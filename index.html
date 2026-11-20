@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Rastreio em Tempo Real | Fretes e Carretos</title>
+
+  <!-- Fonte Moderna -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Mapa Leaflet (Gratuito e sem limite de visualizações) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-light: #334155;
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --accent: #3b82f6;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.1);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      height: 100dvh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hidden { display: none !important; }
+
+    /* Mapa em Tela Cheia */
+    #map {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background: #e2e8f0;
+    }
+
+    /* Cabeçalho Flutuante */
+    .top-bar {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      z-index: 10;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .brand-info h1 {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-info span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-live {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .badge-wait {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .badge-done {
+      background: rgba(59, 130, 246, 0.18);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 1; }
+      70% { transform: scale(1.6); opacity: 0; }
+      100% { transform: scale(0.9); opacity: 0; }
+    }
+
+    /* Cartão Inferior */
+    .bottom-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border);
+      border-radius: 22px 22px 0 0;
+      padding: 18px 18px 24px;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+      max-height: 75dvh;
+      overflow-y: auto;
+    }
+
+    .sheet-handle {
+      width: 38px;
+      height: 4px;
+      background: var(--surface-light);
+      border-radius: 99px;
+      margin: 0 auto 14px;
+    }
+
+    /* Métricas do Cliente */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .metric-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .metric-box small {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .metric-box strong {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      padding: 12px 14px;
+      border-radius: 14px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    /* Formulários e Botões */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    input, select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 11px 13px;
+      border-radius: 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 13px 16px;
+      border: none;
+      border-radius: 13px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--primary); color: #052e16; }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-dark { background: var(--surface-light); color: var(--text); }
+    .btn-danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .btn-sm { width: auto; padding: 10px 14px; font-size: 13px; }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    /* Marcador do Veículo no Mapa */
+    .truck-marker {
+      width: 44px;
+      height: 44px;
+      background: #0f172a;
+      border: 3px solid #10b981;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.45);
+      font-size: 20px;
+    }
+
+    .dest-marker {
+      width: 36px;
+      height: 36px;
+      background: #ef4444;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      font-size: 16px;
+    }
+
+    /* Modo Tela Preta OLED (Economia Extrema) */
+    #oledOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #000000;
+      color: #22c55e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      user-select: none;
+    }
+
+    #oledOverlay p {
+      color: #4b5563;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    .oled-unlock {
+      margin-top: 36px;
+      padding: 14px 24px;
+      border: 1px solid #1f2937;
+      border-radius: 99px;
+      background: #09090b;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Toast de Notificação */
+    #toast {
+      position: fixed;
+      top: 82px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      background: #10b981;
+      color: #052e16;
+      padding: 9px 16px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+
+    #toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Mapa Principal -->
+  <div id="map"></div>
+
+  <!-- Cabeçalho -->
+  <header class="top-bar">
+    <div class="brand">
+      <div class="brand-icon">🚚</div>
+      <div class="brand-info">
+        <h1 id="brandTitle">Fretes e Carretos</h1>
+        <span id="brandSub">@fretes__e__carretos</span>
+      </div>
+    </div>
+    <div id="statusBadge" class="badge badge-wait">
+      <span class="pulse-dot"></span>
+      <span id="statusText">Aguardando</span>
+    </div>
+  </header>
+
+  <div id="toast">Link copiado!</div>
+
+  <!-- ========================================== -->
+  <!-- 1. TELA DO CLIENTE (ACOMPANHAMENTO)        -->
+  <!-- ========================================== -->
+  <section id="clientView" class="bottom-sheet hidden">
+    <div class="sheet-handle"></div>
+
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <small>Distância</small>
+        <strong id="clientDist">--</strong>
+      </div>
+      <div class="metric-box">
+        <small>Previsão</small>
+        <strong id="clientEta">--</strong>
+      </div>
+      <div class="metric-box">
+        <small>Atualizado</small>
+        <strong id="clientUpdated">Agora</strong>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div>
+        <div style="color: var(--text-muted); font-size: 11px;">VEÍCULO EM ROTA</div>
+        <strong id="clientVehicle">Utilitário / Transporte</strong>
+      </div>
+      <div style="text-align: right;">
+        <div style="color: var(--text-muted); font-size: 11px;">CÓDIGO</div>
+        <strong id="clientCode">#0000</strong>
+      </div>
+    </div>
+
+    <a id="btnClientWhatsApp" href="#" target="_blank" class="btn btn-primary" style="text-decoration: none;">
+      💬 Falar com o Motorista no WhatsApp
+    </a>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 2. PAINEL DO MOTORISTA (TRANSMISSÃO GPS)   -->
+  <!-- ========================================== -->
+  <section id="driverView" class="bottom-sheet hidden">
+    <div class="sheet-handle"></div>
+
+    <div id="driverSetup">
+      <div class="input-row form-group">
+        <div style="flex: 1;">
+          <label>Código do Frete</label>
+          <input type="text" id="driverTripId" placeholder="Ex: FRETE-101" />
+        </div>
+        <div style="flex: 1;">
+          <label>Intervalo GPS (Bateria)</label>
+          <select id="intervalSelect">
+            <option value="12000" selected>Eco (12 seg)</option>
+            <option value="20000">Super Eco (20 seg)</option>
+            <option value="6000">Rápido (6 seg)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Veículo</label>
+        <select id="driverVehicle">
+          <option value="Picape Utilitária (Montana)">Picape Utilitária (Montana)</option>
+          <option value="Caminhão Baú (Hyundai HR)">Caminhão Baú (Hyundai HR)</option>
+          <option value="Caminhão Baú (Ford Cargo 815)">Caminhão Baú (Ford Cargo 815)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Destino (Opcional: busque ou toque no mapa)</label>
+        <div class="input-row">
+          <input type="text" id="destSearchInput" placeholder="Ex: Av. Paulista, 1000, São Paulo" />
+          <button type="button" id="btnSearchDest" class="btn btn-dark btn-sm">Buscar</button>
+        </div>
+      </div>
+
+      <button type="button" id="btnStartTrack" class="btn btn-primary">
+        ▶ Iniciar Transmissão ao Vivo
+      </button>
+    </div>
+
+    <div id="driverActive" class="hidden">
+      <div class="info-row">
+        <div>
+          <div style="color: var(--text-muted); font-size: 11px;">TRANSMITINDO FRETE</div>
+          <strong id="activeTripLabel">--</strong>
+        </div>
+        <div style="text-align: right;">
+          <div style="color: var(--text-muted); font-size: 11px;">ENVIOS GPS</div>
+          <strong id="gpsSendCount">0</strong>
+        </div>
+      </div>
+
+      <button type="button" id="btnWhatsAppShare" class="btn btn-primary">
+        📲 Enviar Link ao Cliente via WhatsApp
+      </button>
+
+      <div class="btn-grid">
+        <button type="button" id="btnCopyLink" class="btn btn-dark">📋 Copiar Link</button>
+        <button type="button" id="btnOledMode" class="btn btn-accent">🔋 Tela Preta (Eco)</button>
+      </div>
+
+      <button type="button" id="btnFinishTrack" class="btn btn-danger" style="margin-top: 8px;">
+        ■ Finalizar Entrega e Desligar GPS
+      </button>
+    </div>
+  </section>
+
+  <!-- Overlay de Economia Extrema OLED -->
+  <div id="oledOverlay" class="hidden">
+    <div style="font-size: 28px; margin-bottom: 8px;">📡</div>
+    <strong style="font-size: 16px;">RASTREIO ATIVO EM ECONOMIA</strong>
+    <p id="oledStatusText">Enviando posição a cada 12s...</p>
+    <p id="oledBatteryText"></p>
+    <button type="button" id="btnExitOled" class="oled-unlock">Toque duas vezes para voltar</button>
+  </div>
+
+  <script type="module">
+    // =========================================================================
+    // CONFIGURAÇÕES DA SUA EMPRESA E DO FIREBASE
+    // =========================================================================
+    const CONFIG = {
+      empresa: "Fretes e Carretos",
+      instagram: "@fretes__e__carretos",
+      whatsapp: "5511981949225", // Formato: 55 + DDD + Número (sem espaços)
+
+      // Cole aqui os dados do seu projeto Firebase Realtime Database (Gratuito)
+      firebase: {
+        apiKey: "SUA_API_KEY",
+        authDomain: "SEU_PROJETO.firebaseapp.com",
+        databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
+        projectId: "SEU_PROJETO"
+      }
+    };
+
+    // =========================================================================
+    // INICIALIZAÇÃO DO BANCO DE DADOS (FIREBASE OU MODO DEMO LOCAL)
+    // =========================================================================
+    const isDemoMode = CONFIG.firebase.apiKey === "SUA_API_KEY";
+    let db = null;
+    let fbRef, fbSet, fbOnValue, fbUpdate;
+
+    if (!isDemoMode) {
+      const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+      const dbMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
+      const app = initializeApp(CONFIG.firebase);
+      db = dbMod.getDatabase(app);
+      fbRef = dbMod.ref;
+      fbSet = dbMod.set;
+      fbOnValue = dbMod.onValue;
+      fbUpdate = dbMod.update;
+    }
+
+    // =========================================================================
+    // VARIÁVEIS DE ESTADO E MAPA
+    // =========================================================================
+    document.getElementById("brandTitle").textContent = CONFIG.empresa;
+    document.getElementById("brandSub").textContent = CONFIG.instagram;
+
+    const params = new URLSearchParams(window.location.search);
+    const tripParam = params.get("id");
+    const isDriver = params.get("motorista") === "1" || !tripParam;
+
+    // Inicializa Mapa (São Paulo como padrão inicial)
+    const map = L.map("map", { zoomControl: false }).setView([-23.5505, -46.6333], 13);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+      attribution: '&copy; OpenStreetMap',
+      maxZoom: 19
+    }).addTo(map);
+
+    const truckIcon = L.divIcon({
+      className: "",
+      html: `<div class="truck-marker">🚚</div>`,
+      iconSize: [44, 44],
+      iconAnchor: [22, 22]
+    });
+
+    const destIcon = L.divIcon({
+      className: "",
+      html: `<div class="dest-marker">🏁</div>`,
+      iconSize: [36, 36],
+      iconAnchor: [18, 18]
+    });
+
+    let truckMarker = null;
+    let destMarker = null;
+    let destinationCoords = null;
+    let watchId = null;
+    let wakeLock = null;
+    let lastSentTime = 0;
+    let lastSentCoords = null;
+    let sendCounter = 0;
+    let currentTripId = "";
+
+    // =========================================================================
+    // FUNÇÕES UTILITÁRIAS (DISTÂNCIA, TOAST, ANIMAÇÃO)
+    // =========================================================================
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2600);
+    }
+
+    function haversineMeters(lat1, lon1, lat2, lon2) {
+      const R = 6371000;
+      const toRad = (v) => (v * Math.PI) / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function smoothMoveMarker(marker, newLat, newLng) {
+      const start = marker.getLatLng();
+      const duration = 1200;
+      const startTime = performance.now();
+
+      function animate(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        const lat = start.lat + (newLat - start.lat) * progress;
+        const lng = start.lng + (newLng - start.lng) * progress;
+        marker.setLatLng([lat, lng]);
+        if (progress < 1) requestAnimationFrame(animate);
+      }
+      requestAnimationFrame(animate);
+    }
+
+    function updateStatusBadge(state, text) {
+      const badge = document.getElementById("statusBadge");
+      const label = document.getElementById("statusText");
+      badge.className = "badge " + (state === "live" ? "badge-live" : state === "done" ? "badge-done" : "badge-wait");
+      label.textContent = text;
+    }
+
+    // =========================================================================
+    // MODO 1: MOTORISTA
+    // =========================================================================
+    if (isDriver) {
+      document.getElementById("driverView").classList.remove("hidden");
+      setTimeout(() => map.invalidateSize(), 150);
+
+      // Gera código aleatório padrão
+      const randomCode = "FRETE-" + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById("driverTripId").value = randomCode;
+
+      if (isDemoMode) {
+        showToast("Modo Demo Local ativo (configure o Firebase para uso online)");
+      }
+
+      // Permite definir destino tocando no mapa
+      map.on("click", (e) => {
+        if (watchId !== null) return; // Evita mudar acidentalmente durante viagem
+        destinationCoords = { lat: e.latlng.lat, lng: e.latlng.lng };
+        if (!destMarker) {
+          destMarker = L.marker([e.latlng.lat, e.latlng.lng], { icon: destIcon }).addTo(map);
+        } else {
+          destMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
+        }
+        showToast("Destino marcado no mapa!");
+      });
+
+      // Busca endereço via OpenStreetMap (Nominatim Gratuito)
+      document.getElementById("btnSearchDest").addEventListener("click", async () => {
+        const query = document.getElementById("destSearchInput").value.trim();
+        if (!query) return;
+        showToast("Buscando endereço...");
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`);
+          const data = await res.json();
+          if (data && data.length > 0) {
+            const lat = parseFloat(data[0].lat);
+            const lng = parseFloat(data[0].lon);
+            destinationCoords = { lat, lng };
+            if (!destMarker) {
+              destMarker = L.marker([lat, lng], { icon: destIcon }).addTo(map);
+            } else {
+              destMarker.setLatLng([lat, lng]);
+            }
+            map.setView([lat, lng], 15);
+       showToast("Destino encontrado!");
+          } else {
+            showToast("Endereço não encontrado. Toque no mapa para marcar.");
+          }
+        } catch {
+          showToast("Erro ao buscar endereço.");
+        }
+      });
+
+      // Função para salvar dados no Firebase ou LocalStorage (Demo)
+      function publishLocation(tripId, payload) {
+        if (!isDemoMode) {
+          fbUpdate(fbRef(db, "fretes/" + tripId), payload);
+        } else {
+          const existing = JSON.parse(localStorage.getItem("demo_" + tripId) || "{}");
+          localStorage.setItem("demo_" + tripId, JSON.stringify({ ...existing, ...payload }));
+        }
+      }
+
+      // Iniciar Transmissão GPS
+      document.getElementById("btnStartTrack").addEventListener("click", async () => {
+        if (!("geolocation" in navigator)) {
+          alert("Seu navegador não suporta GPS.");
+          return;
+        }
+
+        currentTripId = document.getElementById("driverTripId").value.trim().replace(/[^a-zA-Z0-9-_]/g, "") || randomCode;
+        const vehicle = document.getElementById("driverVehicle").value;
+        const intervalMs = parseInt(document.getElementById("intervalSelect").value, 10);
+
+        // Solicita Wake Lock para o celular não matar o GPS em segundo plano
+        try {
+          if ("wakeLock" in navigator) {
+            wakeLock = await navigator.wakeLock.request("screen");
+          }
+        } catch (_) {}
+
+        document.getElementById("driverSetup").classList.add("hidden");
+        document.getElementById("driverActive").classList.remove("hidden");
+        document.getElementById("activeTripLabel").textContent = "#" + currentTripId;
+        updateStatusBadge("live", "Ao Vivo");
+
+        const initialData = {
+          status: "em_rota",
+          vehicle: vehicle,
+          dest: destinationCoords || null,
+          updatedAt: Date.now()
+        };
+
+        if (!isDemoMode) {
+          fbSet(fbRef(db, "fretes/" + currentTripId), initialData);
+        } else {
+          localStorage.setItem("demo_" + currentTripId, JSON.stringify(initialData));
+        }
+
+        watchId = navigator.geolocation.watchPosition(
+          (pos) => {
+            const { latitude: lat, longitude: lng } = pos.coords;
+            const now = Date.now();
+
+            // Atualiza o mapa local do motorista
+            if (!truckMarker) {
+              truckMarker = L.marker([lat, lng], { icon: truckIcon }).addTo(map);
+              map.setView([lat, lng], 16);
+            } else {
+              smoothMoveMarker(truckMarker, lat, lng);
+              map.panTo([lat, lng]);
+            }
+
+            // OTIMIZAÇÃO DE BATERIA 1: Respeita o intervalo escolhido
+            if (now - lastSentTime < intervalMs) return;
+
+            // OTIMIZAÇÃO DE BATERIA 2: Não envia se o veículo andou menos de 15m (exceto a cada 60s)
+            if (lastSentCoords) {
+              const moved = haversineMeters(lastSentCoords.lat, lastSentCoords.lng, lat, lng);
+              if (moved < 15 && now - lastSentTime < 60000) return;
+            }
+
+            lastSentTime = now;
+            lastSentCoords = { lat, lng };
+            sendCounter++;
+            document.getElementById("gpsSendCount").textContent = sendCounter;
+            document.getElementById("oledStatusText").textContent = `Último envio: ${new Date().toLocaleTimeString("pt-BR")} (${sendCounter} envios)`;
+
+            publishLocation(currentTripId, {
+              lat,
+              lng,
+              status: "em_rota",
+              updatedAt: now
+            });
+          },
+          (err) => {
+            showToast("Ative o GPS de alta precisão nas configurações do celular.");
+          },
+          {
+            enableHighAccuracy: true,
+            maximumAge: 10000,
+            timeout: 15000
+          }
+        );
+      });
+
+      // Gera o link completo para o cliente
+      function getClientShareUrl() {
+        const base = window.location.origin + window.location.pathname;
+        return `${base}?id=${encodeURIComponent(currentTripId)}`;
+      }
+
+      document.getElementById("btnCopyLink").addEventListener("click", () => {
+        navigator.clipboard.writeText(getClientShareUrl());
+        showToast("Link do cliente copiado!");
+      });
+
+      document.getElementById("btnWhatsAppShare").addEventListener("click", () => {
+        const link = getClientShareUrl();
+        const msg = `Olá! Seu frete com a *${CONFIG.empresa}* já está a caminho. Acompanhe o veículo em tempo real pelo link:\n\n${link}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+      });
+
+      // Tela Preta OLED (Economia de bateria)
+      document.getElementById("btnOledMode").addEventListener("click", async () => {
+        document.getElementById("oledOverlay").classList.remove("hidden");
+        if ("getBattery" in navigator) {
+          const bat = await navigator.getBattery();
+          document.getElementById("oledBatteryText").textContent = `Bateria atual: ${Math.round(bat.level * 100)}%`;
+        }
+      });
+
+      document.getElementById("btnExitOled").addEventListener("dblclick", () => {
+        document.getElementById("oledOverlay").classList.add("hidden");
+      });
+
+      // Finalizar Entrega
+      document.getElementById("btnFinishTrack").addEventListener("click", () => {
+        if (!confirm("Deseja encerrar o rastreio desta entrega?")) return;
+        if (watchId !== null) {
+          navigator.geolocation.clearWatch(watchId);
+          watchId = null;
+        }
+        if (wakeLock) {
+          wakeLock.release();
+          wakeLock = null;
+        }
+        publishLocation(currentTripId, {
+          status: "concluido",
+          updatedAt: Date.now()
+        });
+        updateStatusBadge("done", "Entregue");
+        document.getElementById("driverActive").classList.add("hidden");
+        document.getElementById("driverSetup").classList.remove("hidden");
+        showToast("Entrega finalizada e GPS desligado!");
+      });
+
+    // =========================================================================
+    // MODO 2: CLIENTE (VISUALIZAÇÃO AO VIVO)
+    // =========================================================================
+    } else {
+      document.getElementById("clientView").classList.remove("hidden");
+      document.getElementById("clientCode").textContent = "#" + tripParam;
+      setTimeout(() => map.invalidateSize(), 150);
+
+      const waMsg = `Olá! Estou acompanhando o frete #${tripParam} pelo link de rastreio.`;
+      document.getElementById("btnClientWhatsApp").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(waMsg)}`;
+
+      let lastUpdateTimestamp = null;
+
+      // Atualiza contador de segundos desde a última posição
+      setInterval(() => {
+        if (!lastUpdateTimestamp) return;
+        const sec = Math.floor((Date.now() - lastUpdateTimestamp) / 1000);
+        document.getElementById("clientUpdated").textContent = sec < 5 ? "Agora" : `${sec}s atrás`;
+      }, 1000);
+
+      function renderClientData(data) {
+        if (!data) {
+          updateStatusBadge("wait", "Aguardando");
+          return;
+        }
+
+        if (data.vehicle) {
+          document.getElementById("clientVehicle").textContent = data.vehicle;
+        }
+
+        if (data.status === "concluido") {
+          updateStatusBadge("done", "Entrega Concluída");
+          document.getElementById("clientDist").textContent = "0 km";
+          document.getElementById("clientEta").textContent = "Chegou";
+          return;
+        }
+
+        if (data.lat && data.lng) {
+          updateStatusBadge("live", "A Caminho");
+          lastUpdateTimestamp = data.updatedAt || Date.now();
+
+          if (!truckMarker) {
+            truckMarker = L.marker([data.lat, data.lng], { icon: truckIcon }).addTo(map);
+            map.setView([data.lat, data.lng], 16);
+          } else {
+            smoothMoveMarker(truckMarker, data.lat, data.lng);
+            map.panTo([data.lat, data.lng]);
+          }
+
+          // Se o motorista definiu o destino, calcula distância e previsão
+          if (data.dest && data.dest.lat && data.dest.lng) {
+            if (!destMarker) {
+              destMarker = L.marker([data.dest.lat, data.dest.lng], { icon: destIcon }).addTo(map);
+            }
+            // Fator 1.3 corrige linha reta para distância aproximada de rua
+            const meters = haversineMeters(data.lat, data.lng, data.dest.lat, data.dest.lng) * 1.3;
+            const km = meters / 1000;
+            document.getElementById("clientDist").textContent = km < 1 ? `${Math.round(meters)} m` : `${km.toFixed(1)} km`;
+
+            // Velocidade média urbana estimada: 30 km/h
+            const mins = Math.max(1, Math.round((km / 30) * 60));
+            document.getElementById("clientEta").textContent = mins > 60 ? `${Math.floor(mins / 60)}h ${mins % 60}m` : `${mins} min`;
+          } else {
+            document.getElementById("clientDist").textContent = "Em trânsito";
+            document.getElementById("clientEta").textContent = "Ao vivo";
+          }
+        }
+      }
+
+      if (!isDemoMode) {
+        fbOnValue(fbRef(db, "fretes/" + tripParam), (snapshot) => {
+          renderClientData(snapshot.val());
+        });
+      } else {
+        // Modo Demo Local: escuta alterações na mesma máquina/navegador
+        setInterval(() => {
+          const raw = localStorage.getItem("demo_" + tripParam);
+          if (raw) renderClientData(JSON.parse(raw));
+        }, 1500);
+      }
+    }
+  </script>
+</body>
+</html>
