@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Leaflet via jsDelivr (com backup automático no script) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
     :root {
@@ -48,11 +48,9 @@
 
     #map {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       z-index: 1;
       background: #cbd5e1;
     }
@@ -63,7 +61,7 @@
       top: 12px;
       left: 12px;
       right: 12px;
-      z-index: 10;
+      z-index: 1000;
       background: rgba(15, 23, 42, 0.94);
       backdrop-filter: blur(12px);
       border: 1px solid var(--border);
@@ -130,7 +128,7 @@
       position: fixed;
       top: 78px;
       right: 12px;
-      z-index: 10;
+      z-index: 1000;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -154,7 +152,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      z-index: 10;
+      z-index: 1000;
       background: rgba(15, 23, 42, 0.97);
       backdrop-filter: blur(14px);
       border-top: 1px solid var(--border);
@@ -167,7 +165,7 @@
     }
 
     .bottom-sheet.minimized {
-      max-height: 62px;
+      max-height: 58px;
       overflow: hidden;
     }
 
@@ -275,6 +273,7 @@
     }
 
     .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn-primary { background: var(--primary); color: #052e16; }
     .btn-accent { background: var(--accent); color: #fff; }
     .btn-warning { background: var(--warning); color: #451a03; }
@@ -380,7 +379,7 @@
       top: 78px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 999;
+      z-index: 2000;
       background: #10b981;
       color: #052e16;
       padding: 9px 16px;
@@ -417,9 +416,9 @@
     </div>
   </header>
 
-  <!-- Botões Flutuantes (Estilo do Mapa + Centralizar) -->
+  <!-- Botões Flutuantes -->
   <div class="floating-controls">
-    <button type="button" id="btnThemeToggle" class="float-btn">☀️ Claro</button>
+    <button type="button" id="btnThemeToggle" class="float-btn">🗺️ Moderno</button>
     <button type="button" id="btnRecenter" class="float-btn hidden">🎯 Centralizar</button>
   </div>
 
@@ -440,7 +439,7 @@
         <h2>🔒 Painel do Gestor</h2>
       </div>
       <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-        Digite a senha configurada no Firebase para criar fretes e gerar links para motoristas e clientes.
+        Digite a senha configurada no Firebase para criar fretes e gerar links.
       </p>
       <div class="form-group">
         <input type="password" id="adminPassInput" placeholder="Senha do Gestor" />
@@ -695,17 +694,18 @@
     }
 
     // =========================================================================
-    // MAPA COM FALLBACK AUTOMÁTICO E SELETOR DE 3 ESTILOS
+    // INICIALIZAÇÃO DO MAPA COM BACKUP AUTOMÁTICO DE CDN E SERVIDOR
     // =========================================================================
     let map = null, tileLayer = null, truckMarker = null, routeLayer = null;
     let stopMarkers = [], autoFollow = true, initialFitDone = false;
+    let onMapClickHandler = null;
 
     const MAP_STYLES = [
       {
-        id: "light",
-        label: "☀️ Claro",
-        url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-        attr: "&copy; OpenStreetMap &copy; CARTO"
+        id: "modern",
+        label: "🗺️ Moderno",
+        url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+        attr: "&copy; Esri &copy; OpenStreetMap"
       },
       {
         id: "dark",
@@ -715,26 +715,28 @@
       },
       {
         id: "osm",
-        label: "🗺️ Padrão",
+        label: "📍 Padrão",
         url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
         attr: "&copy; OpenStreetMap"
       }
     ];
 
-    let styleIdx = parseInt(localStorage.getItem("fc_map_style_idx") || "0", 10);
+    let styleIdx = parseInt(localStorage.getItem("fc_map_style_v2") || "0", 10);
     if (isNaN(styleIdx) || styleIdx < 0 || styleIdx >= MAP_STYLES.length) styleIdx = 0;
 
-    const truckIcon = typeof L !== "undefined" ? L.divIcon({
-      className: "",
-      html: `<div class="truck-marker">🚚</div>`,
-      iconSize: [44, 44],
-      iconAnchor: [22, 22]
-    }) : null;
+    function getTruckIcon() {
+      return L.divIcon({
+        className: "",
+        html: `<div class="truck-marker">🚚</div>`,
+        iconSize: [44, 44],
+        iconAnchor: [22, 22]
+      });
+    }
 
     function applyMapStyle(idx, isFallback = false) {
       if (!map) return;
       styleIdx = idx;
-      localStorage.setItem("fc_map_style_idx", String(styleIdx));
+      localStorage.setItem("fc_map_style_v2", String(styleIdx));
       const style = MAP_STYLES[styleIdx];
       document.getElementById("btnThemeToggle").textContent = style.label;
 
@@ -757,7 +759,8 @@
       if (isFallback) showToast("Mapa alternativo ativado!");
     }
 
-    if (typeof L !== "undefined") {
+    function initMap() {
+      if (map || typeof L === "undefined") return;
       map = L.map("map", { zoomControl: false }).setView([-23.5505, -46.6333], 13);
       applyMapStyle(styleIdx);
 
@@ -770,20 +773,35 @@
         document.getElementById("btnRecenter").classList.remove("hidden");
       });
 
+      map.on("click", (e) => {
+        if (onMapClickHandler) onMapClickHandler(e);
+      });
+
       document.getElementById("btnRecenter").addEventListener("click", () => {
         autoFollow = true;
         document.getElementById("btnRecenter").classList.add("hidden");
         if (truckMarker) map.setView(truckMarker.getLatLng(), 16);
       });
 
-      if (typeof ResizeObserver !== "undefined") {
-        new ResizeObserver(() => map.invalidateSize()).observe(document.getElementById("map"));
-      }
       window.addEventListener("resize", () => map.invalidateSize());
       setTimeout(() => map.invalidateSize(), 150);
-      setTimeout(() => map.invalidateSize(), 600);
+      setTimeout(() => map.invalidateSize(), 700);
+    }
+
+    if (typeof L !== "undefined") {
+      initMap();
     } else {
-      showToast("Erro ao carregar biblioteca de mapas. Atualize a página.", true);
+      // Se jsDelivr falhar, carrega automaticamente via cdnjs
+      const backupCss = document.createElement("link");
+      backupCss.rel = "stylesheet";
+      backupCss.href = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
+      document.head.appendChild(backupCss);
+
+      const backupJs = document.createElement("script");
+      backupJs.src = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";
+      backupJs.onload = () => initMap();
+      backupJs.onerror = () => showToast("Falha ao carregar mapa. Verifique sua internet.", true);
+      document.head.appendChild(backupJs);
     }
 
     function smoothMoveMarker(marker, newLat, newLng) {
@@ -918,37 +936,84 @@
     }
 
     // =========================================================================
-    // 1. MODO GESTOR
+    // 1. MODO GESTOR (COM VALIDAÇÃO REAL DA SENHA NO FIREBASE)
     // =========================================================================
     if (isManagerMode) {
-      let adminPassword = localStorage.getItem("fc_admin_pass") || "";
+      let adminPassword = "";
+      let isAdminAuthenticated = false;
       let draftStops = [];
 
-      function unlockManagerUI() {
+      function unlockManagerUI(pass) {
+        adminPassword = pass;
+        isAdminAuthenticated = true;
         document.getElementById("managerLoginBox").classList.add("hidden");
         document.getElementById("managerDashboard").classList.remove("hidden");
         document.getElementById("mgrTripId").value = generateUniqueTripId();
         renderSavedTripsList();
       }
 
-      if (adminPassword) unlockManagerUI();
+      async function verifyAdminPassword(pass) {
+        const conn = await connectFirebase();
+        if (!conn) return false;
+        try {
+          await conn.set(conn.ref(conn.db, "auth_check"), pass);
+          return true;
+        } catch {
+          return false;
+        }
+      }
 
-      document.getElementById("btnAdminLogin").addEventListener("click", () => {
+      // Valida automaticamente se houver senha salva no aparelho
+      const savedPass = localStorage.getItem("fc_admin_pass");
+      if (savedPass) {
+        const btnLogin = document.getElementById("btnAdminLogin");
+        btnLogin.disabled = true;
+        btnLogin.textContent = "Verificando acesso...";
+        verifyAdminPassword(savedPass).then((ok) => {
+          btnLogin.disabled = false;
+          btnLogin.textContent = "Desbloquear Painel";
+          if (ok) {
+            unlockManagerUI(savedPass);
+          } else {
+            localStorage.removeItem("fc_admin_pass");
+          }
+        });
+      }
+
+      document.getElementById("btnAdminLogin").addEventListener("click", async () => {
         const val = document.getElementById("adminPassInput").value.trim();
         if (!val) {
           showToast("Digite a senha do gestor.", true);
           return;
         }
-        adminPassword = val;
+
+        const btnLogin = document.getElementById("btnAdminLogin");
+        btnLogin.disabled = true;
+        btnLogin.textContent = "Verificando senha...";
+
+        const isValid = await verifyAdminPassword(val);
+
+        btnLogin.disabled = false;
+        btnLogin.textContent = "Desbloquear Painel";
+
+        if (!isValid) {
+          localStorage.removeItem("fc_admin_pass");
+          showToast("Senha incorreta! Acesso negado.", true);
+          return;
+        }
+
         if (document.getElementById("rememberPassCheck").checked) {
           localStorage.setItem("fc_admin_pass", val);
         }
-        unlockManagerUI();
+        unlockManagerUI(val);
+        showToast("Painel desbloqueado!");
       });
 
       document.getElementById("btnLogoutAdmin").addEventListener("click", () => {
         localStorage.removeItem("fc_admin_pass");
         adminPassword = "";
+        isAdminAuthenticated = false;
+        document.getElementById("adminPassInput").value = "";
         document.getElementById("managerDashboard").classList.add("hidden");
         document.getElementById("managerLoginBox").classList.remove("hidden");
       });
@@ -965,7 +1030,7 @@
               <span class="stop-badge ${isLast ? "final" : ""}">${isLast ? "🏁" : idx + 1}</span>
               <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${st.label}</span>
             </div>
-            <button type="button" class="btn btn-danger btn-xs" data-idx="${idx}">✕</button>
+            <button type="button" class="btn btn-danger btn-xs">✕</button>
           `;
           div.querySelector("button").addEventListener("click", () => {
             draftStops.splice(idx, 1);
@@ -976,15 +1041,13 @@
         renderStopPins(draftStops, 0);
       }
 
-      if (map) {
-        map.on("click", (e) => {
-          if (!adminPassword) return;
-          const label = `Ponto no mapa (${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)})`;
-          draftStops.push({ label, lat: e.latlng.lat, lng: e.latlng.lng });
-          refreshDraftStopsUI();
-          showToast(`Parada ${draftStops.length} adicionada!`);
-        });
-      }
+      onMapClickHandler = (e) => {
+        if (!isAdminAuthenticated) return;
+        const label = `Ponto no mapa (${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)})`;
+        draftStops.push({ label, lat: e.latlng.lat, lng: e.latlng.lng });
+        refreshDraftStopsUI();
+        showToast(`Parada ${draftStops.length} adicionada!`);
+      };
 
       document.getElementById("btnAddStopSearch").addEventListener("click", async () => {
         const q = document.getElementById("stopSearchInput").value.trim();
@@ -1010,6 +1073,7 @@
       });
 
       document.getElementById("btnCreateTrip").addEventListener("click", async () => {
+        if (!isAdminAuthenticated) return;
         const conn = await connectFirebase();
         if (!conn) return;
 
@@ -1047,7 +1111,7 @@
           renderSavedTripsList();
           showToast("Transporte criado com sucesso!");
         } catch {
-          showToast("Senha incorreta ou bloqueada nas Regras do Firebase!", true);
+          showToast("Erro de permissão no Firebase!", true);
         }
       });
 
@@ -1200,7 +1264,7 @@
 
             if (map) {
               if (!truckMarker) {
-                truckMarker = L.marker([lat, lng], { icon: truckIcon }).addTo(map);
+                truckMarker = L.marker([lat, lng], { icon: getTruckIcon() }).addTo(map);
                 map.setView([lat, lng], 16);
               } else {
                 smoothMoveMarker(truckMarker, lat, lng);
@@ -1323,7 +1387,7 @@
           lastUpdateTimestamp = latestLive.updatedAt || Date.now();
 
           if (!truckMarker) {
-            truckMarker = L.marker([latestLive.lat, latestLive.lng], { icon: truckIcon }).addTo(map);
+            truckMarker = L.marker([latestLive.lat, latestLive.lng], { icon: getTruckIcon() }).addTo(map);
           } else {
             smoothMoveMarker(truckMarker, latestLive.lat, latestLive.lng);
           }
