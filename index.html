@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Leaflet via jsDelivr -->
+  <!-- Leaflet -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -24,7 +24,7 @@
       --warning: #f59e0b;
       --text: #f8fafc;
       --text-muted: #94a3b8;
-      --border: rgba(255, 255, 255, 0.1);
+      --border: rgba(255, 255, 255, 0.12);
       --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
     }
 
@@ -51,20 +51,21 @@
       position: fixed;
       inset: 0;
       z-index: 1;
-      background: #cbd5e1;
+      background: #e2e8f0;
     }
 
+    /* Cabeçalho */
     .top-bar {
       position: fixed;
-      top: 14px;
-      left: 14px;
-      right: 14px;
+      top: 12px;
+      left: 12px;
+      right: 12px;
       z-index: 10;
       background: rgba(15, 23, 42, 0.94);
       backdrop-filter: blur(12px);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 12px 16px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -78,57 +79,34 @@
     }
 
     .brand-icon {
-      width: 38px;
-      height: 38px;
+      width: 36px;
+      height: 36px;
       border-radius: 10px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       display: grid;
       place-items: center;
       font-size: 18px;
-      color: #fff;
       flex-shrink: 0;
     }
 
-    .brand-info h1 {
-      font-size: 15px;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-
-    .brand-info span {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+    .brand-info h1 { font-size: 14px; font-weight: 700; line-height: 1.2; }
+    .brand-info span { font-size: 11px; color: var(--text-muted); }
 
     .badge {
       padding: 5px 10px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.4px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
-    .badge-live {
-      background: rgba(16, 185, 129, 0.18);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.4);
-    }
-
-    .badge-wait {
-      background: rgba(245, 158, 11, 0.18);
-      color: #fbbf24;
-      border: 1px solid rgba(245, 158, 11, 0.4);
-    }
-
-    .badge-done {
-      background: rgba(59, 130, 246, 0.18);
-      color: #60a5fa;
-      border: 1px solid rgba(59, 130, 246, 0.4);
-    }
+    .badge-live { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-wait { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .badge-done { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
 
     .pulse-dot {
       width: 7px;
@@ -144,12 +122,19 @@
       100% { transform: scale(0.9); opacity: 0; }
     }
 
-    .btn-recenter {
+    /* Botões Flutuantes no Mapa */
+    .floating-controls {
       position: fixed;
-      top: 84px;
-      right: 14px;
+      top: 78px;
+      right: 12px;
       z-index: 10;
-      background: rgba(15, 23, 42, 0.94);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .float-btn {
+      background: rgba(15, 23, 42, 0.92);
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -160,6 +145,7 @@
       cursor: pointer;
     }
 
+    /* Painel Inferior */
     .bottom-sheet {
       position: fixed;
       bottom: 0;
@@ -170,9 +156,9 @@
       backdrop-filter: blur(14px);
       border-top: 1px solid var(--border);
       border-radius: 22px 22px 0 0;
-      padding: 16px 18px 24px;
+      padding: 14px 16px 22px;
       box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
-      max-height: 75dvh;
+      max-height: 76dvh;
       overflow-y: auto;
     }
 
@@ -181,72 +167,65 @@
       height: 4px;
       background: var(--surface-light);
       border-radius: 99px;
-      margin: 0 auto 14px;
+      margin: 0 auto 12px;
     }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .section-header h2 { font-size: 15px; font-weight: 700; }
 
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
     .metric-box {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 10px;
+      border-radius: 12px;
+      padding: 9px;
       text-align: center;
     }
 
-    .metric-box small {
-      display: block;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 3px;
-    }
+    .metric-box small { display: block; font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+    .metric-box strong { font-size: 14px; font-weight: 700; color: var(--text); }
 
-    .metric-box strong {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .info-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .info-card {
       background: var(--surface);
-      padding: 12px 14px;
-      border-radius: 14px;
-      margin-bottom: 12px;
+      padding: 11px 13px;
+      border-radius: 13px;
+      margin-bottom: 10px;
       border: 1px solid var(--border);
       font-size: 13px;
     }
 
-    .form-group { margin-bottom: 12px; }
-
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 5px;
-    }
-
-    .input-row {
+    .info-flex {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 8px;
     }
+
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+
+    .input-row { display: flex; gap: 8px; }
 
     input, select {
       width: 100%;
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 11px 13px;
-      border-radius: 12px;
-      font-size: 14px;
+      padding: 10px 12px;
+      border-radius: 11px;
+      font-size: 13px;
       outline: none;
     }
 
@@ -254,25 +233,28 @@
 
     .btn {
       width: 100%;
-      padding: 13px 16px;
+      padding: 12px 14px;
       border: none;
-      border-radius: 13px;
-      font-size: 14px;
+      border-radius: 12px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
+      text-decoration: none;
       transition: transform 0.1s;
     }
 
     .btn:active { transform: scale(0.98); }
     .btn-primary { background: var(--primary); color: #052e16; }
     .btn-accent { background: var(--accent); color: #fff; }
+    .btn-warning { background: var(--warning); color: #451a03; }
     .btn-dark { background: var(--surface-light); color: var(--text); }
     .btn-danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .btn-sm { width: auto; padding: 10px 14px; font-size: 13px; }
+    .btn-sm { width: auto; padding: 9px 12px; font-size: 12px; }
+    .btn-xs { width: auto; padding: 6px 9px; font-size: 11px; border-radius: 8px; }
 
     .btn-grid {
       display: grid;
@@ -281,6 +263,36 @@
       margin-top: 8px;
     }
 
+    /* Lista de Paradas no Gestor */
+    .stop-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      border-radius: 10px;
+      margin-top: 6px;
+      font-size: 12px;
+      gap: 8px;
+    }
+
+    .stop-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .stop-badge.final { background: var(--danger); }
+
+    /* Marcadores no Mapa */
     .truck-marker {
       width: 44px;
       height: 44px;
@@ -293,18 +305,24 @@
       font-size: 20px;
     }
 
-    .dest-marker {
-      width: 36px;
-      height: 36px;
-      background: #ef4444;
-      border: 3px solid #fff;
+    .pin-marker {
+      width: 32px;
+      height: 32px;
+      background: #3b82f6;
+      border: 2.5px solid #fff;
+      color: #fff;
       border-radius: 50%;
       display: grid;
       place-items: center;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      font-size: 16px;
+      font-size: 13px;
+      font-weight: 800;
     }
 
+    .pin-marker.final { background: #ef4444; }
+    .pin-marker.done { background: #64748b; opacity: 0.75; }
+
+    /* Tela Preta OLED */
     #oledOverlay {
       position: fixed;
       inset: 0;
@@ -320,11 +338,7 @@
       user-select: none;
     }
 
-    #oledOverlay p {
-      color: #4b5563;
-      font-size: 13px;
-      margin-top: 10px;
-    }
+    #oledOverlay p { color: #4b5563; font-size: 13px; margin-top: 8px; }
 
     .oled-unlock {
       margin-top: 36px;
@@ -339,7 +353,7 @@
 
     #toast {
       position: fixed;
-      top: 84px;
+      top: 78px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 999;
@@ -347,7 +361,7 @@
       color: #052e16;
       padding: 9px 16px;
       border-radius: 99px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       box-shadow: var(--shadow);
       opacity: 0;
@@ -364,12 +378,13 @@
 
   <div id="map"></div>
 
+  <!-- Cabeçalho -->
   <header class="top-bar">
     <div class="brand">
       <div class="brand-icon">🚚</div>
       <div class="brand-info">
-        <h1 id="brandTitle">Fretes e Carretos</h1>
-        <span id="brandSub">@fretes__e__carretos</span>
+        <h1>Fretes e Carretos</h1>
+        <span>@fretes__e__carretos</span>
       </div>
     </div>
     <div id="statusBadge" class="badge badge-wait">
@@ -378,126 +393,207 @@
     </div>
   </header>
 
-  <button type="button" id="btnRecenter" class="btn-recenter hidden">🎯 Centralizar</button>
+  <!-- Botões Flutuantes (Tema Claro/Escuro + Centralizar) -->
+  <div class="floating-controls">
+    <button type="button" id="btnThemeToggle" class="float-btn">🌙 Escuro</button>
+    <button type="button" id="btnRecenter" class="float-btn hidden">🎯 Centralizar</button>
+  </div>
+
   <div id="toast">Pronto!</div>
 
-  <!-- TELA DO CLIENTE -->
+  <!-- ========================================================= -->
+  <!-- 1. INTERFACE DO GESTOR (VOCÊ)                             -->
+  <!-- ========================================================= -->
+  <section id="managerView" class="bottom-sheet hidden">
+    <div class="sheet-handle"></div>
+
+    <!-- Tela de Bloqueio por Senha Mestra -->
+    <div id="managerLoginBox">
+      <div class="section-header">
+        <h2>🔒 Painel do Gestor</h2>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+        Digite a senha configurada no Firebase para criar fretes e gerar links para motoristas e clientes.
+      </p>
+      <div class="form-group">
+        <input type="password" id="adminPassInput" placeholder="Senha do Gestor" />
+      </div>
+      <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+        <input type="checkbox" id="rememberPassCheck" checked style="width: auto;" />
+        Lembrar senha neste aparelho
+      </label>
+      <button type="button" id="btnAdminLogin" class="btn btn-primary">Desbloquear Painel</button>
+    </div>
+
+    <!-- Painel Desbloqueado -->
+    <div id="managerDashboard" class="hidden">
+      <div class="section-header">
+        <h2>📋 Novo Transporte</h2>
+        <button type="button" id="btnLogoutAdmin" class="btn btn-dark btn-xs">🔒 Sair</button>
+      </div>
+
+      <div class="input-row form-group">
+        <div style="flex: 1;">
+          <label>Código Único</label>
+          <input type="text" id="mgrTripId" />
+        </div>
+        <div style="flex: 1;">
+          <label>Motorista (Opcional)</label>
+          <input type="text" id="mgrDriverName" placeholder="Ex: Eric / Gilberto" />
+        </div>
+      </div>
+
+      <div class="input-row form-group">
+        <div style="flex: 1.3;">
+          <label>Veículo</label>
+          <select id="mgrVehicle">
+            <option value="Picape Utilitária (Montana)">Picape Utilitária (Montana)</option>
+            <option value="Caminhão Baú (Hyundai HR)">Caminhão Baú (Hyundai HR)</option>
+            <option value="Caminhão Baú (Ford Cargo 815)">Caminhão Baú (Ford Cargo 815)</option>
+          </select>
+        </div>
+        <div style="flex: 0.7;">
+          <label>GPS (Bateria)</label>
+          <select id="mgrInterval">
+            <option value="20000" selected>Super Eco (20s)</option>
+            <option value="12000">Eco (12s)</option>
+            <option value="6000">Rápido (6s)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Paradas e Destino (busque o endereço ou toque no mapa)</label>
+        <div class="input-row">
+          <input type="text" id="stopSearchInput" placeholder="Ex: Av. Paulista, 1000, São Paulo" />
+          <button type="button" id="btnAddStopSearch" class="btn btn-dark btn-sm">+ Add</button>
+        </div>
+        <div id="stopsList"></div>
+      </div>
+
+      <button type="button" id="btnCreateTrip" class="btn btn-primary">
+        ✅ Criar Transporte e Gerar Links
+      </button>
+
+      <!-- Lista de Transportes Criados -->
+      <div id="activeTripsSection" class="hidden" style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 14px;">
+        <div class="section-header">
+          <h2>🚚 Transportes Gerados</h2>
+        </div>
+        <div id="activeTripsList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 2. INTERFACE DO MOTORISTA (PARCEIRO OU VOCÊ NA RUA)       -->
+  <!-- ========================================================= -->
+  <section id="driverView" class="bottom-sheet hidden">
+    <div class="sheet-handle"></div>
+
+    <div class="info-card info-flex">
+      <div>
+        <div style="font-size: 11px; color: var(--text-muted);">TRANSPORTE</div>
+        <strong id="drvTripCode">#0000</strong>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-size: 11px; color: var(--text-muted);">VEÍCULO</div>
+        <strong id="drvVehicle">--</strong>
+      </div>
+    </div>
+
+    <div id="drvStopBox" class="info-card hidden">
+      <div style="font-size: 11px; color: #34d399; font-weight: 700;" id="drvStopTitle">PRÓXIMA PARADA</div>
+      <div style="font-size: 13px; font-weight: 600; margin: 4px 0 8px;" id="drvStopAddr">--</div>
+      <a id="btnOpenGmaps" href="#" target="_blank" class="btn btn-accent">
+        🗺️ Abrir Rota no Google Maps
+      </a>
+    </div>
+
+    <div id="drvSetupControls">
+      <button type="button" id="btnDrvStart" class="btn btn-primary">
+        ▶ Iniciar Transmissão ao Vivo
+      </button>
+    </div>
+
+    <div id="drvActiveControls" class="hidden">
+      <div class="info-card info-flex">
+        <span style="color: var(--text-muted); font-size: 12px;">Posições GPS enviadas:</span>
+        <strong id="drvSendCount">0</strong>
+      </div>
+
+      <button type="button" id="btnDrvNextStop" class="btn btn-warning hidden" style="margin-bottom: 8px;">
+        ✅ Concluir Parada Atual e Ir para Próxima
+      </button>
+
+      <div class="btn-grid">
+        <button type="button" id="btnDrvOled" class="btn btn-accent">🔋 Tela Preta (Eco)</button>
+        <button type="button" id="btnDrvShareClient" class="btn btn-dark">📲 Link Cliente</button>
+      </div>
+
+      <button type="button" id="btnDrvFinish" class="btn btn-danger" style="margin-top: 8px;">
+        ■ Finalizar Entrega Completa
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 3. INTERFACE DO CLIENTE (ACOMPANHAMENTO AO VIVO)          -->
+  <!-- ========================================================= -->
   <section id="clientView" class="bottom-sheet hidden">
     <div class="sheet-handle"></div>
 
     <div class="metrics-grid">
       <div class="metric-box">
         <small>Distância</small>
-        <strong id="clientDist">--</strong>
+        <strong id="cliDist">--</strong>
       </div>
       <div class="metric-box">
         <small>Previsão</small>
-        <strong id="clientEta">--</strong>
+        <strong id="cliEta">--</strong>
       </div>
       <div class="metric-box">
         <small>Atualizado</small>
-        <strong id="clientUpdated">Aguardando</strong>
+        <strong id="cliUpdated">Aguardando</strong>
       </div>
     </div>
 
-    <div class="info-row">
+    <div id="cliStopBanner" class="info-card hidden" style="border-color: rgba(16, 185, 129, 0.35);">
+      <div style="font-size: 11px; color: #34d399; font-weight: 700;" id="cliStopProgress">ROTA EM ANDAMENTO</div>
+      <div style="font-size: 13px; font-weight: 600; margin-top: 2px;" id="cliStopLabel">--</div>
+    </div>
+
+    <div class="info-card info-flex">
       <div>
-        <div style="color: var(--text-muted); font-size: 11px;">VEÍCULO EM ROTA</div>
-        <strong id="clientVehicle">Utilitário / Transporte</strong>
+        <div style="color: var(--text-muted); font-size: 11px;">VEÍCULO / MOTORISTA</div>
+        <strong id="cliVehicle">Utilitário / Transporte</strong>
       </div>
       <div style="text-align: right;">
         <div style="color: var(--text-muted); font-size: 11px;">CÓDIGO</div>
-        <strong id="clientCode">#0000</strong>
+        <strong id="cliCode">#0000</strong>
       </div>
     </div>
 
-    <a id="btnClientWhatsApp" href="#" target="_blank" class="btn btn-primary" style="text-decoration: none;">
-      💬 Falar com o Motorista no WhatsApp
+    <a id="btnClientWhatsApp" href="#" target="_blank" class="btn btn-primary">
+      💬 Falar com a Central no WhatsApp
     </a>
-  </section>
-
-  <!-- PAINEL DO MOTORISTA -->
-  <section id="driverView" class="bottom-sheet">
-    <div class="sheet-handle"></div>
-
-    <div id="driverSetup">
-      <div class="input-row form-group">
-        <div style="flex: 1;">
-          <label>Código do Frete</label>
-          <input type="text" id="driverTripId" />
-        </div>
-        <div style="flex: 1;">
-          <label>Intervalo GPS (Bateria)</label>
-          <select id="intervalSelect">
-            <option value="12000" selected>Eco (12 seg)</option>
-            <option value="20000">Super Eco (20 seg)</option>
-            <option value="6000">Rápido (6 seg)</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Veículo</label>
-        <select id="driverVehicle">
-          <option value="Picape Utilitária (Montana)">Picape Utilitária (Montana)</option>
-          <option value="Caminhão Baú (Hyundai HR)">Caminhão Baú (Hyundai HR)</option>
-          <option value="Caminhão Baú (Ford Cargo 815)">Caminhão Baú (Ford Cargo 815)</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Destino (Opcional: busque ou toque no mapa)</label>
-        <div class="input-row">
-          <input type="text" id="destSearchInput" placeholder="Ex: Av. Paulista, 1000, São Paulo" />
-          <button type="button" id="btnSearchDest" class="btn btn-dark btn-sm">Buscar</button>
-        </div>
-      </div>
-
-      <button type="button" id="btnStartTrack" class="btn btn-primary">
-        ▶ Iniciar Transmissão ao Vivo
-      </button>
-    </div>
-
-    <div id="driverActive" class="hidden">
-      <div class="info-row">
-        <div>
-          <div style="color: var(--text-muted); font-size: 11px;">TRANSMITINDO FRETE</div>
-          <strong id="activeTripLabel">--</strong>
-        </div>
-        <div style="text-align: right;">
-          <div style="color: var(--text-muted); font-size: 11px;">ENVIOS GPS</div>
-          <strong id="gpsSendCount">0</strong>
-        </div>
-      </div>
-
-      <button type="button" id="btnWhatsAppShare" class="btn btn-primary">
-        📲 Enviar Link ao Cliente via WhatsApp
-      </button>
-
-      <div class="btn-grid">
-        <button type="button" id="btnCopyLink" class="btn btn-dark">📋 Copiar Link</button>
-        <button type="button" id="btnOledMode" class="btn btn-accent">🔋 Tela Preta (Eco)</button>
-      </div>
-
-      <button type="button" id="btnFinishTrack" class="btn btn-danger" style="margin-top: 8px;">
-        ■ Finalizar Entrega e Desligar GPS
-      </button>
-    </div>
   </section>
 
   <!-- Overlay Tela Preta OLED -->
   <div id="oledOverlay" class="hidden">
     <div style="font-size: 28px; margin-bottom: 8px;">📡</div>
     <strong style="font-size: 16px;">RASTREIO ATIVO EM ECONOMIA</strong>
-    <p id="oledStatusText">Aguardando primeira leitura GPS...</p>
+    <p id="oledStatusText">Transmitindo localização em segundo plano...</p>
     <p id="oledBatteryText"></p>
     <button type="button" id="btnExitOled" class="oled-unlock">Toque duas vezes para voltar</button>
   </div>
 
   <script>
+    // =========================================================================
+    // CONFIGURAÇÕES DO PROJETO
+    // =========================================================================
     const CONFIG = {
       empresa: "Fretes e Carretos",
-      instagram: "@fretes__e__carretos",
       whatsapp: "5511981949225",
       firebase: {
         apiKey: "AIzaSyCH_wpFlgl1icQIGEOL8HifFc8LbYfXloo",
@@ -512,17 +608,18 @@
 
     const params = new URLSearchParams(window.location.search);
     const tripParam = params.get("id");
-    const isDriver = params.get("motorista") === "1" || !tripParam;
+    const driverKeyParam = params.get("chave");
+    const isDriverMode = Boolean(tripParam && params.get("motorista") === "1" && driverKeyParam);
+    const isClientMode = Boolean(tripParam && !isDriverMode);
+    const isManagerMode = !tripParam;
 
-    // Alterna imediatamente entre painel do motorista e tela do cliente
-    if (isDriver) {
-      document.getElementById("driverView").classList.remove("hidden");
-      document.getElementById("clientView").classList.add("hidden");
-    } else {
-      document.getElementById("driverView").classList.add("hidden");
-      document.getElementById("clientView").classList.remove("hidden");
-    }
+    if (isManagerMode) document.getElementById("managerView").classList.remove("hidden");
+    if (isDriverMode) document.getElementById("driverView").classList.remove("hidden");
+    if (isClientMode) document.getElementById("clientView").classList.remove("hidden");
 
+    // =========================================================================
+    // UTILITÁRIOS GERAIS
+    // =========================================================================
     function showToast(msg, isError = false) {
       const t = document.getElementById("toast");
       t.textContent = msg;
@@ -539,6 +636,14 @@
       label.textContent = text;
     }
 
+    function generateUniqueTripId() {
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      const stamp = `${pad(d.getDate())}${pad(d.getMonth() + 1)}-${pad(d.getHours())}${pad(d.getMinutes())}`;
+      const rand = Math.random().toString(36).substring(2, 6).toUpperCase();
+      return `${stamp}-${rand}`;
+    }
+
     function haversineMeters(lat1, lon1, lat2, lon2) {
       const R = 6371000;
       const toRad = (v) => (v * Math.PI) / 180;
@@ -548,29 +653,43 @@
       return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
-    // Inicializa Mapa
-    let map = null, truckMarker = null, destMarker = null, truckIcon = null, destIcon = null;
-    let destinationCoords = null, autoFollow = true, initialFitDone = false;
+    function baseUrl() {
+      return window.location.origin + window.location.pathname;
+    }
+
+    // =========================================================================
+    // MAPA CARTO POSITRON / DARK MATTER + ROTA REAL NAS RUAS (OSRM)
+    // =========================================================================
+    let map = null, tileLayer = null, truckMarker = null, routeLayer = null;
+    let stopMarkers = [], autoFollow = true, initialFitDone = false;
+    let isDarkTheme = localStorage.getItem("fc_map_theme") === "dark";
+
+    const TILES = {
+      light: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+      dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+    };
+
+    const truckIcon = typeof L !== "undefined" ? L.divIcon({
+      className: "",
+      html: `<div class="truck-marker">🚚</div>`,
+      iconSize: [44, 44],
+      iconAnchor: [22, 22]
+    }) : null;
 
     if (typeof L !== "undefined") {
       map = L.map("map", { zoomControl: false }).setView([-23.5505, -46.6333], 13);
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap",
+      tileLayer = L.tileLayer(isDarkTheme ? TILES.dark : TILES.light, {
+        attribution: "&copy; OpenStreetMap &copy; CARTO",
         maxZoom: 19
       }).addTo(map);
 
-      truckIcon = L.divIcon({
-        className: "",
-        html: `<div class="truck-marker">🚚</div>`,
-        iconSize: [44, 44],
-        iconAnchor: [22, 22]
-      });
+      document.getElementById("btnThemeToggle").textContent = isDarkTheme ? "☀️ Claro" : "🌙 Escuro";
 
-      destIcon = L.divIcon({
-        className: "",
-        html: `<div class="dest-marker">🏁</div>`,
-        iconSize: [36, 36],
-        iconAnchor: [18, 18]
+      document.getElementById("btnThemeToggle").addEventListener("click", () => {
+        isDarkTheme = !isDarkTheme;
+        localStorage.setItem("fc_map_theme", isDarkTheme ? "dark" : "light");
+        tileLayer.setUrl(isDarkTheme ? TILES.dark : TILES.light);
+        document.getElementById("btnThemeToggle").textContent = isDarkTheme ? "☀️ Claro" : "🌙 Escuro";
       });
 
       map.on("dragstart", () => {
@@ -585,8 +704,6 @@
       });
 
       setTimeout(() => map.invalidateSize(), 200);
-    } else {
-      showToast("Erro ao carregar mapa. Verifique sua internet.", true);
     }
 
     function smoothMoveMarker(marker, newLat, newLng) {
@@ -601,9 +718,117 @@
       requestAnimationFrame(animate);
     }
 
-    // Conexão Firebase Dinâmica
+    function renderStopPins(stops, currentStopIdx = 0) {
+      if (!map) return;
+      stopMarkers.forEach((m) => map.removeLayer(m));
+      stopMarkers = [];
+
+      stops.forEach((st, idx) => {
+        const isLast = idx === stops.length - 1;
+        const isDone = idx < currentStopIdx;
+        const label = isLast ? "🏁" : String(idx + 1);
+        const cls = `pin-marker ${isLast ? "final" : ""} ${isDone ? "done" : ""}`;
+        const icon = L.divIcon({
+          className: "",
+          html: `<div class="${cls}">${label}</div>`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16]
+        });
+        const m = L.marker([st.lat, st.lng], { icon }).addTo(map);
+        if (st.label) m.bindPopup(`<strong>${isLast ? "Destino Final" : "Parada " + (idx + 1)}</strong><br>${st.label}`);
+        stopMarkers.push(m);
+      });
+    }
+
+    let lastRouteTime = 0, lastRouteOrigin = null;
+    async function drawStreetRoute(originLat, originLng, remainingStops, force = false) {
+      if (!map || !remainingStops || remainingStops.length === 0) return;
+      const now = Date.now();
+      if (!force && lastRouteOrigin) {
+        const moved = haversineMeters(lastRouteOrigin.lat, lastRouteOrigin.lng, originLat, originLng);
+        if (now - lastRouteTime < 45000 && moved < 150) return null;
+      }
+
+      lastRouteTime = now;
+      lastRouteOrigin = { lat: originLat, lng: originLng };
+
+      const waypoints = [`${originLng},${originLat}`, ...remainingStops.map((s) => `${s.lng},${s.lat}`)].join(";");
+      try {
+        const res = await fetch(`https://router.project-osrm.org/route/v1/driving/${waypoints}?overview=full&geometries=geojson`);
+        const json = await res.json();
+        if (json.code === "Ok" && json.routes && json.routes.length > 0) {
+          const route = json.routes[0];
+          if (routeLayer) map.removeLayer(routeLayer);
+          routeLayer = L.geoJSON(route.geometry, {
+            style: { color: "#10b981", weight: 5, opacity: 0.9 }
+          }).addTo(map);
+
+          const nextLeg = route.legs && route.legs[0] ? route.legs[0] : route;
+          return {
+            nextDistance: nextLeg.distance,
+            nextDuration: nextLeg.duration,
+            totalDistance: route.distance,
+            totalDuration: route.duration
+          };
+        }
+      } catch (_) {}
+      return null;
+    }
+
+    // =========================================================================
+    // ÁUDIO SILENCIOSO EM SEGUNDO PLANO (MANTÉM O GPS ATIVO NO ANDROID)
+    // =========================================================================
+    let bgAudioEl = null;
+    function startBackgroundAudioKeepAlive() {
+      try {
+        if (!bgAudioEl) {
+          // Gera 1 segundo de áudio WAV PCM silencioso em memória
+          const sampleRate = 8000, numSamples = 8000;
+          const buffer = new ArrayBuffer(44 + numSamples);
+          const view = new DataView(buffer);
+          const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
+          writeStr(0, "RIFF");
+          view.setUint32(4, 36 + numSamples, true);
+          writeStr(8, "WAVE");
+          writeStr(12, "fmt ");
+          view.setUint32(16, 16, true);
+          view.setUint16(20, 1, true);
+          view.setUint16(22, 1, true);
+          view.setUint32(24, sampleRate, true);
+          view.setUint32(28, sampleRate, true);
+          view.setUint16(32, 1, true);
+          view.setUint16(34, 8, true);
+          writeStr(36, "data");
+          view.setUint32(40, numSamples, true);
+          for (let i = 0; i < numSamples; i++) view.setUint8(44 + i, 128);
+
+          const blob = new Blob([buffer], { type: "audio/wav" });
+          bgAudioEl = new Audio(URL.createObjectURL(blob));
+          bgAudioEl.loop = true;
+        }
+        bgAudioEl.play().catch(() => {});
+
+        if ("mediaSession" in navigator) {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: "Rastreio GPS Ativo",
+            artist: CONFIG.empresa
+          });
+        }
+      } catch (_) {}
+    }
+
+    function stopBackgroundAudioKeepAlive() {
+      if (bgAudioEl) {
+        bgAudioEl.pause();
+      }
+    }
+
+    // =========================================================================
+    // CONEXÃO FIREBASE
+    // =========================================================================
     let fb = null;
     async function connectFirebase() {
+      if (fb) return fb;
       try {
         const appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
         const dbMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
@@ -612,91 +837,296 @@
           db: dbMod.getDatabase(app),
           ref: dbMod.ref,
           set: dbMod.set,
-          update: dbMod.update,
           onValue: dbMod.onValue
         };
         return fb;
-      } catch (err) {
-        showToast("Falha ao conectar no Firebase. Verifique o domínio.", true);
+      } catch {
+        showToast("Erro ao conectar no Firebase.", true);
         return null;
       }
     }
 
-    // MODO MOTORISTA
-    if (isDriver) {
-      const secretSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
-      const randomCode = `FRETE-${Math.floor(100 + Math.random() * 900)}-${secretSuffix}`;
-      document.getElementById("driverTripId").value = randomCode;
+    // =========================================================================
+    // 1. MODO GESTOR
+    // =========================================================================
+    if (isManagerMode) {
+      let adminPassword = localStorage.getItem("fc_admin_pass") || "";
+      let draftStops = [];
 
-      let watchId = null, wakeLock = null, lastSentTime = 0, lastSentCoords = null, sendCounter = 0, currentTripId = "";
+      function unlockManagerUI() {
+        document.getElementById("managerLoginBox").classList.add("hidden");
+        document.getElementById("managerDashboard").classList.remove("hidden");
+        document.getElementById("mgrTripId").value = generateUniqueTripId();
+        renderSavedTripsList();
+      }
 
+      if (adminPassword) {
+        unlockManagerUI();
+      }
+
+      document.getElementById("btnAdminLogin").addEventListener("click", () => {
+        const val = document.getElementById("adminPassInput").value.trim();
+        if (!val) {
+          showToast("Digite a senha do gestor.", true);
+          return;
+        }
+        adminPassword = val;
+        if (document.getElementById("rememberPassCheck").checked) {
+          localStorage.setItem("fc_admin_pass", val);
+        }
+        unlockManagerUI();
+      });
+
+      document.getElementById("btnLogoutAdmin").addEventListener("click", () => {
+        localStorage.removeItem("fc_admin_pass");
+        adminPassword = "";
+        document.getElementById("managerDashboard").classList.add("hidden");
+        document.getElementById("managerLoginBox").classList.remove("hidden");
+      });
+
+      function refreshDraftStopsUI() {
+        const container = document.getElementById("stopsList");
+        container.innerHTML = "";
+        draftStops.forEach((st, idx) => {
+          const isLast = idx === draftStops.length - 1;
+          const div = document.createElement("div");
+          div.className = "stop-item";
+          div.innerHTML = `
+            <div style="display:flex; align-items:center; gap:8px; overflow:hidden;">
+              <span class="stop-badge ${isLast ? "final" : ""}">${isLast ? "🏁" : idx + 1}</span>
+              <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${st.label}</span>
+            </div>
+            <button type="button" class="btn btn-danger btn-xs" data-idx="${idx}">✕</button>
+          `;
+          div.querySelector("button").addEventListener("click", () => {
+            draftStops.splice(idx, 1);
+            refreshDraftStopsUI();
+          });
+          container.appendChild(div);
+        });
+        renderStopPins(draftStops, 0);
+      }
+
+      // Adicionar parada tocando no mapa
       if (map) {
         map.on("click", (e) => {
-          if (watchId !== null) return;
-          destinationCoords = { lat: e.latlng.lat, lng: e.latlng.lng };
-          if (!destMarker) {
-            destMarker = L.marker([e.latlng.lat, e.latlng.lng], { icon: destIcon }).addTo(map);
-          } else {
-            destMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
-          }
-          showToast("Destino marcado no mapa!");
+          if (!adminPassword) return;
+          const label = `Ponto no mapa (${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)})`;
+          draftStops.push({ label, lat: e.latlng.lat, lng: e.latlng.lng });
+          refreshDraftStopsUI();
+          showToast(`Parada ${draftStops.length} adicionada!`);
         });
       }
 
-      document.getElementById("btnSearchDest").addEventListener("click", async () => {
-        const query = document.getElementById("destSearchInput").value.trim();
-        if (!query) return;
+      // Adicionar parada buscando endereço
+      document.getElementById("btnAddStopSearch").addEventListener("click", async () => {
+        const q = document.getElementById("stopSearchInput").value.trim();
+        if (!q) return;
         showToast("Buscando endereço...");
         try {
-          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`);
+          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&q=${encodeURIComponent(q)}`);
           const data = await res.json();
-          if (data && data.length > 0 && map) {
+          if (data && data.length > 0) {
             const lat = parseFloat(data[0].lat);
             const lng = parseFloat(data[0].lon);
-            destinationCoords = { lat, lng };
-            if (!destMarker) {
-              destMarker = L.marker([lat, lng], { icon: destIcon }).addTo(map);
-            } else {
-              destMarker.setLatLng([lat, lng]);
-            }
-            map.setView([lat, lng], 15);
-            showToast("Destino encontrado!");
+            draftStops.push({ label: q, lat, lng });
+            document.getElementById("stopSearchInput").value = "";
+            refreshDraftStopsUI();
+            if (map) map.setView([lat, lng], 15);
+            showToast(`Parada ${draftStops.length} adicionada!`);
           } else {
             showToast("Endereço não encontrado. Toque direto no mapa.", true);
           }
         } catch {
-          showToast("Erro ao buscar. Toque direto no mapa.", true);
+          showToast("Erro ao buscar endereço.", true);
         }
       });
 
-      document.getElementById("btnStartTrack").addEventListener("click", async () => {
+      // Criar transporte no Firebase
+      document.getElementById("btnCreateTrip").addEventListener("click", async () => {
+        const conn = await connectFirebase();
+        if (!conn) return;
+
+        const tripId = document.getElementById("mgrTripId").value.trim().replace(/[^a-zA-Z0-9-_]/g, "") || generateUniqueTripId();
+        const driverName = document.getElementById("mgrDriverName").value.trim();
+        const vehicle = document.getElementById("mgrVehicle").value;
+        const intervalMs = parseInt(document.getElementById("mgrInterval").value, 10);
+        const driverKey = Math.random().toString(36).substring(2, 10).toUpperCase();
+
+        const payload = {
+          meta: {
+            adminPass: adminPassword,
+            driverKey: driverKey
+          },
+          info: {
+            vehicle: vehicle,
+            driverName: driverName,
+            intervalMs: intervalMs,
+            stops: draftStops,
+            createdAt: Date.now()
+          }
+        };
+
+        try {
+          await conn.set(conn.ref(conn.db, "fretes/" + tripId), payload);
+
+          // Salva no histórico local do gestor para acesso rápido aos links
+          const saved = JSON.parse(localStorage.getItem("fc_saved_trips") || "[]");
+          saved.unshift({ tripId, driverKey, vehicle, driverName, stopsCount: draftStops.length, createdAt: Date.now() });
+          localStorage.setItem("fc_saved_trips", JSON.stringify(saved.slice(0, 15)));
+
+          draftStops = [];
+          refreshDraftStopsUI();
+          document.getElementById("mgrTripId").value = generateUniqueTripId();
+          document.getElementById("mgrDriverName").value = "";
+          renderSavedTripsList();
+          showToast("Transporte criado com sucesso!");
+        } catch {
+          showToast("Senha incorreta ou bloqueada nas Regras do Firebase!", true);
+        }
+      });
+
+      function renderSavedTripsList() {
+        const saved = JSON.parse(localStorage.getItem("fc_saved_trips") || "[]");
+        const sec = document.getElementById("activeTripsSection");
+        const list = document.getElementById("activeTripsList");
+        if (saved.length === 0) {
+          sec.classList.add("hidden");
+          return;
+        }
+        sec.classList.remove("hidden");
+        list.innerHTML = "";
+
+        saved.forEach((item, idx) => {
+          const driverUrl = `${baseUrl()}?id=${encodeURIComponent(item.tripId)}&motorista=1&chave=${encodeURIComponent(item.driverKey)}`;
+          const clientUrl = `${baseUrl()}?id=${encodeURIComponent(item.tripId)}`;
+
+          const card = document.createElement("div");
+          card.className = "info-card";
+          card.innerHTML = `
+            <div class="info-flex" style="margin-bottom: 8px;">
+              <div>
+                <strong>#${item.tripId}</strong>
+                <div style="font-size: 11px; color: var(--text-muted);">${item.vehicle}${item.driverName ? " • " + item.driverName : ""} (${item.stopsCount} parada(s))</div>
+              </div>
+              <button type="button" class="btn btn-danger btn-xs" data-del="${idx}">✕</button>
+            </div>
+            <div class="btn-grid" style="margin-top: 0;">
+              <button type="button" class="btn btn-accent btn-sm" data-drv="1">📲 Link Motorista</button>
+              <button type="button" class="btn btn-primary btn-sm" data-cli="1">📲 Link Cliente</button>
+            </div>
+            <div class="btn-grid" style="margin-top: 6px;">
+              <a href="${driverUrl}" target="_blank" class="btn btn-dark btn-xs">🚚 Abrir como Motorista</a>
+              <a href="${clientUrl}" target="_blank" class="btn btn-dark btn-xs">👁️ Ver Mapa ao Vivo</a>
+            </div>
+          `;
+
+          card.querySelector("[data-drv]").addEventListener("click", () => {
+            const msg = `Olá${item.driverName ? " " + item.driverName : ""}! Acesse o link abaixo para iniciar o rastreio GPS do frete *#${item.tripId}*:\n\n${driverUrl}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+          });
+
+          card.querySelector("[data-cli]").addEventListener("click", () => {
+            const msg = `Olá! Seu transporte com a *${CONFIG.empresa}* já está programado. Acompanhe o veículo em tempo real pelo link:\n\n${clientUrl}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+          });
+
+          card.querySelector("[data-del]").addEventListener("click", () => {
+            saved.splice(idx, 1);
+            localStorage.setItem("fc_saved_trips", JSON.stringify(saved));
+            renderSavedTripsList();
+          });
+
+          list.appendChild(card);
+        });
+      }
+    }
+
+    // =========================================================================
+    // 2. MODO MOTORISTA
+    // =========================================================================
+    if (isDriverMode) {
+      document.getElementById("drvTripCode").textContent = "#" + tripParam;
+
+      let tripInfo = { stops: [], intervalMs: 20000, vehicle: "Utilitário" };
+      let currentStopIdx = 0, watchId = null, wakeLock = null;
+      let lastSentTime = 0, lastSentCoords = null, sendCounter = 0;
+
+      function updateDriverStopUI() {
+        const stops = tripInfo.stops || [];
+        if (stops.length === 0) {
+          document.getElementById("drvStopBox").classList.add("hidden");
+          document.getElementById("btnDrvNextStop").classList.add("hidden");
+          return;
+        }
+        renderStopPins(stops, currentStopIdx);
+        const activeStop = stops[Math.min(currentStopIdx, stops.length - 1)];
+        const isLast = currentStopIdx >= stops.length - 1;
+
+        document.getElementById("drvStopBox").classList.remove("hidden");
+        document.getElementById("drvStopTitle").textContent = isLast
+          ? `DESTINO FINAL (${currentStopIdx + 1}/${stops.length})`
+          : `PARADA ${currentStopIdx + 1} DE ${stops.length}`;
+        document.getElementById("drvStopAddr").textContent = activeStop.label;
+        document.getElementById("btnOpenGmaps").href =
+          `https://www.google.com/maps/dir/?api=1&destination=${activeStop.lat},${activeStop.lng}&travelmode=driving`;
+
+        if (!isLast && watchId !== null) {
+          document.getElementById("btnDrvNextStop").classList.remove("hidden");
+        } else {
+          document.getElementById("btnDrvNextStop").classList.add("hidden");
+        }
+      }
+
+      connectFirebase().then((conn) => {
+        if (!conn) return;
+        conn.onValue(conn.ref(conn.db, `fretes/${tripParam}/info`), (snap) => {
+          const val = snap.val();
+          if (!val) {
+            showToast("Transporte não encontrado.", true);
+            return;
+          }
+          tripInfo = val;
+          document.getElementById("drvVehicle").textContent = val.vehicle || "Utilitário";
+          updateDriverStopUI();
+        });
+      });
+
+      async function publishDriverUpdate(extra = {}) {
+        const conn = await connectFirebase();
+        if (!conn) return;
+        const payload = {
+          lat: lastSentCoords ? lastSentCoords.lat : null,
+          lng: lastSentCoords ? lastSentCoords.lng : null,
+          currentStop: currentStopIdx,
+          status: "em_rota",
+          updatedAt: Date.now(),
+          ...extra
+        };
+        return conn.set(conn.ref(conn.db, `fretes/${tripParam}/updates/${driverKeyParam}`), payload);
+      }
+
+      document.getElementById("btnDrvStart").addEventListener("click", async () => {
         if (!("geolocation" in navigator)) {
           alert("Seu navegador não suporta GPS.");
           return;
         }
 
-        const conn = fb || await connectFirebase();
-        if (!conn) return;
-
-        currentTripId = document.getElementById("driverTripId").value.trim().replace(/[^a-zA-Z0-9-_]/g, "") || randomCode;
-        const vehicle = document.getElementById("driverVehicle").value;
-        const intervalMs = parseInt(document.getElementById("intervalSelect").value, 10);
-
+        startBackgroundAudioKeepAlive();
         try {
           if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen");
         } catch (_) {}
 
-        document.getElementById("driverSetup").classList.add("hidden");
-        document.getElementById("driverActive").classList.remove("hidden");
-        document.getElementById("activeTripLabel").textContent = "#" + currentTripId;
+        document.getElementById("drvSetupControls").classList.add("hidden");
+        document.getElementById("drvActiveControls").classList.remove("hidden");
         updateStatusBadge("live", "Ao Vivo");
+        updateDriverStopUI();
 
-        conn.set(conn.ref(conn.db, "fretes/" + currentTripId), {
-          status: "em_rota",
-          vehicle: vehicle,
-          dest: destinationCoords || null,
-          updatedAt: Date.now()
-        }).catch(() => showToast("Erro de permissão no Firebase.", true));
+        publishDriverUpdate({ status: "em_rota" }).catch(() => {
+          showToast("Chave de motorista inválida!", true);
+        });
+
+        const intervalMs = tripInfo.intervalMs || 20000;
 
         watchId = navigator.geolocation.watchPosition(
           (pos) => {
@@ -713,6 +1143,9 @@
               }
             }
 
+            const remaining = (tripInfo.stops || []).slice(currentStopIdx);
+            if (remaining.length > 0) drawStreetRoute(lat, lng, remaining);
+
             if (now - lastSentTime < intervalMs) return;
             if (lastSentCoords) {
               const moved = haversineMeters(lastSentCoords.lat, lastSentCoords.lng, lat, lng);
@@ -723,34 +1156,35 @@
             lastSentCoords = { lat, lng };
             sendCounter++;
 
-            document.getElementById("gpsSendCount").textContent = sendCounter;
+            document.getElementById("drvSendCount").textContent = sendCounter;
             document.getElementById("oledStatusText").textContent =
               `Último envio: ${new Date().toLocaleTimeString("pt-BR")} (${sendCounter} envios)`;
 
-            conn.update(conn.ref(conn.db, "fretes/" + currentTripId), {
-              lat, lng, status: "em_rota", updatedAt: now
-            });
+            publishDriverUpdate({ lat, lng, status: "em_rota" });
           },
-          () => showToast("Ative a localização (GPS) do celular.", true),
+          () => showToast("Ative o GPS do celular.", true),
           { enableHighAccuracy: true, maximumAge: 10000, timeout: 15000 }
         );
       });
 
-      function getClientShareUrl() {
-        return `${window.location.origin}${window.location.pathname}?id=${encodeURIComponent(currentTripId)}`;
-      }
-
-      document.getElementById("btnCopyLink").addEventListener("click", () => {
-        navigator.clipboard.writeText(getClientShareUrl());
-        showToast("Link copiado!");
+      document.getElementById("btnDrvNextStop").addEventListener("click", () => {
+        currentStopIdx++;
+        updateDriverStopUI();
+        publishDriverUpdate({ currentStop: currentStopIdx });
+        if (lastSentCoords) {
+          const remaining = (tripInfo.stops || []).slice(currentStopIdx);
+          drawStreetRoute(lastSentCoords.lat, lastSentCoords.lng, remaining, true);
+        }
+        showToast(`Avançado para parada ${currentStopIdx + 1}!`);
       });
 
-      document.getElementById("btnWhatsAppShare").addEventListener("click", () => {
-        const msg = `Olá! Seu frete com a *${CONFIG.empresa}* já está a caminho. Acompanhe o veículo em tempo real pelo link:\n\n${getClientShareUrl()}`;
+      document.getElementById("btnDrvShareClient").addEventListener("click", () => {
+        const clientUrl = `${baseUrl()}?id=${encodeURIComponent(tripParam)}`;
+        const msg = `Olá! Seu frete com a *${CONFIG.empresa}* está a caminho. Acompanhe pelo link:\n\n${clientUrl}`;
         window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
       });
 
-      document.getElementById("btnOledMode").addEventListener("click", async () => {
+      document.getElementById("btnDrvOled").addEventListener("click", async () => {
         document.getElementById("oledOverlay").classList.remove("hidden");
         if ("getBattery" in navigator) {
           const bat = await navigator.getBattery();
@@ -762,80 +1196,121 @@
         document.getElementById("oledOverlay").classList.add("hidden");
       });
 
-      document.getElementById("btnFinishTrack").addEventListener("click", () => {
-        if (!confirm("Deseja encerrar o rastreio desta entrega?")) return;
+      document.getElementById("btnDrvFinish").addEventListener("click", async () => {
+        if (!confirm("Finalizar a entrega e desligar o GPS?")) return;
         if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
         if (wakeLock) { wakeLock.release(); wakeLock = null; }
-        if (fb) {
-          fb.update(fb.ref(fb.db, "fretes/" + currentTripId), { status: "concluido", updatedAt: Date.now() });
-        }
-        updateStatusBadge("done", "Entregue");
-        document.getElementById("driverActive").classList.add("hidden");
-        document.getElementById("driverSetup").classList.remove("hidden");
+        stopBackgroundAudioKeepAlive();
+
+        await publishDriverUpdate({ status: "concluido" });
+        updateStatusBadge("done", "Concluído");
+        document.getElementById("drvActiveControls").classList.add("hidden");
+        document.getElementById("btnDrvNextStop").classList.add("hidden");
         showToast("Entrega finalizada!");
       });
+    }
 
-    // MODO CLIENTE
-    } else {
-      document.getElementById("clientCode").textContent = "#" + tripParam.split("-").slice(0, 2).join("-");
-      const waMsg = `Olá! Estou acompanhando o frete #${tripParam} pelo link de rastreio.`;
+    // =========================================================================
+    // 3. MODO CLIENTE
+    // =========================================================================
+    if (isClientMode) {
+      document.getElementById("cliCode").textContent = "#" + tripParam;
+      const waMsg = `Olá! Estou acompanhando o transporte #${tripParam} pelo link de rastreio.`;
       document.getElementById("btnClientWhatsApp").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(waMsg)}`;
 
+      let tripInfo = { stops: [] };
+      let latestLive = null;
       let lastUpdateTimestamp = null;
+
       setInterval(() => {
         if (!lastUpdateTimestamp) return;
         const sec = Math.floor((Date.now() - lastUpdateTimestamp) / 1000);
-        document.getElementById("clientUpdated").textContent = sec < 5 ? "Agora" : `${sec}s atrás`;
+        document.getElementById("cliUpdated").textContent = sec < 5 ? "Agora" : `${sec}s atrás`;
       }, 1000);
+
+      async function updateClientView() {
+        const stops = tripInfo.stops || [];
+        const stopIdx = latestLive && typeof latestLive.currentStop === "number" ? latestLive.currentStop : 0;
+
+        if (stops.length > 0) {
+          renderStopPins(stops, stopIdx);
+          const targetStop = stops[Math.min(stopIdx, stops.length - 1)];
+          const isLast = stopIdx >= stops.length - 1;
+          document.getElementById("cliStopBanner").classList.remove("hidden");
+          document.getElementById("cliStopProgress").textContent = isLast
+            ? `DESTINO FINAL (${stopIdx + 1}/${stops.length})`
+            : `INDO PARA PARADA ${stopIdx + 1} DE ${stops.length}`;
+          document.getElementById("cliStopLabel").textContent = targetStop.label;
+        }
+
+        if (!latestLive) return;
+
+        if (latestLive.status === "concluido") {
+          updateStatusBadge("done", "Entregue");
+          document.getElementById("cliDist").textContent = "0 km";
+          document.getElementById("cliEta").textContent = "Chegou";
+          if (routeLayer && map) map.removeLayer(routeLayer);
+          return;
+        }
+
+        if (latestLive.lat && latestLive.lng && map) {
+          updateStatusBadge("live", "A Caminho");
+          lastUpdateTimestamp = latestLive.updatedAt || Date.now();
+
+          if (!truckMarker) {
+            truckMarker = L.marker([latestLive.lat, latestLive.lng], { icon: truckIcon }).addTo(map);
+          } else {
+            smoothMoveMarker(truckMarker, latestLive.lat, latestLive.lng);
+          }
+
+          const remainingStops = stops.slice(stopIdx);
+          if (remainingStops.length > 0) {
+            if (!initialFitDone) {
+              const pts = [[latestLive.lat, latestLive.lng], ...remainingStops.map((s) => [s.lat, s.lng])];
+              map.fitBounds(L.latLngBounds(pts), { padding: [70, 70] });
+              initialFitDone = true;
+            } else if (autoFollow) {
+              map.panTo([latestLive.lat, latestLive.lng]);
+            }
+
+            const routeMetrics = await drawStreetRoute(latestLive.lat, latestLive.lng, remainingStops);
+            if (routeMetrics) {
+              const km = routeMetrics.nextDistance / 1000;
+              document.getElementById("cliDist").textContent = km < 1 ? `${Math.round(routeMetrics.nextDistance)} m` : `${km.toFixed(1)} km`;
+              const mins = Math.max(1, Math.round(routeMetrics.nextDuration / 60));
+              document.getElementById("cliEta").textContent = mins > 60 ? `${Math.floor(mins / 60)}h ${mins % 60}m` : `${mins} min`;
+            }
+          } else {
+            if (!initialFitDone) {
+              map.setView([latestLive.lat, latestLive.lng], 16);
+              initialFitDone = true;
+            } else if (autoFollow) {
+              map.panTo([latestLive.lat, latestLive.lng]);
+            }
+            document.getElementById("cliDist").textContent = "Em rota";
+            document.getElementById("cliEta").textContent = "Ao vivo";
+          }
+        }
+      }
 
       connectFirebase().then((conn) => {
         if (!conn) return;
-        conn.onValue(conn.ref(conn.db, "fretes/" + tripParam), (snapshot) => {
-          const data = snapshot.val();
-          if (!data) {
-            updateStatusBadge("wait", "Aguardando");
-            return;
+        conn.onValue(conn.ref(conn.db, `fretes/${tripParam}/info`), (snap) => {
+          const val = snap.val();
+          if (val) {
+            tripInfo = val;
+            document.getElementById("cliVehicle").textContent =
+              `${val.vehicle || "Utilitário"}${val.driverName ? " • " + val.driverName : ""}`;
+            updateClientView();
           }
-          if (data.vehicle) document.getElementById("clientVehicle").textContent = data.vehicle;
-          if (data.status === "concluido") {
-            updateStatusBadge("done", "Entregue");
-            document.getElementById("clientDist").textContent = "0 km";
-            document.getElementById("clientEta").textContent = "Chegou";
-            return;
-          }
-          if (data.lat && data.lng && map) {
-            updateStatusBadge("live", "A Caminho");
-            lastUpdateTimestamp = data.updatedAt || Date.now();
+        });
 
-            if (!truckMarker) {
-              truckMarker = L.marker([data.lat, data.lng], { icon: truckIcon }).addTo(map);
-            } else {
-              smoothMoveMarker(truckMarker, data.lat, data.lng);
-            }
-
-            if (data.dest && data.dest.lat && data.dest.lng) {
-              if (!destMarker) destMarker = L.marker([data.dest.lat, data.dest.lng], { icon: destIcon }).addTo(map);
-              if (!initialFitDone) {
-                map.fitBounds(L.latLngBounds([[data.lat, data.lng], [data.dest.lat, data.dest.lng]]), { padding: [70, 70] });
-                initialFitDone = true;
-              } else if (autoFollow) {
-                map.panTo([data.lat, data.lng]);
-              }
-              const meters = haversineMeters(data.lat, data.lng, data.dest.lat, data.dest.lng) * 1.3;
-              const km = meters / 1000;
-              document.getElementById("clientDist").textContent = km < 1 ? `${Math.round(meters)} m` : `${km.toFixed(1)} km`;
-              const mins = Math.max(1, Math.round((km / 30) * 60));
-              document.getElementById("clientEta").textContent = mins > 60 ? `${Math.floor(mins / 60)}h ${mins % 60}m` : `${mins} min`;
-            } else {
-              if (!initialFitDone) {
-                map.setView([data.lat, data.lng], 16);
-                initialFitDone = true;
-              } else if (autoFollow) {
-                map.panTo([data.lat, data.lng]);
-              }
-              document.getElementById("clientDist").textContent = "Em trânsito";
-              document.getElementById("clientEta").textContent = "Ao vivo";
-            }
+        conn.onValue(conn.ref(conn.db, `fretes/${tripParam}/updates`), (snap) => {
+          const all = snap.val();
+          if (all) {
+            const keys = Object.keys(all);
+            latestLive = all[keys[keys.length - 1]];
+            updateClientView();
           }
         });
       });
