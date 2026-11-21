@@ -55,11 +55,7 @@
       background: #e2e8f0;
     }
 
-    /* Modo Escuro direto sobre o mapa OpenStreetMap Padrão */
-    #map.dark-map {
-      background: #0f172a;
-    }
-
+    #map.dark-map { background: #0f172a; }
     #map.dark-map .leaflet-tile-pane {
       filter: invert(100%) hue-rotate(180deg) brightness(92%) contrast(92%);
     }
@@ -82,11 +78,7 @@
       box-shadow: var(--shadow);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .brand { display: flex; align-items: center; gap: 10px; }
 
     .brand-icon {
       width: 36px;
@@ -117,6 +109,7 @@
     .badge-live { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
     .badge-wait { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
     .badge-done { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .badge-sos  { background: rgba(239, 68, 68, 0.3); color: #fca5a5; border: 1px solid #ef4444; }
 
     .pulse-dot {
       width: 7px;
@@ -132,7 +125,7 @@
       100% { transform: scale(0.9); opacity: 0; }
     }
 
-    /* Botões Flutuantes no Mapa */
+    /* Botões Flutuantes */
     .floating-controls {
       position: fixed;
       top: 78px;
@@ -168,7 +161,7 @@
       border-radius: 22px 22px 0 0;
       padding: 12px 16px 20px;
       box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
-      max-height: 74dvh;
+      max-height: 76dvh;
       overflow-y: auto;
       transition: max-height 0.25s ease;
     }
@@ -288,8 +281,14 @@
     .btn-warning { background: var(--warning); color: #451a03; }
     .btn-dark { background: var(--surface-light); color: var(--text); }
     .btn-danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .btn-sos { background: #dc2626; color: #ffffff; border: 1px solid #fca5a5; animation: sosPulse 2s infinite; }
     .btn-sm { width: auto; padding: 9px 12px; font-size: 12px; }
     .btn-xs { width: auto; padding: 6px 9px; font-size: 11px; border-radius: 8px; }
+
+    @keyframes sosPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.55); }
+      50% { box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+    }
 
     .btn-grid {
       display: grid;
@@ -298,6 +297,24 @@
       margin-top: 8px;
     }
 
+    .btn-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .unread-pill {
+      background: #ef4444;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 99px;
+      margin-left: 2px;
+    }
+
+    /* Paradas */
     .stop-item {
       display: flex;
       align-items: center;
@@ -326,6 +343,118 @@
 
     .stop-badge.final { background: var(--danger); }
 
+    /* Cartão Pix no Cliente */
+    .pix-box {
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.16), rgba(59, 130, 246, 0.14));
+      border: 1.5px solid rgba(16, 185, 129, 0.55);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .pix-qr {
+      width: 150px;
+      height: 150px;
+      border-radius: 12px;
+      background: #fff;
+      padding: 6px;
+      margin: 10px auto;
+      display: block;
+    }
+
+    .pix-code-preview {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      word-break: break-all;
+      margin: 8px 0;
+      max-height: 46px;
+      overflow: hidden;
+    }
+
+    /* Modal de Chat ao Vivo */
+    #chatModal {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .chat-container {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      border-radius: 22px 22px 0 0;
+      height: 82dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 14px 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-msg {
+      max-width: 82%;
+      padding: 9px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.35;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+    }
+
+    .chat-msg.mine {
+      align-self: flex-end;
+      background: rgba(16, 185, 129, 0.2);
+      border-color: rgba(16, 185, 129, 0.45);
+    }
+
+    .chat-meta {
+      font-size: 10px;
+      font-weight: 700;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .role-gestor { color: #fbbf24; }
+    .role-motorista { color: #38bdf8; }
+    .role-cliente { color: #34d399; }
+
+    .chat-input-bar {
+      padding: 10px 12px 16px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Marcadores no Mapa */
     .truck-marker {
       width: 44px;
       height: 44px;
@@ -355,6 +484,7 @@
     .pin-marker.final { background: #ef4444; }
     .pin-marker.done { background: #64748b; opacity: 0.75; }
 
+    /* Tela Preta OLED */
     #oledOverlay {
       position: fixed;
       inset: 0;
@@ -388,7 +518,7 @@
       top: 78px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 2000;
+      z-index: 4000;
       background: #10b981;
       color: #052e16;
       padding: 9px 16px;
@@ -496,6 +626,18 @@
         </div>
       </div>
 
+      <!-- Pagamento Pix no Término do Serviço -->
+      <div class="input-row form-group">
+        <div style="flex: 1.4;">
+          <label>Chave Pix ou Link Pagamento (Opcional)</label>
+          <input type="text" id="mgrPixKey" placeholder="CPF, Celular, E-mail ou https://..." />
+        </div>
+        <div style="flex: 0.6;">
+          <label>Valor (R$)</label>
+          <input type="text" id="mgrPixAmount" inputmode="decimal" placeholder="150,00" />
+        </div>
+      </div>
+
       <div class="form-group">
         <label>Paradas e Destino (busque ou minimize e toque no mapa)</label>
         <div class="input-row">
@@ -532,11 +674,9 @@
       <div>
         <div style="font-size: 11px; color: var(--text-muted);">TRANSPORTE</div>
         <strong id="drvTripCode">#0000</strong>
+        <div style="font-size: 11px; color: var(--text-muted);" id="drvVehicle">--</div>
       </div>
-      <div style="text-align: right;">
-        <div style="font-size: 11px; color: var(--text-muted);">VEÍCULO</div>
-        <strong id="drvVehicle">--</strong>
-      </div>
+      <a id="btnDrvSos" href="tel:190" class="btn btn-sos btn-sm">🚨 SOS 190</a>
     </div>
 
     <div id="drvStopBox" class="info-card hidden">
@@ -551,6 +691,9 @@
       <button type="button" id="btnDrvStart" class="btn btn-primary">
         ▶ Iniciar Transmissão ao Vivo
       </button>
+      <button type="button" id="btnDrvChatSetup" class="btn btn-dark" style="margin-top: 8px;">
+        💬 Chat da Equipe / Cliente <span id="drvUnreadBadge1" class="unread-pill hidden">0</span>
+      </button>
     </div>
 
     <div id="drvActiveControls" class="hidden">
@@ -563,9 +706,12 @@
         ✅ Concluir Parada Atual e Ir para Próxima
       </button>
 
-      <div class="btn-grid">
-        <button type="button" id="btnDrvOled" class="btn btn-accent">🔋 Tela Preta (Eco)</button>
-        <button type="button" id="btnDrvShareClient" class="btn btn-dark">📲 Link Cliente</button>
+      <div class="btn-grid-3">
+        <button type="button" id="btnDrvChat" class="btn btn-dark btn-sm">
+          💬 Chat <span id="drvUnreadBadge2" class="unread-pill hidden">0</span>
+        </button>
+        <button type="button" id="btnDrvOled" class="btn btn-accent btn-sm">🔋 Tela Preta</button>
+        <button type="button" id="btnDrvShareClient" class="btn btn-dark btn-sm">📲 Link</button>
       </div>
 
       <button type="button" id="btnDrvFinish" class="btn btn-danger" style="margin-top: 8px;">
@@ -582,6 +728,27 @@
       <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Rastreio</span>
       <div class="sheet-handle"></div>
       <button type="button" class="btn-toggle-sheet">Minimizar</button>
+    </div>
+
+    <!-- Bloco de Pagamento Pix (Aparece automaticamente ao concluir o serviço) -->
+    <div id="cliPixCard" class="pix-box hidden">
+      <div style="font-size: 11px; color: #34d399; font-weight: 800; letter-spacing: 0.4px;">✅ ENTREGA CONCLUÍDA • PAGAMENTO PIX</div>
+      <div id="cliPixAmountLabel" style="font-size: 18px; font-weight: 800; margin-top: 4px;"></div>
+
+      <div id="cliPixEmvSection" class="hidden">
+        <img id="cliPixQrImg" class="pix-qr" alt="QR Code Pix" />
+        <div id="cliPixCodeText" class="pix-code-preview"></div>
+        <button type="button" id="btnCopyPixCode" class="btn btn-primary">
+          📋 Copiar Código Pix (Copia e Cola)
+        </button>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px;" id="cliPixRawKey"></div>
+      </div>
+
+      <div id="cliPixLinkSection" class="hidden" style="margin-top: 8px;">
+        <a id="btnOpenPixLink" href="#" target="_blank" class="btn btn-primary">
+          💳 Abrir Link de Pagamento
+        </a>
+      </div>
     </div>
 
     <div class="metrics-grid">
@@ -615,10 +782,35 @@
       </div>
     </div>
 
-    <a id="btnClientWhatsApp" href="#" target="_blank" class="btn btn-primary">
-      💬 Falar com a Central no WhatsApp
-    </a>
+    <div class="btn-grid" style="margin-top: 0;">
+      <button type="button" id="btnClientChat" class="btn btn-accent">
+        💬 Chat ao Vivo <span id="cliUnreadBadge" class="unread-pill hidden">0</span>
+      </button>
+      <a id="btnClientWhatsApp" href="#" target="_blank" class="btn btn-primary">
+        📲 WhatsApp
+      </a>
+    </div>
   </section>
+
+  <!-- ========================================================= -->
+  <!-- MODAL DE CHAT AO VIVO (GESTOR / MOTORISTA / CLIENTE)      -->
+  <!-- ========================================================= -->
+  <div id="chatModal" class="hidden">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div>
+          <strong style="font-size: 14px;" id="chatTitle">💬 Chat do Transporte</strong>
+          <div style="font-size: 11px; color: var(--text-muted);" id="chatSub">Gestor • Motorista • Cliente</div>
+        </div>
+        <button type="button" id="btnCloseChat" class="btn btn-dark btn-xs">✕ Fechar</button>
+      </div>
+      <div id="chatMessagesBox" class="chat-messages"></div>
+      <form id="chatForm" class="chat-input-bar">
+        <input type="text" id="chatInput" placeholder="Digite sua mensagem..." autocomplete="off" />
+        <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
+      </form>
+    </div>
+  </div>
 
   <!-- Overlay Tela Preta OLED -->
   <div id="oledOverlay" class="hidden">
@@ -677,7 +869,11 @@
     function updateStatusBadge(state, text) {
       const badge = document.getElementById("statusBadge");
       const label = document.getElementById("statusText");
-      badge.className = "badge " + (state === "live" ? "badge-live" : state === "done" ? "badge-done" : "badge-wait");
+      badge.className = "badge " + (
+        state === "live" ? "badge-live" :
+        state === "done" ? "badge-done" :
+        state === "sos"  ? "badge-sos"  : "badge-wait"
+      );
       label.textContent = text;
     }
 
@@ -703,7 +899,54 @@
     }
 
     // =========================================================================
-    // MAPA PADRÃO OPENSTREETMAP + ALTERNÂNCIA INSTANTÂNEA PARA MODO ESCURO
+    // GERADOR OFICIAL DE PIX COPIA E COLA (PADRÃO EMV / BANCO CENTRAL)
+    // =========================================================================
+    function crc16Pix(str) {
+      let crc = 0xFFFF;
+      for (let i = 0; i < str.length; i++) {
+        crc ^= str.charCodeAt(i) << 8;
+        for (let j = 0; j < 8; j++) {
+          if ((crc & 0x8000) !== 0) {
+            crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+          } else {
+            crc = (crc << 1) & 0xFFFF;
+          }
+        }
+      }
+      return crc.toString(16).toUpperCase().padStart(4, "0");
+    }
+
+    function emvField(id, value) {
+      const len = String(value.length).padStart(2, "0");
+      return `${id}${len}${value}`;
+    }
+
+    function buildPixPayload(pixKey, amountStr) {
+      const cleanKey = pixKey.trim();
+      const merchantAccount = emvField("00", "br.gov.bcb.pix") + emvField("01", cleanKey);
+      let payload =
+        emvField("00", "01") +
+        emvField("26", merchantAccount) +
+        emvField("52", "0000") +
+        emvField("53", "986");
+
+      const numVal = parseFloat(String(amountStr || "").replace(/\./g, "").replace(",", "."));
+      if (!isNaN(numVal) && numVal > 0) {
+        payload += emvField("54", numVal.toFixed(2));
+      }
+
+      payload +=
+        emvField("58", "BR") +
+        emvField("59", "FRETES E CARRETOS") +
+        emvField("60", "SAO PAULO") +
+        emvField("62", emvField("05", "***")) +
+        "6304";
+
+      return payload + crc16Pix(payload);
+    }
+
+    // =========================================================================
+    // MAPA PADRÃO OPENSTREETMAP + ALTERNÂNCIA MODO ESCURO
     // =========================================================================
     let map = null, truckMarker = null, routeLayer = null;
     let stopMarkers = [], autoFollow = true, initialFitDone = false;
@@ -893,7 +1136,9 @@
       if (bgAudioEl) bgAudioEl.pause();
     }
 
-    // Conexão Firebase
+    // =========================================================================
+    // CONEXÃO FIREBASE
+    // =========================================================================
     let fb = null;
     async function connectFirebase() {
       if (fb) return fb;
@@ -905,6 +1150,7 @@
           db: dbMod.getDatabase(app),
           ref: dbMod.ref,
           set: dbMod.set,
+          push: dbMod.push,
           onValue: dbMod.onValue
         };
         return fb;
@@ -915,12 +1161,145 @@
     }
 
     // =========================================================================
+    // SISTEMA DE CHAT AO VIVO (COMPARTILHADO ENTRE GESTOR, MOTORISTA E CLIENTE)
+    // =========================================================================
+    let activeChatTripId = null;
+    let activeChatRole = "Cliente"; // "Gestor" | "Motorista" | "Cliente"
+    let activeChatSender = "Cliente";
+    let chatUnsubscribe = null;
+    let seenMessagesCount = 0;
+
+    function renderChatMessages(messagesObj) {
+      const box = document.getElementById("chatMessagesBox");
+      box.innerHTML = "";
+      const list = messagesObj ? Object.values(messagesObj) : [];
+
+      if (list.length === 0) {
+        box.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:12px; margin-top:24px;">Nenhuma mensagem ainda. Inicie a conversa abaixo.</div>`;
+        return;
+      }
+
+      list.forEach((m) => {
+        const isMine = m.role === activeChatRole;
+        const div = document.createElement("div");
+        div.className = "chat-msg" + (isMine ? " mine" : "");
+
+        const meta = document.createElement("div");
+        meta.className = "chat-meta";
+
+        const roleSpan = document.createElement("span");
+        roleSpan.className =
+          m.role === "Gestor" ? "role-gestor" :
+          m.role === "Motorista" ? "role-motorista" : "role-cliente";
+        roleSpan.textContent = m.sender || m.role;
+
+        const timeSpan = document.createElement("span");
+        timeSpan.style.color = "var(--text-muted)";
+        timeSpan.textContent = m.ts ? new Date(m.ts).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
+
+        meta.appendChild(roleSpan);
+        meta.appendChild(timeSpan);
+
+        const body = document.createElement("div");
+        body.textContent = m.text || "";
+
+        div.appendChild(meta);
+        div.appendChild(body);
+        box.appendChild(div);
+      });
+
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function openChatForTrip(tripId, role, senderName, badgeElements = []) {
+      const conn = await connectFirebase();
+      if (!conn) return;
+
+      activeChatTripId = tripId;
+      activeChatRole = role;
+      activeChatSender = senderName;
+
+      document.getElementById("chatTitle").textContent = `💬 Chat • #${tripId}`;
+      document.getElementById("chatModal").classList.remove("hidden");
+      badgeElements.forEach((el) => el && el.classList.add("hidden"));
+
+      if (chatUnsubscribe) chatUnsubscribe();
+
+      chatUnsubscribe = conn.onValue(conn.ref(conn.db, `fretes/${tripId}/chat`), (snap) => {
+        const val = snap.val();
+        const count = val ? Object.keys(val).length : 0;
+        seenMessagesCount = count;
+        renderChatMessages(val);
+      });
+    }
+
+    function subscribeChatUnreadBadge(tripId, myRole, badgeElements) {
+      connectFirebase().then((conn) => {
+        if (!conn) return;
+        conn.onValue(conn.ref(conn.db, `fretes/${tripId}/chat`), (snap) => {
+          const val = snap.val();
+          const list = val ? Object.values(val) : [];
+          const isModalOpen = !document.getElementById("chatModal").classList.contains("hidden") && activeChatTripId === tripId;
+
+          if (isModalOpen) {
+            seenMessagesCount = list.length;
+            return;
+          }
+
+          if (list.length > seenMessagesCount) {
+            const lastMsg = list[list.length - 1];
+            const unread = list.length - seenMessagesCount;
+            badgeElements.forEach((el) => {
+              if (!el) return;
+              el.textContent = unread;
+              el.classList.remove("hidden");
+            });
+            if (lastMsg && lastMsg.role !== myRole) {
+              showToast(`💬 ${lastMsg.sender || lastMsg.role}: ${lastMsg.text}`);
+            }
+          }
+        });
+      });
+    }
+
+    document.getElementById("btnCloseChat").addEventListener("click", () => {
+      document.getElementById("chatModal").classList.add("hidden");
+      activeChatTripId = null;
+    });
+
+    document.getElementById("chatForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const input = document.getElementById("chatInput");
+      const text = input.value.trim();
+      if (!text || !activeChatTripId) return;
+
+      const conn = await connectFirebase();
+      if (!conn) return;
+
+      input.value = "";
+      try {
+        await conn.push(conn.ref(conn.db, `fretes/${activeChatTripId}/chat`), {
+          role: activeChatRole,
+          sender: activeChatSender,
+          text: text,
+          ts: Date.now()
+        });
+      } catch {
+        showToast("Erro ao enviar mensagem.", true);
+      }
+    });
+
+    // =========================================================================
     // 1. MODO GESTOR
     // =========================================================================
     if (isManagerMode) {
       let adminPassword = "";
       let isAdminAuthenticated = false;
       let draftStops = [];
+
+      // Carrega última chave Pix salva para agilizar próximos fretes
+      const savedPix = localStorage.getItem("fc_default_pix");
+      if (savedPix) document.getElementById("mgrPixKey").value = savedPix;
 
       function unlockManagerUI(pass) {
         adminPassword = pass;
@@ -1063,32 +1442,37 @@
         const driverName = document.getElementById("mgrDriverName").value.trim();
         const vehicle = document.getElementById("mgrVehicle").value;
         const intervalMs = parseInt(document.getElementById("mgrInterval").value, 10);
+        const pixKey = document.getElementById("mgrPixKey").value.trim();
+        const pixAmount = document.getElementById("mgrPixAmount").value.trim();
         const driverKey = Math.random().toString(36).substring(2, 10).toUpperCase();
 
+        if (pixKey) localStorage.setItem("fc_default_pix", pixKey);
+
         try {
-          // 1. Grava primeiro a pasta 'meta' com a senha e a chave do motorista
           await conn.set(conn.ref(conn.db, `fretes/${tripId}/meta`), {
             adminPass: adminPassword,
             driverKey: driverKey
           });
 
-          // 2. Grava em seguida a pasta 'info' com os dados públicos da corrida
           await conn.set(conn.ref(conn.db, `fretes/${tripId}/info`), {
             vehicle: vehicle,
             driverName: driverName,
             intervalMs: intervalMs,
+            pixKey: pixKey,
+            pixAmount: pixAmount,
             stops: draftStops,
             createdAt: Date.now()
           });
 
           const saved = JSON.parse(localStorage.getItem("fc_saved_trips") || "[]");
-          saved.unshift({ tripId, driverKey, vehicle, driverName, stopsCount: draftStops.length, createdAt: Date.now() });
+          saved.unshift({ tripId, driverKey, vehicle, driverName, pixAmount, stopsCount: draftStops.length, createdAt: Date.now() });
           localStorage.setItem("fc_saved_trips", JSON.stringify(saved.slice(0, 15)));
 
           draftStops = [];
           refreshDraftStopsUI();
           document.getElementById("mgrTripId").value = generateUniqueTripId();
           document.getElementById("mgrDriverName").value = "";
+          document.getElementById("mgrPixAmount").value = "";
           renderSavedTripsList();
           showToast("Transporte criado com sucesso!");
         } catch (err) {
@@ -1120,7 +1504,7 @@
             <div class="info-flex" style="margin-bottom: 8px;">
               <div>
                 <strong>#${item.tripId}</strong>
-                <div style="font-size: 11px; color: var(--text-muted);">${item.vehicle}${item.driverName ? " • " + item.driverName : ""} (${item.stopsCount} parada(s))</div>
+                <div style="font-size: 11px; color: var(--text-muted);">${item.vehicle}${item.driverName ? " • " + item.driverName : ""} (${item.stopsCount} parada(s))${item.pixAmount ? " • R$ " + item.pixAmount : ""}</div>
               </div>
               <button type="button" class="btn btn-danger btn-xs" data-del="${idx}">✕</button>
             </div>
@@ -1128,11 +1512,16 @@
               <button type="button" class="btn btn-accent btn-sm" data-drv="1">📲 Link Motorista</button>
               <button type="button" class="btn btn-primary btn-sm" data-cli="1">📲 Link Cliente</button>
             </div>
-            <div class="btn-grid" style="margin-top: 6px;">
-              <a href="${driverUrl}" target="_blank" class="btn btn-dark btn-xs">🚚 Abrir como Motorista</a>
-              <a href="${clientUrl}" target="_blank" class="btn btn-dark btn-xs">👁️ Ver Mapa ao Vivo</a>
+            <div class="btn-grid-3">
+              <button type="button" class="btn btn-dark btn-xs" data-chat="1">💬 Chat</button>
+              <a href="${driverUrl}" target="_blank" class="btn btn-dark btn-xs">🚚 Motorista</a>
+              <a href="${clientUrl}" target="_blank" class="btn btn-dark btn-xs">👁️ Mapa</a>
             </div>
           `;
+
+          card.querySelector("[data-chat]").addEventListener("click", () => {
+            openChatForTrip(item.tripId, "Gestor", "Gestor (Central)");
+          });
 
           card.querySelector("[data-drv]").addEventListener("click", () => {
             const msg = `Olá${item.driverName ? " " + item.driverName : ""}! Acesse o link abaixo para iniciar o rastreio GPS do frete *#${item.tripId}*:\n\n${driverUrl}`;
@@ -1164,6 +1553,26 @@
       let tripInfo = { stops: [], intervalMs: 20000, vehicle: "Utilitário" };
       let currentStopIdx = 0, watchId = null, wakeLock = null;
       let lastSentTime = 0, lastSentCoords = null, sendCounter = 0;
+
+      const drvBadges = [
+        document.getElementById("drvUnreadBadge1"),
+        document.getElementById("drvUnreadBadge2")
+      ];
+      subscribeChatUnreadBadge(tripParam, "Motorista", drvBadges);
+
+      function openDriverChat() {
+        const sender = tripInfo.driverName ? `Motorista (${tripInfo.driverName})` : "Motorista";
+        openChatForTrip(tripParam, "Motorista", sender, drvBadges);
+      }
+
+      document.getElementById("btnDrvChatSetup").addEventListener("click", openDriverChat);
+      document.getElementById("btnDrvChat").addEventListener("click", openDriverChat);
+
+      // Sinaliza alerta SOS no Firebase ao tocar em ligar para 190
+      document.getElementById("btnDrvSos").addEventListener("click", () => {
+        updateStatusBadge("sos", "SOS 190");
+        publishDriverUpdate({ sosAt: Date.now() }).catch(() => {});
+      });
 
       function updateDriverStopUI() {
         const stops = tripInfo.stops || [];
@@ -1331,9 +1740,47 @@
       const waMsg = `Olá! Estou acompanhando o transporte #${tripParam} pelo link de rastreio.`;
       document.getElementById("btnClientWhatsApp").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(waMsg)}`;
 
+      const cliBadges = [document.getElementById("cliUnreadBadge")];
+      subscribeChatUnreadBadge(tripParam, "Cliente", cliBadges);
+
+      document.getElementById("btnClientChat").addEventListener("click", () => {
+        openChatForTrip(tripParam, "Cliente", "Cliente", cliBadges);
+      });
+
       let tripInfo = { stops: [] };
       let latestLive = null;
       let lastUpdateTimestamp = null;
+      let generatedPixPayload = "";
+
+      document.getElementById("btnCopyPixCode").addEventListener("click", () => {
+        if (!generatedPixPayload) return;
+        navigator.clipboard.writeText(generatedPixPayload);
+        showToast("Código Pix Copia e Cola copiado!");
+      });
+
+      function renderClientPixPayment() {
+        const pixKey = (tripInfo.pixKey || "").trim();
+        if (!pixKey) return;
+
+        const pixCard = document.getElementById("cliPixCard");
+        pixCard.classList.remove("hidden");
+
+        if (tripInfo.pixAmount) {
+          document.getElementById("cliPixAmountLabel").textContent = `Valor: R$ ${tripInfo.pixAmount}`;
+        }
+
+        if (/^https?:\/\//i.test(pixKey)) {
+          document.getElementById("cliPixLinkSection").classList.remove("hidden");
+          document.getElementById("btnOpenPixLink").href = pixKey;
+        } else {
+          generatedPixPayload = buildPixPayload(pixKey, tripInfo.pixAmount);
+          document.getElementById("cliPixEmvSection").classList.remove("hidden");
+          document.getElementById("cliPixCodeText").textContent = generatedPixPayload;
+          document.getElementById("cliPixRawKey").textContent = `Chave Pix: ${pixKey}`;
+          document.getElementById("cliPixQrImg").src =
+            `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(generatedPixPayload)}`;
+        }
+      }
 
       setInterval(() => {
         if (!lastUpdateTimestamp) return;
@@ -1363,6 +1810,7 @@
           document.getElementById("cliDist").textContent = "0 km";
           document.getElementById("cliEta").textContent = "Chegou";
           if (routeLayer && map) map.removeLayer(routeLayer);
+          renderClientPixPayment();
           return;
         }
 
