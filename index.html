@@ -188,17 +188,6 @@
       margin: 0 auto 14px;
     }
 
-    .config-alert {
-      background: rgba(245, 158, 11, 0.16);
-      border: 1px solid rgba(245, 158, 11, 0.45);
-      color: #fde68a;
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-size: 12px;
-      margin-bottom: 12px;
-      line-height: 1.4;
-    }
-
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -373,7 +362,8 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s;
-      white-space: nowrap;
+      max-width: 90vw;
+      text-align: center;
     }
 
     #toast.show { opacity: 1; }
@@ -443,10 +433,6 @@
   <section id="driverView" class="bottom-sheet hidden">
     <div class="sheet-handle"></div>
 
-    <div id="firebaseWarning" class="config-alert hidden">
-      ⚠️ <strong>Falta conectar o Firebase:</strong> cole os dados do seu projeto na seção <code>CONFIG.firebase</code> dentro do código para que o cliente veja o mapa pela internet.
-    </div>
-
     <div id="driverSetup">
       <div class="input-row form-group">
         <div style="flex: 1;">
@@ -522,8 +508,11 @@
   </div>
 
   <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
     // =========================================================================
-    // 1. CONFIGURAÇÕES DA SUA EMPRESA E DO FIREBASE (COLE AQUI SEUS DADOS)
+    // 1. CONFIGURAÇÕES DA EMPRESA E FIREBASE (LOCALIZA FRETE)
     // =========================================================================
     const CONFIG = {
       empresa: "Fretes e Carretos",
@@ -531,39 +520,21 @@
       whatsapp: "5511981949225",
 
       firebase: {
-        apiKey: "COLE_SUA_API_KEY_AQUI",
-        authDomain: "SEU_PROJETO.firebaseapp.com",
-        databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
-        projectId: "SEU_PROJETO",
-        storageBucket: "SEU_PROJETO.firebasestorage.app",
-        messagingSenderId: "000000000000",
-        appId: "1:000000000000:web:000000000000"
+        apiKey: "AIzaSyCH_wpFlgl1icQIGEOL8HifFc8LbYfXloo",
+        authDomain: "localiza-frete.firebaseapp.com",
+        databaseURL: "https://localiza-frete-default-rtdb.firebaseio.com",
+        projectId: "localiza-frete",
+        storageBucket: "localiza-frete.firebasestorage.app",
+        messagingSenderId: "363926098860",
+        appId: "1:363926098860:web:afb5a63b44ee225bcd2009"
       }
     };
 
-    // =========================================================================
-    // 2. INICIALIZAÇÃO DO FIREBASE (PLANO GRATUITO SPARK)
-    // =========================================================================
-    const isFirebaseReady =
-      CONFIG.firebase.apiKey &&
-      !CONFIG.firebase.apiKey.includes("COLE_SUA_API_KEY");
-
-    let db = null;
-    let fbRef, fbSet, fbUpdate, fbOnValue;
-
-    if (isFirebaseReady) {
-      const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
-      const dbMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
-      const app = initializeApp(CONFIG.firebase);
-      db = dbMod.getDatabase(app);
-      fbRef = dbMod.ref;
-      fbSet = dbMod.set;
-      fbUpdate = dbMod.update;
-      fbOnValue = dbMod.onValue;
-    }
+    const app = initializeApp(CONFIG.firebase);
+    const db = getDatabase(app);
 
     // =========================================================================
-    // 3. MAPA OPENSTREETMAP (SEM CHAVE DE API)
+    // 2. MAPA OPENSTREETMAP (SEM API KEY)
     // =========================================================================
     document.getElementById("brandTitle").textContent = CONFIG.empresa;
     document.getElementById("brandSub").textContent = CONFIG.instagram;
@@ -604,7 +575,6 @@
     let initialFitDone = false;
     let autoFollow = true;
 
-    // Pausa o seguimento automático se o usuário arrastar o mapa manualmente
     map.on("dragstart", () => {
       autoFollow = false;
       document.getElementById("btnRecenter").classList.remove("hidden");
@@ -621,11 +591,13 @@
     // =========================================================================
     // UTILITÁRIOS
     // =========================================================================
-    function showToast(msg) {
+    function showToast(msg, isError = false) {
       const t = document.getElementById("toast");
       t.textContent = msg;
+      t.style.background = isError ? "#ef4444" : "#10b981";
+      t.style.color = isError ? "#ffffff" : "#052e16";
       t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 2600);
+      setTimeout(() => t.classList.remove("show"), 3200);
     }
 
     function haversineMeters(lat1, lon1, lat2, lon2) {
@@ -669,7 +641,6 @@
       } catch (_) {}
     }
 
-    // Reativa o bloqueio de tela caso o motorista saia para o WhatsApp e volte
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible" && watchId !== null) {
         requestScreenWakeLock();
@@ -681,16 +652,30 @@
     // =========================================================================
     if (isDriver) {
       document.getElementById("driverView").classList.remove("hidden");
-      if (!isFirebaseReady) {
-        documezado</small>
-        <strong id="clientUpdated">Aguardando</strong>
-      </div>
-    </div>
+      setTimeout(() => map.invalidateSize(), 150);
 
-    <div class="info-row">
-      <div>
-        <div style="color: var(--text-muted); font-size: 11px;">VEÍCULO EM ROTA</div>
-        <strong id="clientVehicle">Utilitário / Transporte</strong>
+      const secretSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
+      const randomCode = `FRETE-${Math.floor(100 + Math.random() * 900)}-${secretSuffix}`;
+      document.getElementById("driverTripId").value = randomCode;
+
+      map.on("click", (e) => {
+        if (watchId !== null) return;
+        destinationCoords = { lat: e.latlng.lat, lng: e.latlng.lng };
+        if (!destMarker) {
+          destMarker = L.marker([e.latlng.lat, e.latlng.lng], { icon: destIcon }).addTo(map);
+        } else {
+          destMarker.setLatLng([e.latlng.lat, e.latlng.lng]);
+        }
+        showToast("Destino marcado no mapa!");
+      });
+
+      document.getElementById("btnSearchDest").addEventListener("click", async () => {
+        const query = document.getElementById("destSearchInput").value.trim();
+        if (!query) return;
+        showToast("Buscando endereço...");
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`);
+       cle">Utilitário / Transporte</strong>
       </div>
       <div style="text-align: right;">
         <div style="color: var(--text-muted); font-size: 11px;">CÓDIGO</div>
@@ -709,10 +694,6 @@
   <section id="driverView" class="bottom-sheet hidden">
     <div class="sheet-handle"></div>
 
-    <div id="firebaseWarning" class="config-alert hidden">
-      ⚠️ <strong>Falta conectar o Firebase:</strong> cole os dados do seu projeto na seção <code>CONFIG.firebase</code> dentro do código para que o cliente veja o mapa pela internet.
-    </div>
-
     <div id="driverSetup">
       <div class="input-row form-group">
         <div style="flex: 1;">
@@ -788,8 +769,11 @@
   </div>
 
   <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
     // =========================================================================
-    // 1. CONFIGURAÇÕES DA SUA EMPRESA E DO FIREBASE (COLE AQUI SEUS DADOS)
+    // 1. CONFIGURAÇÕES DA EMPRESA E FIREBASE (LOCALIZA FRETE)
     // =========================================================================
     const CONFIG = {
       empresa: "Fretes e Carretos",
@@ -797,39 +781,21 @@
       whatsapp: "5511981949225",
 
       firebase: {
-        apiKey: "COLE_SUA_API_KEY_AQUI",
-        authDomain: "SEU_PROJETO.firebaseapp.com",
-        databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
-        projectId: "SEU_PROJETO",
-        storageBucket: "SEU_PROJETO.firebasestorage.app",
-        messagingSenderId: "000000000000",
-        appId: "1:000000000000:web:000000000000"
+        apiKey: "AIzaSyCH_wpFlgl1icQIGEOL8HifFc8LbYfXloo",
+        authDomain: "localiza-frete.firebaseapp.com",
+        databaseURL: "https://localiza-frete-default-rtdb.firebaseio.com",
+        projectId: "localiza-frete",
+        storageBucket: "localiza-frete.firebasestorage.app",
+        messagingSenderId: "363926098860",
+        appId: "1:363926098860:web:afb5a63b44ee225bcd2009"
       }
     };
 
-    // =========================================================================
-    // 2. INICIALIZAÇÃO DO FIREBASE (PLANO GRATUITO SPARK)
-    // =========================================================================
-    const isFirebaseReady =
-      CONFIG.firebase.apiKey &&
-      !CONFIG.firebase.apiKey.includes("COLE_SUA_API_KEY");
-
-    let db = null;
-    let fbRef, fbSet, fbUpdate, fbOnValue;
-
-    if (isFirebaseReady) {
-      const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
-      const dbMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
-      const app = initializeApp(CONFIG.firebase);
-      db = dbMod.getDatabase(app);
-      fbRef = dbMod.ref;
-      fbSet = dbMod.set;
-      fbUpdate = dbMod.update;
-      fbOnValue = dbMod.onValue;
-    }
+    const app = initializeApp(CONFIG.firebase);
+    const db = getDatabase(app);
 
     // =========================================================================
-    // 3. MAPA OPENSTREETMAP (SEM CHAVE DE API)
+    // 2. MAPA OPENSTREETMAP (SEM API KEY)
     // =========================================================================
     document.getElementById("brandTitle").textContent = CONFIG.empresa;
     document.getElementById("brandSub").textContent = CONFIG.instagram;
@@ -870,7 +836,6 @@
     let initialFitDone = false;
     let autoFollow = true;
 
-    // Pausa o seguimento automático se o usuário arrastar o mapa manualmente
     map.on("dragstart", () => {
       autoFollow = false;
       document.getElementById("btnRecenter").classList.remove("hidden");
@@ -887,11 +852,13 @@
     // =========================================================================
     // UTILITÁRIOS
     // =========================================================================
-    function showToast(msg) {
+    function showToast(msg, isError = false) {
       const t = document.getElementById("toast");
       t.textContent = msg;
+      t.style.background = isError ? "#ef4444" : "#10b981";
+      t.style.color = isError ? "#ffffff" : "#052e16";
       t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 2600);
+      setTimeout(() => t.classList.remove("show"), 3200);
     }
 
     function haversineMeters(lat1, lon1, lat2, lon2) {
@@ -935,7 +902,6 @@
       } catch (_) {}
     }
 
-    // Reativa o bloqueio de tela caso o motorista saia para o WhatsApp e volte
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible" && watchId !== null) {
         requestScreenWakeLock();
@@ -947,9 +913,6 @@
     // =========================================================================
     if (isDriver) {
       document.getElementById("driverView").classList.remove("hidden");
-      if (!isFirebaseReady) {
-        document.getElementById("firebaseWarning").classList.remove("hidden");
-      }
       setTimeout(() => map.invalidateSize(), 150);
 
       const secretSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
@@ -986,22 +949,12 @@
             map.setView([lat, lng], 15);
             showToast("Destino encontrado!");
           } else {
-            showToast("Endereço não encontrado. Toque direto no mapa.");
+            showToast("Endereço não encontrado. Toque direto no mapa.", true);
           }
         } catch {
-          showToast("Erro ao buscar. Toque direto no mapa.");
+          showToast("Erro ao buscar. Toque direto no mapa.", true);
         }
       });
-
-      function saveTripData(tripId, payload, overwrite = false) {
-        if (isFirebaseReady) {
-          const tripRef = fbRef(db, "fretes/" + tripId);
-          return overwrite ? fbSet(tripRef, payload) : fbUpdate(tripRef, payload);
-        } else {
-          const prev = overwrite ? {} : JSON.parse(localStorage.getItem("fb_sim_" + tripId) || "{}");
-          localStorage.setItem("fb_sim_" + tripId, JSON.stringify({ ...prev, ...payload }));
-        }
-      }
 
       document.getElementById("btnStartTrack").addEventListener("click", async () => {
         if (!("geolocation" in navigator)) {
@@ -1020,12 +973,14 @@
         document.getElementById("activeTripLabel").textContent = "#" + currentTripId;
         updateStatusBadge("live", "Ao Vivo");
 
-        saveTripData(currentTripId, {
+        set(ref(db, "fretes/" + currentTripId), {
           status: "em_rota",
           vehicle: vehicle,
           dest: destinationCoords || null,
           updatedAt: Date.now()
-        }, true);
+        }).catch(() => {
+          showToast("Bloqueado pelo Firebase: publique as Regras do banco!", true);
+        });
 
         watchId = navigator.geolocation.watchPosition(
           (pos) => {
@@ -1040,10 +995,10 @@
               if (autoFollow) map.panTo([lat, lng]);
             }
 
-            // Economia de bateria 1: respeita o intervalo selecionado
+            // Economia de bateria 1: respeita o intervalo escolhido
             if (now - lastSentTime < intervalMs) return;
 
-            // Economia de bateria 2: ignora deslocamentos menores que 15m (semáforo/parada)
+            // Economia de bateria 2: ignora deslocamentos menores que 15m (parado)
             if (lastSentCoords) {
               const moved = haversineMeters(lastSentCoords.lat, lastSentCoords.lng, lat, lng);
               if (moved < 15 && now - lastSentTime < 60000) return;
@@ -1057,15 +1012,17 @@
             document.getElementById("oledStatusText").textContent =
               `Último envio: ${new Date().toLocaleTimeString("pt-BR")} (${sendCounter} envios)`;
 
-            saveTripData(currentTripId, {
+            update(ref(db, "fretes/" + currentTripId), {
               lat,
               lng,
               status: "em_rota",
               updatedAt: now
+            }).catch(() => {
+              showToast("Erro ao gravar GPS: verifique a aba Regras do Firebase.", true);
             });
           },
           () => {
-            showToast("Ative a localização (GPS) nas configurações do celular.");
+            showToast("Ative a localização (GPS) nas configurações do celular.", true);
           },
           {
             enableHighAccuracy: true,
@@ -1113,7 +1070,7 @@
           wakeLock.release();
           wakeLock = null;
         }
-        saveTripData(currentTripId, {
+        update(ref(db, "fretes/" + currentTripId), {
           status: "concluido",
           updatedAt: Date.now()
         });
@@ -1142,77 +1099,73 @@
         document.getElementById("clientUpdated").textContent = sec < 5 ? "Agora" : `${sec}s atrás`;
       }, 1000);
 
-      function renderClientState(data) {
-        if (!data) {
-          updateStatusBadge("wait", "Aguardando");
-          return;
-        }
-
-        if (data.vehicle) {
-          document.getElementById("clientVehicle").textContent = data.vehicle;
-        }
-
-        if (data.status === "concluido") {
-          updateStatusBadge("done", "Entrega Concluída");
-          document.getElementById("clientDist").textContent = "0 km";
-          document.getElementById("clientEta").textContent = "Chegou";
-          return;
-        }
-
-        if (data.lat && data.lng) {
-          updateStatusBadge("live", "A Caminho");
-          lastUpdateTimestamp = data.updatedAt || Date.now();
-
-          if (!truckMarker) {
-            truckMarker = L.marker([data.lat, data.lng], { icon: truckIcon }).addTo(map);
-          } else {
-            smoothMoveMarker(truckMarker, data.lat, data.lng);
+      onValue(
+        ref(db, "fretes/" + tripParam),
+        (snapshot) => {
+          const data = snapshot.val();
+          if (!data) {
+            updateStatusBadge("wait", "Aguardando");
+            return;
           }
 
-          if (data.dest && data.dest.lat && data.dest.lng) {
-            if (!destMarker) {
-              destMarker = L.marker([data.dest.lat, data.dest.lng], { icon: destIcon }).addTo(map);
-            }
-            if (!initialFitDone) {
-              const bounds = L.latLngBounds([
-                [data.lat, data.lng],
-                [data.dest.lat, data.dest.lng]
-              ]);
-              map.fitBounds(bounds, { padding: [70, 70] });
-              initialFitDone = true;
-            } else if (autoFollow) {
-              map.panTo([data.lat, data.lng]);
-            }
-
-            const meters = haversineMeters(data.lat, data.lng, data.dest.lat, data.dest.lng) * 1.3;
-            const km = meters / 1000;
-            document.getElementById("clientDist").textContent = km < 1 ? `${Math.round(meters)} m` : `${km.toFixed(1)} km`;
-
-            const mins = Math.max(1, Math.round((km / 30) * 60));
-            document.getElementById("clientEta").textContent = mins > 60 ? `${Math.floor(mins / 60)}h ${mins % 60}m` : `${mins} min`;
-          } else {
-            if (!initialFitDone) {
-              map.setView([data.lat, data.lng], 16);
-              initialFitDone = true;
-            } else if (autoFollow) {
-              map.panTo([data.lat, data.lng]);
-            }
-            document.getElementById("clientDist").textContent = "Em trânsito";
-            document.getElementById("clientEta").textContent = "Ao vivo";
+          if (data.vehicle) {
+            document.getElementById("clientVehicle").textContent = data.vehicle;
           }
-        }
-      }
 
-      if (isFirebaseReady) {
-        fbOnValue(fbRef(db, "fretes/" + tripParam), (snapshot) => {
-          renderClientState(snapshot.val());
-        });
-      } else {
-        setInterval(() => {
-          const raw = localStorage.getItem("fb_sim_" + tripParam);
-          if (raw) renderClientState(JSON.parse(raw));
-        }, 1500);
-      }
+          if (data.status === "concluido") {
+            updateStatusBadge("done", "Entrega Concluída");
+            document.getElementById("clientDist").textContent = "0 km";
+            document.getElementById("clientEta").textContent = "Chegou";
+            return;
+          }
+
+          if (data.lat && data.lng) {
+            updateStatusBadge("live", "A Caminho");
+            lastUpdateTimestamp = data.updatedAt || Date.now();
+
+            if (!truckMarker) {
+              truckMarker = L.marker([data.lat, data.lng], { icon: truckIcon }).addTo(map);
+            } else {
+              smoothMoveMarker(truckMarker, data.lat, data.lng);
+            }
+
+            if (data.dest && data.dest.lat && data.dest.lng) {
+              if (!destMarker) {
+                destMarker = L.marker([data.dest.lat, data.dest.lng], { icon: destIcon }).addTo(map);
+              }
+              if (!initialFitDone) {
+                const bounds = L.latLngBounds([
+                  [data.lat, data.lng],
+                  [data.dest.lat, data.dest.lng]
+                ]);
+                map.fitBounds(bounds, { padding: [70, 70] });
+                initialFitDone = true;
+              } else if (autoFollow) {
+                map.panTo([data.lat, data.lng]);
+              }
+
+              const meters = haversineMeters(data.lat, data.lng, data.dest.lat, data.dest.lng) * 1.3;
+              const km = meters / 1000;
+              document.getElementById("clientDist").textContent = km < 1 ? `${Math.round(meters)} m` : `${km.toFixed(1)} km`;
+
+              const mins = Math.max(1, Math.round((km / 30) * 60));
+              document.getElementById("clientEta").textContent = mins > 60 ? `${Math.floor(mins / 60)}h ${mins % 60}m` : `${mins} min`;
+            } else {
+              if (!initialFitDone) {
+                map.setView([data.lat, data.lng], 16);
+                initialFitDone = true;
+              } else if (autoFollow) {
+                map.panTo([data.lat, data.lng]);
+              }
+              document.getElementById("clientDist").textContent = "Em trânsito";
+              document.getElementById("clientEta").textContent = "Ao vivo";
+            }
+          }
+        },
+        () => {
+          showToast("Acesso negado: publique as Regras no Firebase.", true);
+        }
+      );
     }
   </script>
 </body>
