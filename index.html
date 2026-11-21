@@ -376,6 +376,37 @@
       overflow: hidden;
     }
 
+    /* Modal de Emergência SOS (Tela do Gestor) */
+    #sosAlertModal {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      background: rgba(127, 29, 29, 0.96);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      animation: sosFlash 1s infinite alternate;
+    }
+
+    @keyframes sosFlash {
+      from { background: rgba(127, 29, 29, 0.96); }
+      to { background: rgba(185, 28, 28, 0.98); }
+    }
+
+    .sos-card {
+      background: #0f172a;
+      border: 2px solid #fca5a5;
+      border-radius: 20px;
+      padding: 22px 18px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    }
+
     /* Modal de Chat ao Vivo */
     #chatModal {
       position: fixed;
@@ -626,7 +657,6 @@
         </div>
       </div>
 
-      <!-- Pagamento Pix no Término do Serviço -->
       <div class="input-row form-group">
         <div style="flex: 1.4;">
           <label>Chave Pix ou Link Pagamento (Opcional)</label>
@@ -676,7 +706,7 @@
         <strong id="drvTripCode">#0000</strong>
         <div style="font-size: 11px; color: var(--text-muted);" id="drvVehicle">--</div>
       </div>
-      <a id="btnDrvSos" href="tel:190" class="btn btn-sos btn-sm">🚨 SOS 190</a>
+      <button type="button" id="btnDrvSos" class="btn btn-sos btn-sm">🚨 SOS 190</button>
     </div>
 
     <div id="drvStopBox" class="info-card hidden">
@@ -730,7 +760,6 @@
       <button type="button" class="btn-toggle-sheet">Minimizar</button>
     </div>
 
-    <!-- Bloco de Pagamento Pix (Aparece automaticamente ao concluir o serviço) -->
     <div id="cliPixCard" class="pix-box hidden">
       <div style="font-size: 11px; color: #34d399; font-weight: 800; letter-spacing: 0.4px;">✅ ENTREGA CONCLUÍDA • PAGAMENTO PIX</div>
       <div id="cliPixAmountLabel" style="font-size: 18px; font-weight: 800; margin-top: 4px;"></div>
@@ -791,6 +820,27 @@
       </a>
     </div>
   </section>
+
+  <!-- ========================================================= -->
+  <!-- MODAL DE ALERTA SOS (PARA O GESTOR)                       -->
+  <!-- ========================================================= -->
+  <div id="sosAlertModal" class="hidden">
+    <div class="sos-card">
+      <div style="font-size: 42px; margin-bottom: 6px;">🚨</div>
+      <h2 style="color: #fca5a5; font-size: 19px; font-weight: 800; letter-spacing: 0.4px;">ALERTA SOS ACIONADO!</h2>
+      <p id="sosAlertDesc" style="font-size: 13px; color: var(--text); margin-top: 8px; line-height: 1.45;">--</p>
+      <p id="sosAlertCoords" style="font-size: 11px; color: var(--text-muted); margin-top: 6px;"></p>
+
+      <div class="btn-grid" style="margin-top: 14px;">
+        <button type="button" id="btnSosLocateMap" class="btn btn-accent btn-sm">📍 Ver no Mapa</button>
+        <button type="button" id="btnSosOpenChat" class="btn btn-dark btn-sm">💬 Abrir Chat</button>
+      </div>
+
+      <button type="button" id="btnSosAcknowledge" class="btn btn-primary" style="margin-top: 10px;">
+        🔇 Silenciar Alarme (Ciente)
+      </button>
+    </div>
+  </div>
 
   <!-- ========================================================= -->
   <!-- MODAL DE CHAT AO VIVO (GESTOR / MOTORISTA / CLIENTE)      -->
@@ -896,6 +946,87 @@
 
     function baseUrl() {
       return window.location.origin + window.location.pathname;
+    }
+
+    // =========================================================================
+    // EFEITOS SONOROS VIA WEB AUDIO API (NÃO INTERFERE NO ÁUDIO MUDO DO GPS)
+    // =========================================================================
+    let soundCtx = null;
+    function getSoundCtx() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return null;
+      if (!soundCtx) soundCtx = new AudioContextClass();
+      if (soundCtx.state === "suspended") soundCtx.resume().catch(() => {});
+      return soundCtx;
+    }
+
+    // Desbloqueia o áudio na primeira interação do usuário na tela
+    ["touchstart", "click", "keydown"].forEach((evt) => {
+      document.addEventListener(evt, () => getSoundCtx(), { once: true, passive: true });
+    });
+
+    // Som agradável de notificação para novas mensagens do Chat
+    function playChatNotificationSound() {
+      try {
+        const ctx = getSoundCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = "sine";
+        osc1.frequency.setValueAtTime(880, now);
+        osc1.frequency.setValueAtTime(1174.66, now + 0.09);
+
+        gain1.gain.setValueAtTime(0.001, now);
+        gain1.gain.exponentialRampToValueAtTime(0.22, now + 0.02);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.3);
+      } catch (_) {}
+    }
+
+    // Sirene de emergência contínua para o SOS no painel do Gestor
+    let sosAlarmTimer = null;
+    function startSosAlarm() {
+      if (sosAlarmTimer) return;
+      const ringOnce = () => {
+        try {
+          if ("vibrate" in navigator) {
+            navigator.vibrate([400, 150, 400, 150, 600]);
+          }
+          const ctx = getSoundCtx();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(780, now);
+          osc.frequency.linearRampToValueAtTime(1040, now + 0.35);
+          osc.frequency.linearRampToValueAtTime(780, now + 0.7);
+
+          gain.gain.setValueAtTime(0.28, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.75);
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.78);
+        } catch (_) {}
+      };
+      ringOnce();
+      sosAlarmTimer = setInterval(ringOnce, 1200);
+    }
+
+    function stopSosAlarm() {
+      if (sosAlarmTimer) {
+        clearInterval(sosAlarmTimer);
+        sosAlarmTimer = null;
+      }
+      if ("vibrate" in navigator) navigator.vibrate(0);
     }
 
     // =========================================================================
@@ -1093,7 +1224,7 @@
       return null;
     }
 
-    // Áudio silencioso em segundo plano
+    // Áudio silencioso em segundo plano (mantém o GPS vivo no Android)
     let bgAudioEl = null;
     function startBackgroundAudioKeepAlive() {
       try {
@@ -1161,13 +1292,13 @@
     }
 
     // =========================================================================
-    // SISTEMA DE CHAT AO VIVO (COMPARTILHADO ENTRE GESTOR, MOTORISTA E CLIENTE)
+    // SISTEMA DE CHAT AO VIVO COM NOTIFICAÇÃO SONORA
     // =========================================================================
     let activeChatTripId = null;
-    let activeChatRole = "Cliente"; // "Gestor" | "Motorista" | "Cliente"
+    let activeChatRole = "Cliente";
     let activeChatSender = "Cliente";
     let chatUnsubscribe = null;
-    let seenMessagesCount = 0;
+    const seenMessagesByTrip = {};
 
     function renderChatMessages(messagesObj) {
       const box = document.getElementById("chatMessagesBox");
@@ -1227,13 +1358,22 @@
 
       chatUnsubscribe = conn.onValue(conn.ref(conn.db, `fretes/${tripId}/chat`), (snap) => {
         const val = snap.val();
-        const count = val ? Object.keys(val).length : 0;
-        seenMessagesCount = count;
+        const list = val ? Object.values(val) : [];
+        const prevCount = seenMessagesByTrip[tripId] || 0;
+
+        if (list.length > prevCount && prevCount > 0) {
+          const lastMsg = list[list.length - 1];
+          if (lastMsg && lastMsg.role !== role) {
+            playChatNotificationSound();
+          }
+        }
+
+        seenMessagesByTrip[tripId] = list.length;
         renderChatMessages(val);
       });
     }
 
-    function subscribeChatUnreadBadge(tripId, myRole, badgeElements) {
+    function subscribeChatUnreadBadge(tripId, myRole, getBadgeElements) {
       connectFirebase().then((conn) => {
         if (!conn) return;
         conn.onValue(conn.ref(conn.db, `fretes/${tripId}/chat`), (snap) => {
@@ -1242,20 +1382,27 @@
           const isModalOpen = !document.getElementById("chatModal").classList.contains("hidden") && activeChatTripId === tripId;
 
           if (isModalOpen) {
-            seenMessagesCount = list.length;
+            seenMessagesByTrip[tripId] = list.length;
             return;
           }
 
-          if (list.length > seenMessagesCount) {
+          if (typeof seenMessagesByTrip[tripId] === "undefined") {
+            seenMessagesByTrip[tripId] = 0;
+          }
+
+          if (list.length > seenMessagesByTrip[tripId]) {
             const lastMsg = list[list.length - 1];
-            const unread = list.length - seenMessagesCount;
-            badgeElements.forEach((el) => {
+            const unread = list.length - seenMessagesByTrip[tripId];
+            const badges = typeof getBadgeElements === "function" ? getBadgeElements() : getBadgeElements;
+            badges.forEach((el) => {
               if (!el) return;
               el.textContent = unread;
               el.classList.remove("hidden");
             });
+
             if (lastMsg && lastMsg.role !== myRole) {
-              showToast(`💬 ${lastMsg.sender || lastMsg.role}: ${lastMsg.text}`);
+              playChatNotificationSound();
+              showToast(`💬 [${tripId}] ${lastMsg.sender || lastMsg.role}: ${lastMsg.text}`);
             }
           }
         });
@@ -1264,6 +1411,10 @@
 
     document.getElementById("btnCloseChat").addEventListener("click", () => {
       document.getElementById("chatModal").classList.add("hidden");
+      if (chatUnsubscribe) {
+        chatUnsubscribe();
+        chatUnsubscribe = null;
+      }
       activeChatTripId = null;
     });
 
@@ -1290,14 +1441,114 @@
     });
 
     // =========================================================================
-    // 1. MODO GESTOR
+    // 1. MODO GESTOR (COM MONITORAMENTO DE ALERTA SOS EM TEMPO REAL)
     // =========================================================================
     if (isManagerMode) {
       let adminPassword = "";
       let isAdminAuthenticated = false;
       let draftStops = [];
+      const monitoredTripIds = new Set();
 
-      // Carrega última chave Pix salva para agilizar próximos fretes
+      // Controles do Modal SOS
+      let activeSosTrip = null;
+      let activeSosTime = 0;
+      let activeSosLat = null;
+      let activeSosLng = null;
+
+      function triggerManagerSosModal(tripItem, liveData) {
+        activeSosTrip = tripItem;
+        activeSosTime = liveData.sosAt;
+        activeSosLat = liveData.lat || null;
+        activeSosLng = liveData.lng || null;
+
+        const timeStr = new Date(liveData.sosAt).toLocaleTimeString("pt-BR");
+        document.getElementById("sosAlertDesc").innerHTML =
+          `O motorista <strong>${tripItem.driverName || "Parceiro"}</strong> (${tripItem.vehicle}) acionou o botão de emergência <strong>SOS 190</strong> no transporte <strong>#${tripItem.tripId}</strong> às <strong>${timeStr}</strong>.`;
+
+        document.getElementById("sosAlertCoords").textContent =
+          activeSosLat && activeSosLng
+            ? `Última posição GPS: ${activeSosLat.toFixed(5)}, ${activeSosLng.toFixed(5)}`
+            : "Aguardando coordenada GPS do aparelho...";
+
+        document.getElementById("sosAlertModal").classList.remove("hidden");
+        updateStatusBadge("sos", "SOS ATIVO");
+        startSosAlarm();
+      }
+
+      document.getElementById("btnSosAcknowledge").addEventListener("click", () => {
+        stopSosAlarm();
+        if (activeSosTrip && activeSosTime) {
+          localStorage.setItem(`fc_ack_sos_${activeSosTrip.tripId}`, String(activeSosTime));
+        }
+        document.getElementById("sosAlertModal").classList.add("hidden");
+        updateStatusBadge("wait", "Pronto");
+      });
+
+      document.getElementById("btnSosLocateMap").addEventListener("click", () => {
+        stopSosAlarm();
+        if (activeSosTrip && activeSosTime) {
+          localStorage.setItem(`fc_ack_sos_${activeSosTrip.tripId}`, String(activeSosTime));
+        }
+        document.getElementById("sosAlertModal").classList.add("hidden");
+
+        if (activeSosLat && activeSosLng && map) {
+          if (!truckMarker) {
+            truckMarker = L.marker([activeSosLat, activeSosLng], { icon: getTruckIcon() }).addTo(map);
+          } else {
+            truckMarker.setLatLng([activeSosLat, activeSosLng]);
+          }
+          map.setView([activeSosLat, activeSosLng], 17);
+          const mgrSheet = document.getElementById("managerView");
+          mgrSheet.classList.add("minimized");
+          mgrSheet.querySelector(".btn-toggle-sheet").textContent = "Expandir";
+          showToast("Mapa centralizado no ponto do SOS!");
+        } else {
+          showToast("Sem coordenada GPS registrada ainda.", true);
+        }
+      });
+
+      document.getElementById("btnSosOpenChat").addEventListener("click", () => {
+        stopSosAlarm();
+        if (activeSosTrip && activeSosTime) {
+          localStorage.setItem(`fc_ack_sos_${activeSosTrip.tripId}`, String(activeSosTime));
+        }
+        document.getElementById("sosAlertModal").classList.add("hidden");
+        if (activeSosTrip) {
+          openChatForTrip(activeSosTrip.tripId, "Gestor", "Gestor (Central)");
+        }
+      });
+
+      function startMonitoringTrips() {
+        if (!isAdminAuthenticated) return;
+        const saved = JSON.parse(localStorage.getItem("fc_saved_trips") || "[]");
+        connectFirebase().then((conn) => {
+          if (!conn) return;
+          saved.forEach((item) => {
+            if (monitoredTripIds.has(item.tripId)) return;
+            monitoredTripIds.add(item.tripId);
+
+            // Escuta SOS e localização do motorista em tempo real
+            conn.onValue(conn.ref(conn.db, `fretes/${item.tripId}/updates`), (snap) => {
+              const all = snap.val();
+              if (!all) return;
+              const keys = Object.keys(all);
+              const latest = all[keys[keys.length - 1]];
+              if (latest && latest.sosAt) {
+                const ackTs = parseInt(localStorage.getItem(`fc_ack_sos_${item.tripId}`) || "0", 10);
+                if (latest.sosAt > ackTs) {
+                  triggerManagerSosModal(item, latest);
+                }
+              }
+            });
+
+            // Escuta mensagens não lidas e toca bipe no painel do Gestor
+            subscribeChatUnreadBadge(item.tripId, "Gestor", () => [
+              document.getElementById(`mgrChatBadge_${item.tripId}`)
+            ]);
+          });
+        });
+      }
+
       const savedPix = localStorage.getItem("fc_default_pix");
       if (savedPix) document.getElementById("mgrPixKey").value = savedPix;
 
@@ -1308,6 +1559,7 @@
         document.getElementById("managerDashboard").classList.remove("hidden");
         document.getElementById("mgrTripId").value = generateUniqueTripId();
         renderSavedTripsList();
+        startMonitoringTrips();
       }
 
       async function verifyAdminPassword(pass) {
@@ -1474,6 +1726,7 @@
           document.getElementById("mgrDriverName").value = "";
           document.getElementById("mgrPixAmount").value = "";
           renderSavedTripsList();
+          startMonitoringTrips();
           showToast("Transporte criado com sucesso!");
         } catch (err) {
           showToast("Erro de permissão no Firebase: " + (err.code || "acesso negado"), true);
@@ -1513,14 +1766,18 @@
               <button type="button" class="btn btn-primary btn-sm" data-cli="1">📲 Link Cliente</button>
             </div>
             <div class="btn-grid-3">
-              <button type="button" class="btn btn-dark btn-xs" data-chat="1">💬 Chat</button>
+              <button type="button" class="btn btn-dark btn-xs" data-chat="1">
+                💬 Chat <span id="mgrChatBadge_${item.tripId}" class="unread-pill hidden">0</span>
+              </button>
               <a href="${driverUrl}" target="_blank" class="btn btn-dark btn-xs">🚚 Motorista</a>
               <a href="${clientUrl}" target="_blank" class="btn btn-dark btn-xs">👁️ Mapa</a>
             </div>
           `;
 
           card.querySelector("[data-chat]").addEventListener("click", () => {
-            openChatForTrip(item.tripId, "Gestor", "Gestor (Central)");
+            openChatForTrip(item.tripId, "Gestor", "Gestor (Central)", [
+              document.getElementById(`mgrChatBadge_${item.tripId}`)
+            ]);
           });
 
           card.querySelector("[data-drv]").addEventListener("click", () => {
@@ -1568,10 +1825,28 @@
       document.getElementById("btnDrvChatSetup").addEventListener("click", openDriverChat);
       document.getElementById("btnDrvChat").addEventListener("click", openDriverChat);
 
-      // Sinaliza alerta SOS no Firebase ao tocar em ligar para 190
-      document.getElementById("btnDrvSos").addEventListener("click", () => {
+      // Envia alerta SOS + mensagem urgente no chat antes de discar 190
+      document.getElementById("btnDrvSos").addEventListener("click", async () => {
         updateStatusBadge("sos", "SOS 190");
-        publishDriverUpdate({ sosAt: Date.now() }).catch(() => {});
+        showToast("🚨 Enviando alerta SOS ao Gestor...", true);
+
+        try {
+          await publishDriverUpdate({ sosAt: Date.now() });
+          const conn = await connectFirebase();
+          if (conn) {
+            const sender = tripInfo.driverName ? `Motorista (${tripInfo.driverName})` : "Motorista";
+            await conn.push(conn.ref(conn.db, `fretes/${tripParam}/chat`), {
+              role: "Motorista",
+              sender: sender,
+              text: "🚨 ALERTA DE EMERGÊNCIA SOS (190) ACIONADO PELO MOTORISTA!",
+              ts: Date.now()
+            });
+          }
+        } catch (_) {}
+
+        setTimeout(() => {
+          window.location.href = "tel:190";
+        }, 300);
       });
 
       function updateDriverStopUI() {
