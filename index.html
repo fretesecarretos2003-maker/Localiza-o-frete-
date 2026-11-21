@@ -52,7 +52,16 @@
       width: 100%;
       height: 100%;
       z-index: 1;
-      background: #cbd5e1;
+      background: #e2e8f0;
+    }
+
+    /* Modo Escuro direto sobre o mapa OpenStreetMap Padrão */
+    #map.dark-map {
+      background: #0f172a;
+    }
+
+    #map.dark-map .leaflet-tile-pane {
+      filter: invert(100%) hue-rotate(180deg) brightness(92%) contrast(92%);
     }
 
     /* Cabeçalho */
@@ -418,7 +427,7 @@
 
   <!-- Botões Flutuantes -->
   <div class="floating-controls">
-    <button type="button" id="btnThemeToggle" class="float-btn">🗺️ Moderno</button>
+    <button type="button" id="btnThemeToggle" class="float-btn">🌙 Escuro</button>
     <button type="button" id="btnRecenter" class="float-btn hidden">🎯 Centralizar</button>
   </div>
 
@@ -694,35 +703,32 @@
     }
 
     // =========================================================================
-    // INICIALIZAÇÃO DO MAPA COM BACKUP AUTOMÁTICO DE CDN E SERVIDOR
+    // MAPA PADRÃO OPENSTREETMAP + ALTERNÂNCIA INSTANTÂNEA PARA MODO ESCURO
     // =========================================================================
-    let map = null, tileLayer = null, truckMarker = null, routeLayer = null;
+    let map = null, truckMarker = null, routeLayer = null;
     let stopMarkers = [], autoFollow = true, initialFitDone = false;
     let onMapClickHandler = null;
+    let isDarkMap = localStorage.getItem("fc_map_dark_v3") === "1";
 
-    const MAP_STYLES = [
-      {
-        id: "modern",
-        label: "🗺️ Moderno",
-        url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
-        attr: "&copy; Esri &copy; OpenStreetMap"
-      },
-      {
-        id: "dark",
-        label: "🌙 Escuro",
-        url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
-        attr: "&copy; OpenStreetMap &copy; CARTO"
-      },
-      {
-        id: "osm",
-        label: "📍 Padrão",
-        url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        attr: "&copy; OpenStreetMap"
+    function applyMapTheme() {
+      const mapEl = document.getElementById("map");
+      const btn = document.getElementById("btnThemeToggle");
+      if (isDarkMap) {
+        mapEl.classList.add("dark-map");
+        btn.textContent = "☀️ Padrão";
+      } else {
+        mapEl.classList.remove("dark-map");
+        btn.textContent = "🌙 Escuro";
       }
-    ];
+    }
 
-    let styleIdx = parseInt(localStorage.getItem("fc_map_style_v2") || "0", 10);
-    if (isNaN(styleIdx) || styleIdx < 0 || styleIdx >= MAP_STYLES.length) styleIdx = 0;
+    applyMapTheme();
+
+    document.getElementById("btnThemeToggle").addEventListener("click", () => {
+      isDarkMap = !isDarkMap;
+      localStorage.setItem("fc_map_dark_v3", isDarkMap ? "1" : "0");
+      applyMapTheme();
+    });
 
     function getTruckIcon() {
       return L.divIcon({
@@ -733,40 +739,14 @@
       });
     }
 
-    function applyMapStyle(idx, isFallback = false) {
-      if (!map) return;
-      styleIdx = idx;
-      localStorage.setItem("fc_map_style_v2", String(styleIdx));
-      const style = MAP_STYLES[styleIdx];
-      document.getElementById("btnThemeToggle").textContent = style.label;
-
-      if (tileLayer) map.removeLayer(tileLayer);
-
-      let fallbackTriggered = false;
-      tileLayer = L.tileLayer(style.url, {
-        attribution: style.attr,
-        maxZoom: 19
-      });
-
-      tileLayer.on("tileerror", () => {
-        if (!fallbackTriggered && style.id !== "osm") {
-          fallbackTriggered = true;
-          applyMapStyle(2, true);
-        }
-      });
-
-      tileLayer.addTo(map);
-      if (isFallback) showToast("Mapa alternativo ativado!");
-    }
-
     function initMap() {
       if (map || typeof L === "undefined") return;
       map = L.map("map", { zoomControl: false }).setView([-23.5505, -46.6333], 13);
-      applyMapStyle(styleIdx);
 
-      document.getElementById("btnThemeToggle").addEventListener("click", () => {
-        applyMapStyle((styleIdx + 1) % MAP_STYLES.length);
-      });
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap",
+        maxZoom: 19
+      }).addTo(map);
 
       map.on("dragstart", () => {
         autoFollow = false;
@@ -791,7 +771,6 @@
     if (typeof L !== "undefined") {
       initMap();
     } else {
-      // Se jsDelivr falhar, carrega automaticamente via cdnjs
       const backupCss = document.createElement("link");
       backupCss.rel = "stylesheet";
       backupCss.href = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
@@ -936,7 +915,7 @@
     }
 
     // =========================================================================
-    // 1. MODO GESTOR (COM VALIDAÇÃO REAL DA SENHA NO FIREBASE)
+    // 1. MODO GESTOR
     // =========================================================================
     if (isManagerMode) {
       let adminPassword = "";
@@ -963,7 +942,6 @@
         }
       }
 
-      // Valida automaticamente se houver senha salva no aparelho
       const savedPass = localStorage.getItem("fc_admin_pass");
       if (savedPass) {
         const btnLogin = document.getElementById("btnAdminLogin");
@@ -1077,28 +1055,31 @@
         const conn = await connectFirebase();
         if (!conn) return;
 
+        const btnCreate = document.getElementById("btnCreateTrip");
+        btnCreate.disabled = true;
+        btnCreate.textContent = "Criando transporte...";
+
         const tripId = document.getElementById("mgrTripId").value.trim().replace(/[^a-zA-Z0-9-_]/g, "") || generateUniqueTripId();
         const driverName = document.getElementById("mgrDriverName").value.trim();
         const vehicle = document.getElementById("mgrVehicle").value;
         const intervalMs = parseInt(document.getElementById("mgrInterval").value, 10);
         const driverKey = Math.random().toString(36).substring(2, 10).toUpperCase();
 
-        const payload = {
-          meta: {
+        try {
+          // 1. Grava primeiro a pasta 'meta' com a senha e a chave do motorista
+          await conn.set(conn.ref(conn.db, `fretes/${tripId}/meta`), {
             adminPass: adminPassword,
             driverKey: driverKey
-          },
-          info: {
+          });
+
+          // 2. Grava em seguida a pasta 'info' com os dados públicos da corrida
+          await conn.set(conn.ref(conn.db, `fretes/${tripId}/info`), {
             vehicle: vehicle,
             driverName: driverName,
             intervalMs: intervalMs,
             stops: draftStops,
             createdAt: Date.now()
-          }
-        };
-
-        try {
-          await conn.set(conn.ref(conn.db, "fretes/" + tripId), payload);
+          });
 
           const saved = JSON.parse(localStorage.getItem("fc_saved_trips") || "[]");
           saved.unshift({ tripId, driverKey, vehicle, driverName, stopsCount: draftStops.length, createdAt: Date.now() });
@@ -1110,8 +1091,11 @@
           document.getElementById("mgrDriverName").value = "";
           renderSavedTripsList();
           showToast("Transporte criado com sucesso!");
-        } catch {
-          showToast("Erro de permissão no Firebase!", true);
+        } catch (err) {
+          showToast("Erro de permissão no Firebase: " + (err.code || "acesso negado"), true);
+        } finally {
+          btnCreate.disabled = false;
+          btnCreate.textContent = "✅ Criar Transporte e Gerar Links";
         }
       });
 
