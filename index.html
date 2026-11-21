@@ -55,12 +55,18 @@
       background: #e2e8f0;
     }
 
+    /* Ajuste do mapa no Modo TV Horizontal */
+    body.tv-mode #map {
+      right: 390px;
+      width: auto;
+    }
+
     #map.dark-map { background: #0f172a; }
     #map.dark-map .leaflet-tile-pane {
       filter: invert(100%) hue-rotate(180deg) brightness(92%) contrast(92%);
     }
 
-    /* Cabeçalho */
+    /* Cabeçalho Padrão (Mobile) */
     .top-bar {
       position: fixed;
       top: 12px;
@@ -76,6 +82,10 @@
       align-items: center;
       justify-content: space-between;
       box-shadow: var(--shadow);
+    }
+
+    body.tv-mode .top-bar {
+      right: 406px;
     }
 
     .brand { display: flex; align-items: center; gap: 10px; }
@@ -136,6 +146,10 @@
       gap: 8px;
     }
 
+    body.tv-mode .floating-controls {
+      right: 406px;
+    }
+
     .float-btn {
       background: rgba(15, 23, 42, 0.92);
       color: var(--text);
@@ -148,7 +162,7 @@
       cursor: pointer;
     }
 
-    /* Painel Inferior */
+    /* Painel Inferior Mobile */
     .bottom-sheet {
       position: fixed;
       bottom: 0;
@@ -202,6 +216,7 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 12px;
+      gap: 8px;
     }
 
     .section-header h2 { font-size: 15px; font-weight: 700; }
@@ -376,7 +391,156 @@
       overflow: hidden;
     }
 
-    /* Modal de Emergência SOS (Tela do Gestor) */
+    /* ========================================================= */
+    /* ESTILOS EXCLUSIVOS DA CENTRAL TV (WIDESCREEN HORIZONTAL)  */
+    /* ========================================================= */
+    #tvSidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 390px;
+      z-index: 1200;
+      background: #0b1120;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.55);
+    }
+
+    .tv-header {
+      padding: 14px 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .tv-mode-bar {
+      padding: 10px 14px;
+      background: rgba(59, 130, 246, 0.15);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      gap: 8px;
+    }
+
+    .tv-trips-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px;
+    }
+
+    .tv-trip-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 11px 12px;
+      margin-bottom: 9px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .tv-trip-card.focused {
+      border-color: var(--primary);
+      background: rgba(16, 185, 129, 0.12);
+    }
+
+    .tv-trip-card.sos-card-item {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.18);
+    }
+
+    .tv-chat-panel {
+      height: 36%;
+      min-height: 210px;
+      border-top: 1px solid var(--border);
+      background: #0f172a;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tv-chat-header {
+      padding: 8px 14px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tv-chat-feed {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      font-size: 12px;
+    }
+
+    .tv-chat-bubble {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 7px 10px;
+    }
+
+    .tv-focus-hud {
+      position: fixed;
+      bottom: 18px;
+      left: 18px;
+      right: 408px;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .tv-hud-stats {
+      display: flex;
+      gap: 18px;
+      text-align: center;
+    }
+
+    .tv-hud-stats div small {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .tv-hud-stats div strong {
+      font-size: 18px;
+      font-weight: 800;
+      color: #34d399;
+    }
+
+    .tv-truck-label {
+      background: rgba(15, 23, 42, 0.92);
+      color: #fff;
+      border: 1px solid #10b981;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Modal de Emergência SOS (Tela do Gestor e TV) */
     #sosAlertModal {
       position: fixed;
       inset: 0;
@@ -403,7 +567,7 @@
       border-radius: 20px;
       padding: 22px 18px;
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     }
 
@@ -498,6 +662,11 @@
       font-size: 20px;
     }
 
+    .truck-marker.sos {
+      border-color: #ef4444;
+      background: #7f1d1d;
+    }
+
     .pin-marker {
       width: 32px;
       height: 32px;
@@ -564,6 +733,10 @@
       text-align: center;
     }
 
+    body.tv-mode #toast {
+      left: calc(50% - 195px);
+    }
+
     #toast.show { opacity: 1; }
   </style>
 </head>
@@ -595,7 +768,7 @@
   <div id="toast">Pronto!</div>
 
   <!-- ========================================================= -->
-  <!-- 1. INTERFACE DO GESTOR (VOCÊ)                             -->
+  <!-- 1. INTERFACE DO GESTOR (CELULAR)                          -->
   <!-- ========================================================= -->
   <section id="managerView" class="bottom-sheet hidden">
     <div class="sheet-top-row" data-toggle-sheet="managerView">
@@ -609,7 +782,7 @@
         <h2>🔒 Painel do Gestor</h2>
       </div>
       <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-        Digite a senha configurada no Firebase para criar fretes e gerar links.
+        Digite a senha configurada no Firebase para criar fretes, gerar links e controlar a TV.
       </p>
       <div class="form-group">
         <input type="password" id="adminPassInput" placeholder="Senha do Gestor" />
@@ -624,7 +797,10 @@
     <div id="managerDashboard" class="hidden">
       <div class="section-header">
         <h2>📋 Novo Transporte</h2>
-        <button type="button" id="btnLogoutAdmin" class="btn btn-dark btn-xs">🔒 Sair</button>
+        <div style="display:flex; gap:6px;">
+          <button type="button" id="btnCopyTvLink" class="btn btn-accent btn-xs">📺 Link TV</button>
+          <button type="button" id="btnLogoutAdmin" class="btn btn-dark btn-xs">🔒 Sair</button>
+        </div>
       </div>
 
       <div class="input-row form-group">
@@ -681,9 +857,20 @@
         ✅ Criar Transporte e Gerar Links
       </button>
 
-      <div id="activeTripsSection" class="hidden" style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 14px;">
+      <!-- Barra de Controle Remoto da TV -->
+      <div id="tvRemoteControlBox" class="info-card" style="margin-top: 14px; border-color: rgba(59, 130, 246, 0.45);">
+        <div class="info-flex">
+          <div>
+            <div style="font-size: 10px; color: #60a5fa; font-weight: 800;">📺 CONTROLE REMOTO DA TV</div>
+            <div style="font-size: 12px; font-weight: 600;" id="mgrTvCurrentStatus">Exibindo: Todos os transportes</div>
+          </div>
+          <button type="button" id="btnTvShowAllRemote" class="btn btn-accent btn-xs">🌐 Mostrar Todos</button>
+        </div>
+      </div>
+
+      <div id="activeTripsSection" class="hidden" style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
         <div class="section-header">
-          <h2>🚚 Transportes Gerados</h2>
+          <h2>🚚 Transportes Ativos</h2>
         </div>
         <div id="activeTripsList"></div>
       </div>
@@ -691,7 +878,82 @@
   </section>
 
   <!-- ========================================================= -->
-  <!-- 2. INTERFACE DO MOTORISTA                                 -->
+  <!-- 2. INTERFACE CENTRAL TV (HORIZONTAL WIDESCREEN)           -->
+  <!-- ========================================================= -->
+  <aside id="tvSidebar" class="hidden">
+    <div class="tv-header">
+      <div>
+        <strong style="font-size: 14px;">📺 Central TV • Gestor</strong>
+        <div style="font-size: 11px; color: var(--text-muted);" id="tvActiveCountLabel">0 transportes ativos</div>
+      </div>
+      <div style="display:flex; gap:5px;">
+        <button type="button" id="btnTvSoundEnable" class="btn btn-warning btn-xs">🔇 Ativar Som</button>
+        <button type="button" id="btnTvFullscreen" class="btn btn-dark btn-xs" title="Tela Cheia">⛶</button>
+        <button type="button" id="btnTvLogout" class="btn btn-dark btn-xs" title="Sair">🔒</button>
+      </div>
+    </div>
+
+    <!-- Login na TV (caso ainda não tenha senha salva) -->
+    <div id="tvLoginBox" style="padding: 18px;">
+      <h3 style="font-size: 15px; margin-bottom: 8px;">🔒 Acesso da Central TV</h3>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+        Digite a senha do gestor para sincronizar os transportes ao vivo com seu celular.
+      </p>
+      <div class="form-group">
+        <input type="password" id="tvPassInput" placeholder="Senha do Gestor" />
+      </div>
+      <button type="button" id="btnTvLogin" class="btn btn-primary">Conectar Central TV</button>
+    </div>
+
+    <!-- Conteúdo Principal da TV -->
+    <div id="tvMainContent" class="hidden" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+      <div class="tv-mode-bar">
+        <span id="tvModeLabel" style="font-weight: 700; color: #93c5fd;">🌐 Visão Geral (Todos)</span>
+        <button type="button" id="btnTvOverviewLocal" class="btn btn-dark btn-xs hidden">Ver Todos</button>
+      </div>
+
+      <div id="tvTripsList" class="tv-trips-scroll"></div>
+
+      <!-- Painel de Chat ao Vivo na TV -->
+      <div class="tv-chat-panel">
+        <div class="tv-chat-header">
+          <span id="tvChatHeaderTitle">💬 Mensagens ao Vivo</span>
+          <button type="button" id="btnTvOpenFullChat" class="btn btn-dark btn-xs hidden">Responder</button>
+        </div>
+        <div id="tvChatFeed" class="tv-chat-feed">
+          <div style="color: var(--text-muted); text-align: center; margin-top: 20px;">
+            As mensagens do chat aparecerão aqui automaticamente.
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- HUD Inferior na TV quando um transporte está em Foco Tela Cheia -->
+  <div id="tvFocusHud" class="tv-focus-hud hidden">
+    <div style="min-width: 0; flex: 1;">
+      <div style="font-size: 11px; color: #34d399; font-weight: 800;" id="tvHudCode">#0000 • AO VIVO</div>
+      <div style="font-size: 16px; font-weight: 800; margin: 2px 0;" id="tvHudVehicle">--</div>
+      <div style="font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="tvHudStop">Aguardando rota...</div>
+    </div>
+    <div class="tv-hud-stats">
+      <div>
+        <small>Distância</small>
+        <strong id="tvHudDist">--</strong>
+      </div>
+      <div>
+        <small>Previsão</small>
+        <strong id="tvHudEta">--</strong>
+      </div>
+      <div>
+        <small>Atualizado</small>
+        <strong id="tvHudUpdated" style="color: var(--text);">--</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 3. INTERFACE DO MOTORISTA                                 -->
   <!-- ========================================================= -->
   <section id="driverView" class="bottom-sheet hidden">
     <div class="sheet-top-row" data-toggle-sheet="driverView">
@@ -751,7 +1013,7 @@
   </section>
 
   <!-- ========================================================= -->
-  <!-- 3. INTERFACE DO CLIENTE                                   -->
+  <!-- 4. INTERFACE DO CLIENTE                                   -->
   <!-- ========================================================= -->
   <section id="clientView" class="bottom-sheet hidden">
     <div class="sheet-top-row" data-toggle-sheet="clientView">
@@ -822,7 +1084,7 @@
   </section>
 
   <!-- ========================================================= -->
-  <!-- MODAL DE ALERTA SOS (PARA O GESTOR)                       -->
+  <!-- MODAL DE ALERTA SOS (PARA O GESTOR E PARA A TV)           -->
   <!-- ========================================================= -->
   <div id="sosAlertModal" class="hidden">
     <div class="sos-card">
@@ -889,15 +1151,20 @@
     const params = new URLSearchParams(window.location.search);
     const tripParam = params.get("id");
     const driverKeyParam = params.get("chave");
+    const isTvMode = params.get("tv") === "1" && !tripParam;
     const isDriverMode = Boolean(tripParam && params.get("motorista") === "1" && driverKeyParam);
     const isClientMode = Boolean(tripParam && !isDriverMode);
-    const isManagerMode = !tripParam;
+    const isManagerMode = !tripParam && !isTvMode;
 
+    if (isTvMode) {
+      document.body.classList.add("tv-mode");
+      document.getElementById("tvSidebar").classList.remove("hidden");
+    }
     if (isManagerMode) document.getElementById("managerView").classList.remove("hidden");
     if (isDriverMode) document.getElementById("driverView").classList.remove("hidden");
     if (isClientMode) document.getElementById("clientView").classList.remove("hidden");
 
-    // Minimizar / Expandir painel inferior
+    // Minimizar / Expandir painel inferior mobile
     document.querySelectorAll("[data-toggle-sheet]").forEach((row) => {
       row.addEventListener("click", () => {
         const sheet = document.getElementById(row.getAttribute("data-toggle-sheet"));
@@ -913,7 +1180,7 @@
       t.style.background = isError ? "#ef4444" : "#10b981";
       t.style.color = isError ? "#ffffff" : "#052e16";
       t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 3200);
+      setTimeout(() => t.classList.remove("show"), 3400);
     }
 
     function updateStatusBadge(state, text) {
@@ -948,8 +1215,74 @@
       return window.location.origin + window.location.pathname;
     }
 
+    // SHA-256 puro em JS para sincronizar Gestor e TV com segurança sem expor a senha
+    function sha256Hex(str) {
+      const ascii = unescape(encodeURIComponent(str));
+      function rightRotate(value, amount) {
+        return (value >>> amount) | (value << (32 - amount));
+      }
+      const maxWord = Math.pow(2, 32);
+      let result = "";
+      const words = [];
+      const asciiBitLength = ascii.length * 8;
+      const hash = [];
+      const k = [];
+      let primeCounter = 0;
+      const isComposite = {};
+      for (let candidate = 2; primeCounter < 64; candidate++) {
+        if (!isComposite[candidate]) {
+          for (let i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+          hash[primeCounter] = (Math.pow(candidate, 0.5) * maxWord) | 0;
+          k[primeCounter++] = (Math.pow(candidate, 1 / 3) * maxWord) | 0;
+        }
+      }
+      let padded = ascii + "\x80";
+      while ((padded.length % 64) - 56) padded += "\x00";
+      for (let i = 0; i < padded.length; i++) {
+        const j = padded.charCodeAt(i);
+        words[i >> 2] |= j << (((3 - i) % 4) * 8);
+      }
+      words[words.length] = (asciiBitLength / maxWord) | 0;
+      words[words.length] = asciiBitLength;
+      for (let j = 0; j < words.length; ) {
+        const w = words.slice(j, (j += 16));
+        const oldHash = hash.slice(0);
+        for (let i = 0; i < 64; i++) {
+          const w15 = w[i - 15], w2 = w[i - 2];
+          const a = hash[0], e = hash[4];
+          const temp1 =
+            hash[7] +
+            (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) +
+            ((e & hash[5]) ^ (~e & hash[6])) +
+            k[i] +
+            (w[i] =
+              i < 16
+                ? w[i]
+                : (w[i - 16] +
+                    (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) +
+                    w[i - 7] +
+                    (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) |
+                  0);
+          const temp2 =
+            (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) +
+            ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+          hash.unshift((temp1 + temp2) | 0);
+          hash.pop();
+          hash[4] = (hash[4] + temp1) | 0;
+        }
+        for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+      }
+      for (let i = 0; i < 8; i++) {
+        for (let j = 3; j + 1; j--) {
+          const b = (hash[i] >> (j * 8)) & 255;
+          result += (b < 16 ? "0" : "") + b.toString(16);
+        }
+      }
+      return result;
+    }
+
     // =========================================================================
-    // EFEITOS SONOROS VIA WEB AUDIO API (NÃO INTERFERE NO ÁUDIO MUDO DO GPS)
+    // EFEITOS SONOROS VIA WEB AUDIO API (CHAT E SIRENE SOS)
     // =========================================================================
     let soundCtx = null;
     function getSoundCtx() {
@@ -960,36 +1293,45 @@
       return soundCtx;
     }
 
-    // Desbloqueia o áudio na primeira interação do usuário na tela
+    function updateTvSoundButtonState() {
+      const btn = document.getElementById("btnTvSoundEnable");
+      if (!btn) return;
+      if (soundCtx && soundCtx.state === "running") {
+        btn.textContent = "🔊 Som Ativo";
+        btn.classList.remove("btn-warning");
+        btn.classList.add("btn-primary");
+      }
+    }
+
     ["touchstart", "click", "keydown"].forEach((evt) => {
-      document.addEventListener(evt, () => getSoundCtx(), { once: true, passive: true });
+      document.addEventListener(evt, () => {
+        getSoundCtx();
+        updateTvSoundButtonState();
+      }, { passive: true });
     });
 
-    // Som agradável de notificação para novas mensagens do Chat
     function playChatNotificationSound() {
       try {
         const ctx = getSoundCtx();
         if (!ctx) return;
         const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.setValueAtTime(1174.66, now + 0.09);
 
-        const osc1 = ctx.createOscillator();
-        const gain1 = ctx.createGain();
-        osc1.type = "sine";
-        osc1.frequency.setValueAtTime(880, now);
-        osc1.frequency.setValueAtTime(1174.66, now + 0.09);
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(0.25, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
 
-        gain1.gain.setValueAtTime(0.001, now);
-        gain1.gain.exponentialRampToValueAtTime(0.22, now + 0.02);
-        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
-
-        osc1.connect(gain1);
-        gain1.connect(ctx.destination);
-        osc1.start(now);
-        osc1.stop(now + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.32);
       } catch (_) {}
     }
 
-    // Sirene de emergência contínua para o SOS no painel do Gestor
     let sosAlarmTimer = null;
     function startSosAlarm() {
       if (sosAlarmTimer) return;
@@ -1008,7 +1350,7 @@
           osc.frequency.linearRampToValueAtTime(1040, now + 0.35);
           osc.frequency.linearRampToValueAtTime(780, now + 0.7);
 
-          gain.gain.setValueAtTime(0.28, now);
+          gain.gain.setValueAtTime(0.3, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.75);
 
           osc.connect(gain);
@@ -1030,26 +1372,21 @@
     }
 
     // =========================================================================
-    // GERADOR OFICIAL DE PIX COPIA E COLA (PADRÃO EMV / BANCO CENTRAL)
+    // GERADOR OFICIAL DE PIX COPIA E COLA (EMV / BANCO CENTRAL)
     // =========================================================================
     function crc16Pix(str) {
       let crc = 0xFFFF;
       for (let i = 0; i < str.length; i++) {
         crc ^= str.charCodeAt(i) << 8;
         for (let j = 0; j < 8; j++) {
-          if ((crc & 0x8000) !== 0) {
-            crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
-          } else {
-            crc = (crc << 1) & 0xFFFF;
-          }
+          crc = (crc & 0x8000) !== 0 ? ((crc << 1) ^ 0x1021) & 0xFFFF : (crc << 1) & 0xFFFF;
         }
       }
       return crc.toString(16).toUpperCase().padStart(4, "0");
     }
 
     function emvField(id, value) {
-      const len = String(value.length).padStart(2, "0");
-      return `${id}${len}${value}`;
+      return `${id}${String(value.length).padStart(2, "0")}${value}`;
     }
 
     function buildPixPayload(pixKey, amountStr) {
@@ -1104,10 +1441,10 @@
       applyMapTheme();
     });
 
-    function getTruckIcon() {
+    function getTruckIcon(isSos = false) {
       return L.divIcon({
         className: "",
-        html: `<div class="truck-marker">🚚</div>`,
+        html: `<div class="truck-marker ${isSos ? "sos" : ""}">🚚</div>`,
         iconSize: [44, 44],
         iconAnchor: [22, 22]
       });
@@ -1224,7 +1561,7 @@
       return null;
     }
 
-    // Áudio silencioso em segundo plano (mantém o GPS vivo no Android)
+    // Áudio silencioso em segundo plano (mantém GPS ativo no Android)
     let bgAudioEl = null;
     function startBackgroundAudioKeepAlive() {
       try {
@@ -1282,12 +1619,24 @@
           ref: dbMod.ref,
           set: dbMod.set,
           push: dbMod.push,
+          remove: dbMod.remove,
           onValue: dbMod.onValue
         };
         return fb;
       } catch {
         showToast("Erro ao conectar no Firebase.", true);
         return null;
+      }
+    }
+
+    async function verifyAdminPassword(pass) {
+      const conn = await connectFirebase();
+      if (!conn) return false;
+      try {
+        await conn.set(conn.ref(conn.db, "auth_check"), pass);
+        return true;
+      } catch {
+        return false;
       }
     }
 
@@ -1373,13 +1722,15 @@
       });
     }
 
-    function subscribeChatUnreadBadge(tripId, myRole, getBadgeElements) {
+    function subscribeChatUnreadBadge(tripId, myRole, getBadgeElements, onNewMessageCallback = null) {
       connectFirebase().then((conn) => {
         if (!conn) return;
         conn.onValue(conn.ref(conn.db, `fretes/${tripId}/chat`), (snap) => {
           const val = snap.val();
           const list = val ? Object.values(val) : [];
           const isModalOpen = !document.getElementById("chatModal").classList.contains("hidden") && activeChatTripId === tripId;
+
+          if (onNewMessageCallback) onNewMessageCallback(tripId, list);
 
           if (isModalOpen) {
             seenMessagesByTrip[tripId] = list.length;
@@ -1441,110 +1792,161 @@
     });
 
     // =========================================================================
-    // 1. MODO GESTOR (COM MONITORAMENTO DE ALERTA SOS EM TEMPO REAL)
+    // CONTROLE COMPARTILHADO DE ALERTA SOS (PARA GESTOR MOBILE E CENTRAL TV)
+    // =========================================================================
+    let activeSosTrip = null;
+    let activeSosTime = 0;
+    let activeSosLat = null;
+    let activeSosLng = null;
+    let onSosLocateCallback = null;
+
+    function triggerSosAlertModal(tripItem, liveData) {
+      activeSosTrip = tripItem;
+      activeSosTime = liveData.sosAt;
+      activeSosLat = liveData.lat || null;
+      activeSosLng = liveData.lng || null;
+
+      const timeStr = new Date(liveData.sosAt).toLocaleTimeString("pt-BR");
+      document.getElementById("sosAlertDesc").innerHTML =
+        `O motorista <strong>${tripItem.driverName || "Parceiro"}</strong> (${tripItem.vehicle}) acionou o botão de emergência <strong>SOS 190</strong> no transporte <strong>#${tripItem.tripId}</strong> às <strong>${timeStr}</strong>.`;
+
+      document.getElementById("sosAlertCoords").textContent =
+        activeSosLat && activeSosLng
+          ? `Última posição GPS: ${activeSosLat.toFixed(5)}, ${activeSosLng.toFixed(5)}`
+          : "Aguardando coordenada GPS do aparelho...";
+
+      document.getElementById("sosAlertModal").classList.remove("hidden");
+      updateStatusBadge("sos", "SOS ATIVO");
+      startSosAlarm();
+    }
+
+    function acknowledgeActiveSos() {
+      stopSosAlarm();
+      if (activeSosTrip && activeSosTime) {
+        localStorage.setItem(`fc_ack_sos_${activeSosTrip.tripId}`, String(activeSosTime));
+      }
+      document.getElementById("sosAlertModal").classList.add("hidden");
+      updateStatusBadge(isTvMode ? "live" : "wait", isTvMode ? "Central TV" : "Pronto");
+    }
+
+    document.getElementById("btnSosAcknowledge").addEventListener("click", acknowledgeActiveSos);
+
+    document.getElementById("btnSosLocateMap").addEventListener("click", () => {
+      const tripCopy = activeSosTrip;
+      const latCopy = activeSosLat;
+      const lngCopy = activeSosLng;
+      acknowledgeActiveSos();
+
+      if (onSosLocateCallback && tripCopy) {
+        onSosLocateCallback(tripCopy, latCopy, lngCopy);
+        return;
+      }
+
+      if (latCopy && lngCopy && map) {
+        if (!truckMarker) {
+          truckMarker = L.marker([latCopy, lngCopy], { icon: getTruckIcon(true) }).addTo(map);
+        } else {
+          truckMarker.setLatLng([latCopy, lngCopy]);
+        }
+        map.setView([latCopy, lngCopy], 17);
+        const mgrSheet = document.getElementById("managerView");
+        mgrSheet.classList.add("minimized");
+        mgrSheet.querySelector(".btn-toggle-sheet").textContent = "Expandir";
+        showToast("Mapa centralizado no ponto do SOS!");
+      } else {
+        showToast("Sem coordenada GPS registrada ainda.", true);
+      }
+    });
+
+    document.getElementById("btnSosOpenChat").addEventListener("click", () => {
+      const tripCopy = activeSosTrip;
+      acknowledgeActiveSos();
+      if (tripCopy) {
+        openChatForTrip(tripCopy.tripId, "Gestor", isTvMode ? "Central TV (Gestor)" : "Gestor (Central)");
+      }
+    });
+
+    // =========================================================================
+    // 1. MODO GESTOR (CELULAR — CONTROLA OS FRETES E A TV)
     // =========================================================================
     if (isManagerMode) {
       let adminPassword = "";
+      let adminPassHash = "";
       let isAdminAuthenticated = false;
       let draftStops = [];
+      let currentTvFocusedTripId = null;
       const monitoredTripIds = new Set();
 
-      // Controles do Modal SOS
-      let activeSosTrip = null;
-      let activeSosTime = 0;
-      let activeSosLat = null;
-      let activeSosLng = null;
+      document.getElementById("btnCopyTvLink").addEventListener("click", () => {
+        const tvUrl = `${baseUrl()}?tv=1`;
+        navigator.clipboard.writeText(tvUrl);
+        showToast("Link da Central TV copiado!");
+      });
 
-      function triggerManagerSosModal(tripItem, liveData) {
-        activeSosTrip = tripItem;
-        activeSosTime = liveData.sosAt;
-        activeSosLat = liveData.lat || null;
-        activeSosLng = liveData.lng || null;
-
-        const timeStr = new Date(liveData.sosAt).toLocaleTimeString("pt-BR");
-        document.getElementById("sosAlertDesc").innerHTML =
-          `O motorista <strong>${tripItem.driverName || "Parceiro"}</strong> (${tripItem.vehicle}) acionou o botão de emergência <strong>SOS 190</strong> no transporte <strong>#${tripItem.tripId}</strong> às <strong>${timeStr}</strong>.`;
-
-        document.getElementById("sosAlertCoords").textContent =
-          activeSosLat && activeSosLng
-            ? `Última posição GPS: ${activeSosLat.toFixed(5)}, ${activeSosLng.toFixed(5)}`
-            : "Aguardando coordenada GPS do aparelho...";
-
-        document.getElementById("sosAlertModal").classList.remove("hidden");
-        updateStatusBadge("sos", "SOS ATIVO");
-        startSosAlarm();
+      async function setTvRemoteFocus(tripIdOrNull) {
+        if (!isAdminAuthenticated || !adminPassHash) return;
+        const conn = await connectFirebase();
+        if (!conn) return;
+        try {
+          await conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/tv_control`), {
+            focusedTripId: tripIdOrNull || null,
+            updatedAt: Date.now()
+          });
+          showToast(tripIdOrNull ? `📺 TV focada no frete #${tripIdOrNull}` : "📺 TV exibindo todos os transportes");
+        } catch {
+          showToast("Erro ao enviar comando para TV.", true);
+        }
       }
 
-      document.getElementById("btnSosAcknowledge").addEventListener("click", () => {
-        stopSosAlarm();
-        if (activeSosTrip && activeSosTime) {
-          localStorage.setItem(`fc_ack_sos_${activeSosTrip.tripId}`, String(activeSosTime));
-        }
-        document.getElementById("sosAlertModal").classList.add("hidden");
-        updateStatusBadge("wait", "Pronto");
+      document.getElementById("btnTvShowAllRemote").addEventListener("click", () => {
+        setTvRemoteFocus(null);
       });
 
-      document.getElementById("btnSosLocateMap").addEventListener("click", () => {
-        stopSosAlarm();
-        if (activeSosTrip && activeSosTime) {
-          localStorage.setItem(`fc_ack_sos_${activeSosTrip.tripId}`, String(activeSosTime));
-        }
-        document.getElementById("sosAlertModal").classList.add("hidden");
-
-        if (activeSosLat && activeSosLng && map) {
-          if (!truckMarker) {
-            truckMarker = L.marker([activeSosLat, activeSosLng], { icon: getTruckIcon() }).addTo(map);
-          } else {
-            truckMarker.setLatLng([activeSosLat, activeSosLng]);
-          }
-          map.setView([activeSosLat, activeSosLng], 17);
-          const mgrSheet = document.getElementById("managerView");
-          mgrSheet.classList.add("minimized");
-          mgrSheet.querySelector(".btn-toggle-sheet").textContent = "Expandir";
-          showToast("Mapa centralizado no ponto do SOS!");
-        } else {
-          showToast("Sem coordenada GPS registrada ainda.", true);
-        }
-      });
-
-      document.getElementById("btnSosOpenChat").addEventListener("click", () => {
-        stopSosAlarm();
-        if (activeSosTrip && activeSosTime) {
-          localStorage.setItem(`fc_ack_sos_${activeSosTrip.tripId}`, String(activeSosTime));
-        }
-        document.getElementById("sosAlertModal").classList.add("hidden");
-        if (activeSosTrip) {
-          openChatForTrip(activeSosTrip.tripId, "Gestor", "Gestor (Central)");
-        }
-      });
-
-      function startMonitoringTrips() {
-        if (!isAdminAuthenticated) return;
-        const saved = JSON.parse(localStorage.getItem("fc_saved_trips") || "[]");
+      function startManagerRealtimeSync() {
+        if (!isAdminAuthenticated || !adminPassHash) return;
         connectFirebase().then((conn) => {
           if (!conn) return;
-          saved.forEach((item) => {
-            if (monitoredTripIds.has(item.tripId)) return;
-            monitoredTripIds.add(item.tripId);
 
-            // Escuta SOS e localização do motorista em tempo real
-            conn.onValue(conn.ref(conn.db, `fretes/${item.tripId}/updates`), (snap) => {
-              const all = snap.val();
-              if (!all) return;
-              const keys = Object.keys(all);
-              const latest = all[keys[keys.length - 1]];
-              if (latest && latest.sosAt) {
-                const ackTs = parseInt(localStorage.getItem(`fc_ack_sos_${item.tripId}`) || "0", 10);
-                if (latest.sosAt > ackTs) {
-                  triggerManagerSosModal(item, latest);
+          // Escuta o estado atual da TV
+          conn.onValue(conn.ref(conn.db, `gestor_privado/${adminPassHash}/tv_control`), (snap) => {
+            const ctrl = snap.val();
+            currentTvFocusedTripId = ctrl && ctrl.focusedTripId ? ctrl.focusedTripId : null;
+            document.getElementById("mgrTvCurrentStatus").textContent = currentTvFocusedTripId
+              ? `Exibindo em tela cheia: #${currentTvFocusedTripId}`
+              : "Exibindo: Todos os transportes";
+            renderSavedTripsList();
+          });
+
+          // Sincroniza lista de fretes ativos da nuvem
+          conn.onValue(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos`), (snap) => {
+            const cloudObj = snap.val() || {};
+            const cloudList = Object.values(cloudObj).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            if (cloudList.length > 0) {
+              localStorage.setItem("fc_saved_trips", JSON.stringify(cloudList));
+            }
+            renderSavedTripsList();
+
+            cloudList.forEach((item) => {
+              if (monitoredTripIds.has(item.tripId)) return;
+              monitoredTripIds.add(item.tripId);
+
+              conn.onValue(conn.ref(conn.db, `fretes/${item.tripId}/updates`), (uSnap) => {
+                const all = uSnap.val();
+                if (!all) return;
+                const keys = Object.keys(all);
+                const latest = all[keys[keys.length - 1]];
+                if (latest && latest.sosAt) {
+                  const ackTs = parseInt(localStorage.getItem(`fc_ack_sos_${item.tripId}`) || "0", 10);
+                  if (latest.sosAt > ackTs) {
+                    triggerSosAlertModal(item, latest);
+                  }
                 }
-              }
-            });
+              });
 
-            // Escuta mensagens não lidas e toca bipe no painel do Gestor
-            subscribeChatUnreadBadge(item.tripId, "Gestor", () => [
-              document.getElementById(`mgrChatBadge_${item.tripId}`)
-            ]);
+              subscribeChatUnreadBadge(item.tripId, "Gestor", () => [
+                document.getElementById(`mgrChatBadge_${item.tripId}`)
+              ]);
+            });
           });
         });
       }
@@ -1554,23 +1956,13 @@
 
       function unlockManagerUI(pass) {
         adminPassword = pass;
+        adminPassHash = sha256Hex(pass);
         isAdminAuthenticated = true;
         document.getElementById("managerLoginBox").classList.add("hidden");
         document.getElementById("managerDashboard").classList.remove("hidden");
         document.getElementById("mgrTripId").value = generateUniqueTripId();
         renderSavedTripsList();
-        startMonitoringTrips();
-      }
-
-      async function verifyAdminPassword(pass) {
-        const conn = await connectFirebase();
-        if (!conn) return false;
-        try {
-          await conn.set(conn.ref(conn.db, "auth_check"), pass);
-          return true;
-        } catch {
-          return false;
-        }
+        startManagerRealtimeSync();
       }
 
       const savedPass = localStorage.getItem("fc_admin_pass");
@@ -1621,6 +2013,7 @@
       document.getElementById("btnLogoutAdmin").addEventListener("click", () => {
         localStorage.removeItem("fc_admin_pass");
         adminPassword = "";
+        adminPassHash = "";
         isAdminAuthenticated = false;
         document.getElementById("adminPassInput").value = "";
         document.getElementById("managerDashboard").classList.add("hidden");
@@ -1700,6 +2093,16 @@
 
         if (pixKey) localStorage.setItem("fc_default_pix", pixKey);
 
+        const tripSummary = {
+          tripId,
+          driverKey,
+          vehicle,
+          driverName,
+          pixAmount,
+          stopsCount: draftStops.length,
+          createdAt: Date.now()
+        };
+
         try {
           await conn.set(conn.ref(conn.db, `fretes/${tripId}/meta`), {
             adminPass: adminPassword,
@@ -1716,9 +2119,12 @@
             createdAt: Date.now()
           });
 
+          // Sincroniza no índice privado do gestor para aparecer na TV
+          await conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos/${tripId}`), tripSummary);
+
           const saved = JSON.parse(localStorage.getItem("fc_saved_trips") || "[]");
-          saved.unshift({ tripId, driverKey, vehicle, driverName, pixAmount, stopsCount: draftStops.length, createdAt: Date.now() });
-          localStorage.setItem("fc_saved_trips", JSON.stringify(saved.slice(0, 15)));
+          saved.unshift(tripSummary);
+          localStorage.setItem("fc_saved_trips", JSON.stringify(saved.slice(0, 20)));
 
           draftStops = [];
           refreshDraftStopsUI();
@@ -1726,8 +2132,7 @@
           document.getElementById("mgrDriverName").value = "";
           document.getElementById("mgrPixAmount").value = "";
           renderSavedTripsList();
-          startMonitoringTrips();
-          showToast("Transporte criado com sucesso!");
+          showToast("Transporte criado e enviado para a TV!");
         } catch (err) {
           showToast("Erro de permissão no Firebase: " + (err.code || "acesso negado"), true);
         } finally {
@@ -1750,29 +2155,38 @@
         saved.forEach((item, idx) => {
           const driverUrl = `${baseUrl()}?id=${encodeURIComponent(item.tripId)}&motorista=1&chave=${encodeURIComponent(item.driverKey)}`;
           const clientUrl = `${baseUrl()}?id=${encodeURIComponent(item.tripId)}`;
+          const isFocusedOnTv = currentTvFocusedTripId === item.tripId;
 
           const card = document.createElement("div");
           card.className = "info-card";
+          if (isFocusedOnTv) card.style.borderColor = "#10b981";
+
           card.innerHTML = `
             <div class="info-flex" style="margin-bottom: 8px;">
               <div>
-                <strong>#${item.tripId}</strong>
+                <strong>#${item.tripId}</strong> ${isFocusedOnTv ? '<span style="color:#34d399; font-size:10px; font-weight:800;">• NA TV</span>' : ""}
                 <div style="font-size: 11px; color: var(--text-muted);">${item.vehicle}${item.driverName ? " • " + item.driverName : ""} (${item.stopsCount} parada(s))${item.pixAmount ? " • R$ " + item.pixAmount : ""}</div>
               </div>
-              <button type="button" class="btn btn-danger btn-xs" data-del="${idx}">✕</button>
+              <button type="button" class="btn btn-danger btn-xs" data-del="${idx}" title="Remover da lista e da TV">✕</button>
             </div>
             <div class="btn-grid" style="margin-top: 0;">
               <button type="button" class="btn btn-accent btn-sm" data-drv="1">📲 Link Motorista</button>
               <button type="button" class="btn btn-primary btn-sm" data-cli="1">📲 Link Cliente</button>
             </div>
             <div class="btn-grid-3">
+              <button type="button" class="btn ${isFocusedOnTv ? "btn-primary" : "btn-dark"} btn-xs" data-tvfocus="1">
+                📺 ${isFocusedOnTv ? "Na TV" : "Focar TV"}
+              </button>
               <button type="button" class="btn btn-dark btn-xs" data-chat="1">
                 💬 Chat <span id="mgrChatBadge_${item.tripId}" class="unread-pill hidden">0</span>
               </button>
-              <a href="${driverUrl}" target="_blank" class="btn btn-dark btn-xs">🚚 Motorista</a>
               <a href="${clientUrl}" target="_blank" class="btn btn-dark btn-xs">👁️ Mapa</a>
             </div>
           `;
+
+          card.querySelector("[data-tvfocus]").addEventListener("click", () => {
+            setTvRemoteFocus(isFocusedOnTv ? null : item.tripId);
+          });
 
           card.querySelector("[data-chat]").addEventListener("click", () => {
             openChatForTrip(item.tripId, "Gestor", "Gestor (Central)", [
@@ -1790,10 +2204,19 @@
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
           });
 
-          card.querySelector("[data-del]").addEventListener("click", () => {
+          card.querySelector("[data-del]").addEventListener("click", async () => {
             saved.splice(idx, 1);
             localStorage.setItem("fc_saved_trips", JSON.stringify(saved));
             renderSavedTripsList();
+            if (adminPassHash) {
+              const conn = await connectFirebase();
+              if (conn) {
+                conn.remove(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos/${item.tripId}`)).catch(() => {});
+                if (currentTvFocusedTripId === item.tripId) {
+                  setTvRemoteFocus(null);
+                }
+              }
+            }
           });
 
           list.appendChild(card);
@@ -1802,7 +2225,421 @@
     }
 
     // =========================================================================
-    // 2. MODO MOTORISTA
+    // 2. MODO CENTRAL TV (HORIZONTAL WIDESCREEN + SINCRONIA REMOTA)
+    // =========================================================================
+    if (isTvMode) {
+      updateStatusBadge("live", "Central TV");
+
+      let tvPassHash = "";
+      let tvTripsMap = {};     // tripId -> summary
+      let tvTripInfos = {};    // tripId -> info (stops, vehicle, driverName)
+      let tvTripLive = {};     // tripId -> latest update (lat, lng, status, currentStop, sosAt)
+      let tvTripChats = {};    // tripId -> array of chat messages
+      let tvMarkers = {};      // tripId -> L.Marker
+      let focusedTripId = null;
+      let tvInitialOverviewFit = false;
+      let tvLastFocusedRouteTrip = null;
+      const subscribedTvTrips = new Set();
+
+      document.getElementById("btnTvSoundEnable").addEventListener("click", () => {
+        getSoundCtx();
+        playChatNotificationSound();
+        updateTvSoundButtonState();
+        showToast("🔊 Alertas sonoros ativados na TV!");
+      });
+
+      document.getElementById("btnTvFullscreen").addEventListener("click", () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      });
+
+      document.getElementById("btnTvLogout").addEventListener("click", () => {
+        localStorage.removeItem("fc_admin_pass");
+        tvPassHash = "";
+        document.getElementById("tvMainContent").classList.add("hidden");
+        document.getElementById("tvLoginBox").classList.remove("hidden");
+      });
+
+      document.getElementById("btnTvOverviewLocal").addEventListener("click", async () => {
+        setTvFocusedTrip(null);
+        if (tvPassHash) {
+          const conn = await connectFirebase();
+          if (conn) {
+            conn.set(conn.ref(conn.db, `gestor_privado/${tvPassHash}/tv_control`), {
+              focusedTripId: null,
+              updatedAt: Date.now()
+            }).catch(() => {});
+          }
+        }
+      });
+
+      document.getElementById("btnTvOpenFullChat").addEventListener("click", () => {
+        if (!focusedTripId) return;
+        openChatForTrip(focusedTripId, "Gestor", "Central TV (Gestor)", [
+          document.getElementById(`tvChatBadge_${focusedTripId}`)
+        ]);
+      });
+
+      onSosLocateCallback = (tripItem) => {
+        setTvFocusedTrip(tripItem.tripId);
+      };
+
+      function setTvFocusedTrip(tripIdOrNull) {
+        focusedTripId = tripIdOrNull && tvTripsMap[tripIdOrNull] ? tripIdOrNull : null;
+        tvLastFocusedRouteTrip = null;
+        autoFollow = true;
+        document.getElementById("btnRecenter").classList.add("hidden");
+
+        if (focusedTripId) {
+          document.getElementById("tvModeLabel").textContent = `🎯 Tela Cheia: #${focusedTripId}`;
+          document.getElementById("btnTvOverviewLocal").classList.remove("hidden");
+          document.getElementById("tvFocusHud").classList.remove("hidden");
+          document.getElementById("btnTvOpenFullChat").classList.remove("hidden");
+          document.getElementById("tvChatHeaderTitle").textContent = `💬 Chat • #${focusedTripId}`;
+        } else {
+          document.getElementById("tvModeLabel").textContent = "🌐 Visão Geral (Todos ao Vivo)";
+          document.getElementById("btnTvOverviewLocal").classList.add("hidden");
+          document.getElementById("tvFocusHud").classList.add("hidden");
+          document.getElementById("btnTvOpenFullChat").classList.add("hidden");
+          document.getElementById("tvChatHeaderTitle").textContent = "💬 Mensagens Recentes";
+          if (routeLayer && map) {
+            map.removeLayer(routeLayer);
+            routeLayer = null;
+          }
+          stopMarkers.forEach((m) => map && map.removeLayer(m));
+          stopMarkers = [];
+        }
+
+        renderTvSidebarList();
+        renderTvChatFeed();
+        syncTvMapState(true);
+      }
+
+      function renderTvChatFeed() {
+        const feed = document.getElementById("tvChatFeed");
+        feed.innerHTML = "";
+
+        let messages = [];
+        if (focusedTripId) {
+          messages = (tvTripChats[focusedTripId] || []).map((m) => ({ ...m, tripId: focusedTripId }));
+        } else {
+          Object.keys(tvTripChats).forEach((tId) => {
+            if (!tvTripsMap[tId]) return;
+            (tvTripChats[tId] || []).forEach((m) => messages.push({ ...m, tripId: tId }));
+          });
+          messages.sort((a, b) => (a.ts || 0) - (b.ts || 0));
+        }
+
+        const recent = messages.slice(-20);
+        if (recent.length === 0) {
+          feed.innerHTML = `<div style="color: var(--text-muted); text-align: center; margin-top: 20px;">Nenhuma mensagem recente.</div>`;
+          return;
+        }
+
+        recent.forEach((m) => {
+          const item = document.createElement("div");
+          item.className = "tv-chat-bubble";
+          const roleCls =
+            m.role === "Gestor" ? "role-gestor" :
+            m.role === "Motorista" ? "role-motorista" : "role-cliente";
+          const timeStr = m.ts ? new Date(m.ts).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
+
+          item.innerHTML = `
+            <div style="display:flex; justify-content:space-between; font-size:10px; margin-bottom:2px;">
+              <span class="${roleCls}" style="font-weight:800;">${!focusedTripId ? `[#${m.tripId}] ` : ""}${m.sender || m.role}</span>
+              <span style="color:var(--text-muted);">${timeStr}</span>
+            </div>
+            <div style="color:var(--text);">${m.text || ""}</div>
+          `;
+          feed.appendChild(item);
+        });
+
+        feed.scrollTop = feed.scrollHeight;
+      }
+
+      function renderTvSidebarList() {
+        const container = document.getElementById("tvTripsList");
+        const tripIds = Object.keys(tvTripsMap).sort((a, b) => (tvTripsMap[b].createdAt || 0) - (tvTripsMap[a].createdAt || 0));
+        document.getElementById("tvActiveCountLabel").textContent = `${tripIds.length} transporte(s) ativo(s)`;
+
+        if (tripIds.length === 0) {
+          container.innerHTML = `
+            <div style="text-align:center; color:var(--text-muted); font-size:12px; padding:24px 10px;">
+              Nenhum transporte ativo no momento.<br><br>Crie um transporte no seu celular para ele aparecer aqui automaticamente.
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = "";
+        tripIds.forEach((tId) => {
+          const base = tvTripsMap[tId];
+          const info = tvTripInfos[tId] || base;
+          const live = tvTripLive[tId];
+          const isFocused = focusedTripId === tId;
+          const hasSos = live && live.sosAt && live.sosAt > parseInt(localStorage.getItem(`fc_ack_sos_${tId}`) || "0", 10);
+
+          let statusHtml = `<span style="color:#fbbf24; font-size:10px; font-weight:800;">● AGUARDANDO GPS</span>`;
+          if (hasSos) {
+            statusHtml = `<span style="color:#f87171; font-size:10px; font-weight:800;">🚨 SOS ATIVO</span>`;
+          } else if (live && live.status === "concluido") {
+            statusHtml = `<span style="color:#60a5fa; font-size:10px; font-weight:800;">✓ ENTREGUE</span>`;
+          } else if (live && live.lat && live.lng) {
+            const sec = Math.max(0, Math.floor((Date.now() - (live.updatedAt || Date.now())) / 1000));
+            statusHtml = `<span style="color:#34d399; font-size:10px; font-weight:800;">● AO VIVO (${sec < 5 ? "agora" : sec + "s"})</span>`;
+          }
+
+          const card = document.createElement("div");
+          card.className = `tv-trip-card ${isFocused ? "focused" : ""} ${hasSos ? "sos-card-item" : ""}`;
+          card.innerHTML = `
+            <div class="info-flex" style="margin-bottom:4px;">
+              <strong style="font-size:13px;">#${tId}</strong>
+              ${statusHtml}
+            </div>
+            <div style="font-size:12px; color:var(--text); font-weight:600;">
+              ${info.vehicle || "Utilitário"}${info.driverName ? " • " + info.driverName : ""}
+            </div>
+            <div class="info-flex" style="margin-top:8px;">
+              <span style="font-size:11px; color:var(--text-muted);">
+                ${isFocused ? "Exibindo em tela cheia" : "Toque para focar no mapa"}
+              </span>
+              <span id="tvChatBadge_${tId}" class="unread-pill hidden">0</span>
+            </div>
+          `;
+
+          card.addEventListener("click", () => {
+            setTvFocusedTrip(isFocused ? null : tId);
+          });
+
+          container.appendChild(card);
+        });
+      }
+
+      async function syncTvMapState(forceRoute = false) {
+        if (!map) return;
+        const activeIds = new Set(Object.keys(tvTripsMap));
+
+        // Remove marcadores de viagens removidas
+        Object.keys(tvMarkers).forEach((mId) => {
+          if (!activeIds.has(mId) || (focusedTripId && mId !== focusedTripId)) {
+            map.removeLayer(tvMarkers[mId]);
+            delete tvMarkers[mId];
+          }
+        });
+
+        // MODO FOCO EM TRANSPORTE ESPECÍFICO (TELA CHEIA)
+        if (focusedTripId && tvTripsMap[focusedTripId]) {
+          const info = tvTripInfos[focusedTripId] || tvTripsMap[focusedTripId];
+          const live = tvTripLive[focusedTripId];
+          const stops = info.stops || [];
+          const stopIdx = live && typeof live.currentStop === "number" ? live.currentStop : 0;
+
+          document.getElementById("tvHudVehicle").textContent =
+            `${info.vehicle || "Utilitário"}${info.driverName ? " • " + info.driverName : ""}`;
+
+          if (stops.length > 0) {
+            renderStopPins(stops, stopIdx);
+            const target = stops[Math.min(stopIdx, stops.length - 1)];
+            const isLast = stopIdx >= stops.length - 1;
+            document.getElementById("tvHudStop").textContent =
+              `${isLast ? "Destino Final" : `Parada ${stopIdx + 1}/${stops.length}`}: ${target.label}`;
+          } else {
+            document.getElementById("tvHudStop").textContent = "Rota livre sem paradas cadastradas";
+          }
+
+          if (!live || !live.lat || !live.lng) {
+            document.getElementById("tvHudCode").textContent = `#${focusedTripId} • AGUARDANDO GPS`;
+            document.getElementById("tvHudDist").textContent = "--";
+            document.getElementById("tvHudEta").textContent = "--";
+            document.getElementById("tvHudUpdated").textContent = "--";
+            if (stops.length > 0 && tvLastFocusedRouteTrip !== focusedTripId) {
+              map.fitBounds(L.latLngBounds(stops.map((s) => [s.lat, s.lng])), { padding: [90, 90] });
+              tvLastFocusedRouteTrip = focusedTripId;
+            }
+            return;
+          }
+
+          const isDone = live.status === "concluido";
+          document.getElementById("tvHudCode").textContent = `#${focusedTripId} • ${isDone ? "ENTREGUE" : "AO VIVO"}`;
+          const sec = Math.max(0, Math.floor((Date.now() - (live.updatedAt || Date.now())) / 1000));
+          document.getElementById("tvHudUpdated").textContent = sec < 5 ? "Agora" : `${sec}s`;
+
+          if (!tvMarkers[focusedTripId]) {
+            tvMarkers[focusedTripId] = L.marker([live.lat, live.lng], { icon: getTruckIcon(Boolean(live.sosAt)) }).addTo(map);
+          } else {
+            smoothMoveMarker(tvMarkers[focusedTripId], live.lat, live.lng);
+          }
+
+          const remainingStops = stops.slice(stopIdx);
+          if (!isDone && remainingStops.length > 0) {
+            const needForce = forceRoute || tvLastFocusedRouteTrip !== focusedTripId;
+            tvLastFocusedRouteTrip = focusedTripId;
+
+            if (needForce) {
+              const pts = [[live.lat, live.lng], ...remainingStops.map((s) => [s.lat, s.lng])];
+              map.fitBounds(L.latLngBounds(pts), { padding: [95, 95] });
+            } else if (autoFollow) {
+              map.panTo([live.lat, live.lng]);
+            }
+
+            const metrics = await drawStreetRoute(live.lat, live.lng, remainingStops, needForce);
+            if (metrics) {
+              const km = metrics.nextDistance / 1000;
+              document.getElementById("tvHudDist").textContent = km < 1 ? `${Math.round(metrics.nextDistance)} m` : `${km.toFixed(1)} km`;
+              const mins = Math.max(1, Math.round(metrics.nextDuration / 60));
+              document.getElementById("tvHudEta").textContent = mins > 60 ? `${Math.floor(mins / 60)}h ${mins % 60}m` : `${mins} min`;
+            }
+          } else {
+            if (tvLastFocusedRouteTrip !== focusedTripId || autoFollow) {
+              map.setView([live.lat, live.lng], 16);
+              tvLastFocusedRouteTrip = focusedTripId;
+            }
+            document.getElementById("tvHudDist").textContent = isDone ? "0 km" : "Em rota";
+            document.getElementById("tvHudEta").textContent = isDone ? "Chegou" : "Ao vivo";
+          }
+          return;
+        }
+
+        // MODO VISÃO GERAL (TODOS OS VEÍCULOS ATIVOS NO MAPA)
+        const allCoords = [];
+        Object.keys(tvTripsMap).forEach((tId) => {
+          const live = tvTripLive[tId];
+          const info = tvTripInfos[tId] || tvTripsMap[tId];
+          if (!live || !live.lat || !live.lng) return;
+
+          allCoords.push([live.lat, live.lng]);
+          const labelText = `#${tId}${info.driverName ? " • " + info.driverName : ""}`;
+
+          if (!tvMarkers[tId]) {
+            const m = L.marker([live.lat, live.lng], { icon: getTruckIcon(Boolean(live.sosAt)) }).addTo(map);
+            m.bindTooltip(labelText, { permanent: true, direction: "top", offset: [0, -24], className: "tv-truck-label" });
+            m.on("click", () => setTvFocusedTrip(tId));
+            tvMarkers[tId] = m;
+          } else {
+            smoothMoveMarker(tvMarkers[tId], live.lat, live.lng);
+          }
+        });
+
+        if (allCoords.length > 0 && !tvInitialOverviewFit) {
+          if (allCoords.length === 1) {
+            map.setView(allCoords[0], 15);
+          } else {
+            map.fitBounds(L.latLngBounds(allCoords), { padding: [90, 90] });
+          }
+          tvInitialOverviewFit = true;
+        }
+      }
+
+      setInterval(() => {
+        renderTvSidebarList();
+        if (focusedTripId && tvTripLive[focusedTripId]) {
+          const sec = Math.max(0, Math.floor((Date.now() - (tvTripLive[focusedTripId].updatedAt || Date.now())) / 1000));
+          document.getElementById("tvHudUpdated").textContent = sec < 5 ? "Agora" : `${sec}s`;
+        }
+      }, 2000);
+
+      function startTvRealtimeListeners(pass) {
+        tvPassHash = sha256Hex(pass);
+        document.getElementById("tvLoginBox").classList.add("hidden");
+        document.getElementById("tvMainContent").classList.remove("hidden");
+
+        connectFirebase().then((conn) => {
+          if (!conn) return;
+
+          // 1. Escuta comando remoto enviado pelo celular do Gestor
+          conn.onValue(conn.ref(conn.db, `gestor_privado/${tvPassHash}/tv_control`), (snap) => {
+            const ctrl = snap.val();
+            const targetId = ctrl && ctrl.focusedTripId ? ctrl.focusedTripId : null;
+            if (targetId !== focusedTripId) {
+              setTvFocusedTrip(targetId);
+            }
+          });
+
+          // 2. Escuta todos os transportes ativos cadastrados pelo Gestor
+          conn.onValue(conn.ref(conn.db, `gestor_privado/${tvPassHash}/ativos`), (snap) => {
+            tvTripsMap = snap.val() || {};
+            renderTvSidebarList();
+            syncTvMapState();
+
+            Object.keys(tvTripsMap).forEach((tId) => {
+              if (subscribedTvTrips.has(tId)) return;
+              subscribedTvTrips.add(tId);
+
+              // Info do transporte
+              conn.onValue(conn.ref(conn.db, `fretes/${tId}/info`), (iSnap) => {
+                if (iSnap.val()) {
+                  tvTripInfos[tId] = iSnap.val();
+                  renderTvSidebarList();
+                  if (focusedTripId === tId) syncTvMapState(true);
+                }
+              });
+
+              // GPS e SOS ao vivo
+              conn.onValue(conn.ref(conn.db, `fretes/${tId}/updates`), (uSnap) => {
+                const all = uSnap.val();
+                if (!all) return;
+                const keys = Object.keys(all);
+                const latest = all[keys[keys.length - 1]];
+                tvTripLive[tId] = latest;
+
+                if (latest && latest.sosAt) {
+                  const ackTs = parseInt(localStorage.getItem(`fc_ack_sos_${tId}`) || "0", 10);
+                  if (latest.sosAt > ackTs) {
+                    triggerSosAlertModal(tvTripsMap[tId] || { tripId: tId, vehicle: "Veículo" }, latest);
+                  }
+                }
+
+                renderTvSidebarList();
+                syncTvMapState();
+              });
+
+              // Chat ao vivo e som de notificação na TV
+              subscribeChatUnreadBadge(
+                tId,
+                "Gestor",
+                () => [document.getElementById(`tvChatBadge_${tId}`)],
+                (chatTripId, msgList) => {
+                  tvTripChats[chatTripId] = msgList;
+                  renderTvChatFeed();
+                }
+              );
+            });
+          });
+        });
+      }
+
+      const savedTvPass = localStorage.getItem("fc_admin_pass");
+      if (savedTvPass) {
+        verifyAdminPassword(savedTvPass).then((ok) => {
+          if (ok) startTvRealtimeListeners(savedTvPass);
+        });
+      }
+
+      document.getElementById("btnTvLogin").addEventListener("click", async () => {
+        const val = document.getElementById("tvPassInput").value.trim();
+        if (!val) return;
+        const btn = document.getElementById("btnTvLogin");
+        btn.disabled = true;
+        btn.textContent = "Conectando...";
+        const ok = await verifyAdminPassword(val);
+        btn.disabled = false;
+        btn.textContent = "Conectar Central TV";
+        if (!ok) {
+          showToast("Senha incorreta!", true);
+          return;
+        }
+        localStorage.setItem("fc_admin_pass", val);
+        getSoundCtx();
+        updateTvSoundButtonState();
+        startTvRealtimeListeners(val);
+      });
+    }
+
+    // =========================================================================
+    // 3. MODO MOTORISTA
     // =========================================================================
     if (isDriverMode) {
       document.getElementById("drvTripCode").textContent = "#" + tripParam;
@@ -1825,10 +2662,9 @@
       document.getElementById("btnDrvChatSetup").addEventListener("click", openDriverChat);
       document.getElementById("btnDrvChat").addEventListener("click", openDriverChat);
 
-      // Envia alerta SOS + mensagem urgente no chat antes de discar 190
       document.getElementById("btnDrvSos").addEventListener("click", async () => {
         updateStatusBadge("sos", "SOS 190");
-        showToast("🚨 Enviando alerta SOS ao Gestor...", true);
+        showToast("🚨 Enviando alerta SOS ao Gestor e à TV...", true);
 
         try {
           await publishDriverUpdate({ sosAt: Date.now() });
@@ -2008,7 +2844,7 @@
     }
 
     // =========================================================================
-    // 3. MODO CLIENTE
+    // 4. MODO CLIENTE
     // =========================================================================
     if (isClientMode) {
       document.getElementById("cliCode").textContent = "#" + tripParam;
