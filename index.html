@@ -10,8 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Leaflet -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
     :root {
@@ -36,22 +36,25 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
+      width: 100%;
+      height: 100%;
       background: var(--bg);
       color: var(--text);
-      height: 100dvh;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
     }
 
     .hidden { display: none !important; }
 
     #map {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
       z-index: 1;
-      background: #e2e8f0;
+      background: #cbd5e1;
     }
 
     /* Cabeçalho */
@@ -156,10 +159,24 @@
       backdrop-filter: blur(14px);
       border-top: 1px solid var(--border);
       border-radius: 22px 22px 0 0;
-      padding: 14px 16px 22px;
+      padding: 12px 16px 20px;
       box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
-      max-height: 76dvh;
+      max-height: 74dvh;
       overflow-y: auto;
+      transition: max-height 0.25s ease;
+    }
+
+    .bottom-sheet.minimized {
+      max-height: 62px;
+      overflow: hidden;
+    }
+
+    .sheet-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      cursor: pointer;
     }
 
     .sheet-handle {
@@ -167,7 +184,17 @@
       height: 4px;
       background: var(--surface-light);
       border-radius: 99px;
-      margin: 0 auto 12px;
+    }
+
+    .btn-toggle-sheet {
+      background: var(--surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     .section-header {
@@ -263,7 +290,6 @@
       margin-top: 8px;
     }
 
-    /* Lista de Paradas no Gestor */
     .stop-item {
       display: flex;
       align-items: center;
@@ -292,7 +318,6 @@
 
     .stop-badge.final { background: var(--danger); }
 
-    /* Marcadores no Mapa */
     .truck-marker {
       width: 44px;
       height: 44px;
@@ -322,7 +347,6 @@
     .pin-marker.final { background: #ef4444; }
     .pin-marker.done { background: #64748b; opacity: 0.75; }
 
-    /* Tela Preta OLED */
     #oledOverlay {
       position: fixed;
       inset: 0;
@@ -393,9 +417,9 @@
     </div>
   </header>
 
-  <!-- Botões Flutuantes (Tema Claro/Escuro + Centralizar) -->
+  <!-- Botões Flutuantes (Estilo do Mapa + Centralizar) -->
   <div class="floating-controls">
-    <button type="button" id="btnThemeToggle" class="float-btn">🌙 Escuro</button>
+    <button type="button" id="btnThemeToggle" class="float-btn">☀️ Claro</button>
     <button type="button" id="btnRecenter" class="float-btn hidden">🎯 Centralizar</button>
   </div>
 
@@ -405,9 +429,12 @@
   <!-- 1. INTERFACE DO GESTOR (VOCÊ)                             -->
   <!-- ========================================================= -->
   <section id="managerView" class="bottom-sheet hidden">
-    <div class="sheet-handle"></div>
+    <div class="sheet-top-row" data-toggle-sheet="managerView">
+      <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Gestor</span>
+      <div class="sheet-handle"></div>
+      <button type="button" class="btn-toggle-sheet">Minimizar</button>
+    </div>
 
-    <!-- Tela de Bloqueio por Senha Mestra -->
     <div id="managerLoginBox">
       <div class="section-header">
         <h2>🔒 Painel do Gestor</h2>
@@ -425,7 +452,6 @@
       <button type="button" id="btnAdminLogin" class="btn btn-primary">Desbloquear Painel</button>
     </div>
 
-    <!-- Painel Desbloqueado -->
     <div id="managerDashboard" class="hidden">
       <div class="section-header">
         <h2>📋 Novo Transporte</h2>
@@ -463,7 +489,7 @@
       </div>
 
       <div class="form-group">
-        <label>Paradas e Destino (busque o endereço ou toque no mapa)</label>
+        <label>Paradas e Destino (busque ou minimize e toque no mapa)</label>
         <div class="input-row">
           <input type="text" id="stopSearchInput" placeholder="Ex: Av. Paulista, 1000, São Paulo" />
           <button type="button" id="btnAddStopSearch" class="btn btn-dark btn-sm">+ Add</button>
@@ -475,7 +501,6 @@
         ✅ Criar Transporte e Gerar Links
       </button>
 
-      <!-- Lista de Transportes Criados -->
       <div id="activeTripsSection" class="hidden" style="margin-top: 16px; border-top: 1px solid var(--border); padding-top: 14px;">
         <div class="section-header">
           <h2>🚚 Transportes Gerados</h2>
@@ -486,10 +511,14 @@
   </section>
 
   <!-- ========================================================= -->
-  <!-- 2. INTERFACE DO MOTORISTA (PARCEIRO OU VOCÊ NA RUA)       -->
+  <!-- 2. INTERFACE DO MOTORISTA                                 -->
   <!-- ========================================================= -->
   <section id="driverView" class="bottom-sheet hidden">
-    <div class="sheet-handle"></div>
+    <div class="sheet-top-row" data-toggle-sheet="driverView">
+      <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Motorista</span>
+      <div class="sheet-handle"></div>
+      <button type="button" class="btn-toggle-sheet">Minimizar</button>
+    </div>
 
     <div class="info-card info-flex">
       <div>
@@ -538,10 +567,14 @@
   </section>
 
   <!-- ========================================================= -->
-  <!-- 3. INTERFACE DO CLIENTE (ACOMPANHAMENTO AO VIVO)          -->
+  <!-- 3. INTERFACE DO CLIENTE                                   -->
   <!-- ========================================================= -->
   <section id="clientView" class="bottom-sheet hidden">
-    <div class="sheet-handle"></div>
+    <div class="sheet-top-row" data-toggle-sheet="clientView">
+      <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Rastreio</span>
+      <div class="sheet-handle"></div>
+      <button type="button" class="btn-toggle-sheet">Minimizar</button>
+    </div>
 
     <div class="metrics-grid">
       <div class="metric-box">
@@ -589,9 +622,6 @@
   </div>
 
   <script>
-    // =========================================================================
-    // CONFIGURAÇÕES DO PROJETO
-    // =========================================================================
     const CONFIG = {
       empresa: "Fretes e Carretos",
       whatsapp: "5511981949225",
@@ -617,9 +647,16 @@
     if (isDriverMode) document.getElementById("driverView").classList.remove("hidden");
     if (isClientMode) document.getElementById("clientView").classList.remove("hidden");
 
-    // =========================================================================
-    // UTILITÁRIOS GERAIS
-    // =========================================================================
+    // Minimizar / Expandir painel inferior
+    document.querySelectorAll("[data-toggle-sheet]").forEach((row) => {
+      row.addEventListener("click", () => {
+        const sheet = document.getElementById(row.getAttribute("data-toggle-sheet"));
+        const btn = row.querySelector(".btn-toggle-sheet");
+        sheet.classList.toggle("minimized");
+        btn.textContent = sheet.classList.contains("minimized") ? "Expandir" : "Minimizar";
+      });
+    });
+
     function showToast(msg, isError = false) {
       const t = document.getElementById("toast");
       t.textContent = msg;
@@ -658,16 +695,34 @@
     }
 
     // =========================================================================
-    // MAPA CARTO POSITRON / DARK MATTER + ROTA REAL NAS RUAS (OSRM)
+    // MAPA COM FALLBACK AUTOMÁTICO E SELETOR DE 3 ESTILOS
     // =========================================================================
     let map = null, tileLayer = null, truckMarker = null, routeLayer = null;
     let stopMarkers = [], autoFollow = true, initialFitDone = false;
-    let isDarkTheme = localStorage.getItem("fc_map_theme") === "dark";
 
-    const TILES = {
-      light: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-      dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-    };
+    const MAP_STYLES = [
+      {
+        id: "light",
+        label: "☀️ Claro",
+        url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+        attr: "&copy; OpenStreetMap &copy; CARTO"
+      },
+      {
+        id: "dark",
+        label: "🌙 Escuro",
+        url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
+        attr: "&copy; OpenStreetMap &copy; CARTO"
+      },
+      {
+        id: "osm",
+        label: "🗺️ Padrão",
+        url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        attr: "&copy; OpenStreetMap"
+      }
+    ];
+
+    let styleIdx = parseInt(localStorage.getItem("fc_map_style_idx") || "0", 10);
+    if (isNaN(styleIdx) || styleIdx < 0 || styleIdx >= MAP_STYLES.length) styleIdx = 0;
 
     const truckIcon = typeof L !== "undefined" ? L.divIcon({
       className: "",
@@ -676,20 +731,38 @@
       iconAnchor: [22, 22]
     }) : null;
 
+    function applyMapStyle(idx, isFallback = false) {
+      if (!map) return;
+      styleIdx = idx;
+      localStorage.setItem("fc_map_style_idx", String(styleIdx));
+      const style = MAP_STYLES[styleIdx];
+      document.getElementById("btnThemeToggle").textContent = style.label;
+
+      if (tileLayer) map.removeLayer(tileLayer);
+
+      let fallbackTriggered = false;
+      tileLayer = L.tileLayer(style.url, {
+        attribution: style.attr,
+        maxZoom: 19
+      });
+
+      tileLayer.on("tileerror", () => {
+        if (!fallbackTriggered && style.id !== "osm") {
+          fallbackTriggered = true;
+          applyMapStyle(2, true);
+        }
+      });
+
+      tileLayer.addTo(map);
+      if (isFallback) showToast("Mapa alternativo ativado!");
+    }
+
     if (typeof L !== "undefined") {
       map = L.map("map", { zoomControl: false }).setView([-23.5505, -46.6333], 13);
-      tileLayer = L.tileLayer(isDarkTheme ? TILES.dark : TILES.light, {
-        attribution: "&copy; OpenStreetMap &copy; CARTO",
-        maxZoom: 19
-      }).addTo(map);
-
-      document.getElementById("btnThemeToggle").textContent = isDarkTheme ? "☀️ Claro" : "🌙 Escuro";
+      applyMapStyle(styleIdx);
 
       document.getElementById("btnThemeToggle").addEventListener("click", () => {
-        isDarkTheme = !isDarkTheme;
-        localStorage.setItem("fc_map_theme", isDarkTheme ? "dark" : "light");
-        tileLayer.setUrl(isDarkTheme ? TILES.dark : TILES.light);
-        document.getElementById("btnThemeToggle").textContent = isDarkTheme ? "☀️ Claro" : "🌙 Escuro";
+        applyMapStyle((styleIdx + 1) % MAP_STYLES.length);
       });
 
       map.on("dragstart", () => {
@@ -703,7 +776,14 @@
         if (truckMarker) map.setView(truckMarker.getLatLng(), 16);
       });
 
-      setTimeout(() => map.invalidateSize(), 200);
+      if (typeof ResizeObserver !== "undefined") {
+        new ResizeObserver(() => map.invalidateSize()).observe(document.getElementById("map"));
+      }
+      window.addEventListener("resize", () => map.invalidateSize());
+      setTimeout(() => map.invalidateSize(), 150);
+      setTimeout(() => map.invalidateSize(), 600);
+    } else {
+      showToast("Erro ao carregar biblioteca de mapas. Atualize a página.", true);
     }
 
     function smoothMoveMarker(marker, newLat, newLng) {
@@ -766,23 +846,18 @@
           const nextLeg = route.legs && route.legs[0] ? route.legs[0] : route;
           return {
             nextDistance: nextLeg.distance,
-            nextDuration: nextLeg.duration,
-            totalDistance: route.distance,
-            totalDuration: route.duration
+            nextDuration: nextLeg.duration
           };
         }
       } catch (_) {}
       return null;
     }
 
-    // =========================================================================
-    // ÁUDIO SILENCIOSO EM SEGUNDO PLANO (MANTÉM O GPS ATIVO NO ANDROID)
-    // =========================================================================
+    // Áudio silencioso em segundo plano
     let bgAudioEl = null;
     function startBackgroundAudioKeepAlive() {
       try {
         if (!bgAudioEl) {
-          // Gera 1 segundo de áudio WAV PCM silencioso em memória
           const sampleRate = 8000, numSamples = 8000;
           const buffer = new ArrayBuffer(44 + numSamples);
           const view = new DataView(buffer);
@@ -818,14 +893,10 @@
     }
 
     function stopBackgroundAudioKeepAlive() {
-      if (bgAudioEl) {
-        bgAudioEl.pause();
-      }
+      if (bgAudioEl) bgAudioEl.pause();
     }
 
-    // =========================================================================
-    // CONEXÃO FIREBASE
-    // =========================================================================
+    // Conexão Firebase
     let fb = null;
     async function connectFirebase() {
       if (fb) return fb;
@@ -860,9 +931,7 @@
         renderSavedTripsList();
       }
 
-      if (adminPassword) {
-        unlockManagerUI();
-      }
+      if (adminPassword) unlockManagerUI();
 
       document.getElementById("btnAdminLogin").addEventListener("click", () => {
         const val = document.getElementById("adminPassInput").value.trim();
@@ -907,7 +976,6 @@
         renderStopPins(draftStops, 0);
       }
 
-      // Adicionar parada tocando no mapa
       if (map) {
         map.on("click", (e) => {
           if (!adminPassword) return;
@@ -918,7 +986,6 @@
         });
       }
 
-      // Adicionar parada buscando endereço
       document.getElementById("btnAddStopSearch").addEventListener("click", async () => {
         const q = document.getElementById("stopSearchInput").value.trim();
         if (!q) return;
@@ -942,7 +1009,6 @@
         }
       });
 
-      // Criar transporte no Firebase
       document.getElementById("btnCreateTrip").addEventListener("click", async () => {
         const conn = await connectFirebase();
         if (!conn) return;
@@ -970,7 +1036,6 @@
         try {
           await conn.set(conn.ref(conn.db, "fretes/" + tripId), payload);
 
-          // Salva no histórico local do gestor para acesso rápido aos links
           const saved = JSON.parse(localStorage.getItem("fc_saved_trips") || "[]");
           saved.unshift({ tripId, driverKey, vehicle, driverName, stopsCount: draftStops.length, createdAt: Date.now() });
           localStorage.setItem("fc_saved_trips", JSON.stringify(saved.slice(0, 15)));
