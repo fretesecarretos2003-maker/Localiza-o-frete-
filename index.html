@@ -26,6 +26,7 @@
       --text-muted: #94a3b8;
       --border: rgba(255, 255, 255, 0.12);
       --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      --tv-sidebar-w: clamp(440px, 33vw, 540px);
     }
 
     * {
@@ -57,7 +58,7 @@
 
     /* Ajuste do mapa no Modo TV Horizontal */
     body.tv-mode #map {
-      right: 390px;
+      right: var(--tv-sidebar-w);
       width: auto;
     }
 
@@ -85,7 +86,11 @@
     }
 
     body.tv-mode .top-bar {
-      right: 406px;
+      top: 16px;
+      left: 16px;
+      right: calc(var(--tv-sidebar-w) + 18px);
+      padding: 14px 20px;
+      border-radius: 18px;
     }
 
     .brand { display: flex; align-items: center; gap: 10px; }
@@ -100,6 +105,11 @@
       font-size: 18px;
       flex-shrink: 0;
     }
+
+    body.tv-mode .brand { gap: 14px; }
+    body.tv-mode .brand-icon { width: 48px; height: 48px; font-size: 26px; border-radius: 13px; }
+    body.tv-mode .brand-info h1 { font-size: 20px; }
+    body.tv-mode .brand-info span { font-size: 15px; }
 
     .brand-info h1 { font-size: 14px; font-weight: 700; line-height: 1.2; }
     .brand-info span { font-size: 11px; color: var(--text-muted); }
@@ -116,6 +126,12 @@
       gap: 5px;
     }
 
+    body.tv-mode .badge {
+      padding: 8px 15px;
+      font-size: 14px;
+      gap: 8px;
+    }
+
     .badge-live { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
     .badge-wait { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
     .badge-done { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
@@ -128,6 +144,8 @@
       background: currentColor;
       animation: pulse 1.5s infinite;
     }
+
+    body.tv-mode .pulse-dot { width: 10px; height: 10px; }
 
     @keyframes pulse {
       0% { transform: scale(0.9); opacity: 1; }
@@ -147,7 +165,9 @@
     }
 
     body.tv-mode .floating-controls {
-      right: 406px;
+      top: 104px;
+      right: calc(var(--tv-sidebar-w) + 18px);
+      gap: 10px;
     }
 
     .float-btn {
@@ -160,6 +180,12 @@
       font-weight: 700;
       box-shadow: var(--shadow);
       cursor: pointer;
+    }
+
+    body.tv-mode .float-btn {
+      padding: 12px 16px;
+      font-size: 16px;
+      border-radius: 14px;
     }
 
     /* Painel Inferior Mobile */
@@ -392,14 +418,14 @@
     }
 
     /* ========================================================= */
-    /* ESTILOS EXCLUSIVOS DA CENTRAL TV (WIDESCREEN HORIZONTAL)  */
+    /* ESTILOS EXCLUSIVOS DA CENTRAL TV (OTIMIZADO P/ 43" A 3M)  */
     /* ========================================================= */
     #tvSidebar {
       position: fixed;
       top: 0;
       right: 0;
       bottom: 0;
-      width: 390px;
+      width: var(--tv-sidebar-w);
       z-index: 1200;
       background: #0b1120;
       border-left: 1px solid var(--border);
@@ -409,55 +435,134 @@
     }
 
     .tv-header {
-      padding: 14px 16px;
+      padding: 18px 20px;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 10px;
+    }
+
+    .tv-header-title {
+      font-size: 20px;
+      font-weight: 800;
+      display: block;
+    }
+
+    .tv-header-sub {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    body.tv-mode #tvSidebar .btn-xs {
+      padding: 9px 13px;
+      font-size: 14px;
+      border-radius: 10px;
+    }
+
+    .tv-login-box {
+      padding: 24px;
+    }
+
+    .tv-login-box h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .tv-login-box p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+
+    .tv-login-box input {
+      font-size: 18px;
+      padding: 14px 16px;
+    }
+
+    .tv-login-box .btn {
+      font-size: 18px;
+      padding: 15px;
     }
 
     .tv-mode-bar {
-      padding: 10px 14px;
-      background: rgba(59, 130, 246, 0.15);
+      padding: 13px 18px;
+      background: rgba(59, 130, 246, 0.16);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 12px;
+      font-size: 15px;
       gap: 8px;
     }
 
     .tv-trips-scroll {
       flex: 1;
       overflow-y: auto;
-      padding: 12px 14px;
+      padding: 14px 18px;
+    }
+
+    .tv-empty-msg {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.5;
+      padding: 28px 12px;
     }
 
     .tv-trip-card {
       background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 11px 12px;
-      margin-bottom: 9px;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 15px 16px;
+      margin-bottom: 12px;
       cursor: pointer;
       transition: border-color 0.2s, background 0.2s;
     }
 
     .tv-trip-card.focused {
       border-color: var(--primary);
-      background: rgba(16, 185, 129, 0.12);
+      background: rgba(16, 185, 129, 0.14);
     }
 
     .tv-trip-card.sos-card-item {
       border-color: #ef4444;
-      background: rgba(239, 68, 68, 0.18);
+      background: rgba(239, 68, 68, 0.22);
+    }
+
+    .tv-card-code {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .tv-card-status {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .tv-card-vehicle {
+      font-size: 16px;
+      color: var(--text);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .tv-card-hint {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    body.tv-mode .unread-pill {
+      font-size: 14px;
+      padding: 3px 9px;
     }
 
     .tv-chat-panel {
-      height: 36%;
-      min-height: 210px;
+      height: 39%;
+      min-height: 250px;
       border-top: 1px solid var(--border);
       background: #0f172a;
       display: flex;
@@ -465,11 +570,11 @@
     }
 
     .tv-chat-header {
-      padding: 8px 14px;
+      padding: 12px 18px;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 16px;
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -478,66 +583,109 @@
     .tv-chat-feed {
       flex: 1;
       overflow-y: auto;
-      padding: 10px 12px;
+      padding: 12px 16px;
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      font-size: 12px;
+      gap: 10px;
+      font-size: 16px;
+    }
+
+    .tv-chat-empty {
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 24px;
+      font-size: 15px;
     }
 
     .tv-chat-bubble {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 7px 10px;
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+
+    .tv-chat-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 4px;
+      gap: 8px;
+    }
+
+    .tv-chat-text {
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.4;
     }
 
     .tv-focus-hud {
       position: fixed;
-      bottom: 18px;
-      left: 18px;
-      right: 408px;
+      bottom: 20px;
+      left: 20px;
+      right: calc(var(--tv-sidebar-w) + 20px);
       z-index: 1000;
-      background: rgba(15, 23, 42, 0.94);
+      background: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(12px);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 14px 18px;
+      border-radius: 20px;
+      padding: 18px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 20px;
       box-shadow: var(--shadow);
+    }
+
+    .tv-hud-code {
+      font-size: 15px;
+      color: #34d399;
+      font-weight: 800;
+    }
+
+    .tv-hud-vehicle {
+      font-size: 24px;
+      font-weight: 800;
+      margin: 4px 0;
+    }
+
+    .tv-hud-stop {
+      font-size: 16px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .tv-hud-stats {
       display: flex;
-      gap: 18px;
+      gap: 26px;
       text-align: center;
+      flex-shrink: 0;
     }
 
     .tv-hud-stats div small {
       display: block;
-      font-size: 11px;
+      font-size: 14px;
       color: var(--text-muted);
+      margin-bottom: 2px;
     }
 
     .tv-hud-stats div strong {
-      font-size: 18px;
+      font-size: 28px;
       font-weight: 800;
       color: #34d399;
     }
 
     .tv-truck-label {
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15, 23, 42, 0.94);
       color: #fff;
-      border: 1px solid #10b981;
-      padding: 2px 7px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
+      border: 1.5px solid #10b981;
+      padding: 5px 11px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 800;
       white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
     }
 
     /* Modal de Emergência SOS (Tela do Gestor e TV) */
@@ -571,6 +719,23 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     }
 
+    .sos-icon { font-size: 42px; margin-bottom: 6px; }
+    .sos-title { color: #fca5a5; font-size: 19px; font-weight: 800; letter-spacing: 0.4px; }
+    .sos-desc { font-size: 13px; color: var(--text); margin-top: 8px; line-height: 1.45; }
+    .sos-coords { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+    body.tv-mode .sos-card {
+      max-width: 640px;
+      padding: 34px 30px;
+      border-width: 3px;
+    }
+
+    body.tv-mode .sos-icon { font-size: 64px; }
+    body.tv-mode .sos-title { font-size: 30px; }
+    body.tv-mode .sos-desc { font-size: 20px; margin-top: 14px; }
+    body.tv-mode .sos-coords { font-size: 16px; margin-top: 10px; }
+    body.tv-mode .sos-card .btn { font-size: 18px; padding: 16px; }
+
     /* Modal de Chat ao Vivo */
     #chatModal {
       position: fixed;
@@ -588,9 +753,16 @@
       border-top: 1px solid var(--border);
       border-radius: 22px 22px 0 0;
       height: 82dvh;
+      width: 100%;
       display: flex;
       flex-direction: column;
       overflow: hidden;
+    }
+
+    body.tv-mode .chat-container {
+      max-width: 780px;
+      margin: 0 auto;
+      height: 86dvh;
     }
 
     .chat-header {
@@ -601,6 +773,11 @@
       align-items: center;
       justify-content: space-between;
     }
+
+    body.tv-mode .chat-header { padding: 18px 22px; }
+    body.tv-mode .chat-header strong { font-size: 21px !important; }
+    body.tv-mode #chatSub { font-size: 15px !important; }
+    body.tv-mode #btnCloseChat { font-size: 16px; padding: 10px 16px; }
 
     .chat-messages {
       flex: 1;
@@ -622,6 +799,11 @@
       align-self: flex-start;
     }
 
+    body.tv-mode .chat-msg {
+      font-size: 18px;
+      padding: 13px 16px;
+    }
+
     .chat-msg.mine {
       align-self: flex-end;
       background: rgba(16, 185, 129, 0.2);
@@ -637,6 +819,8 @@
       gap: 6px;
     }
 
+    body.tv-mode .chat-meta { font-size: 14px; margin-bottom: 5px; }
+
     .role-gestor { color: #fbbf24; }
     .role-motorista { color: #38bdf8; }
     .role-cliente { color: #34d399; }
@@ -649,6 +833,10 @@
       gap: 8px;
     }
 
+    body.tv-mode .chat-input-bar { padding: 16px 20px 22px; gap: 12px; }
+    body.tv-mode .chat-input-bar input { font-size: 18px; padding: 14px 16px; }
+    body.tv-mode .chat-input-bar .btn { font-size: 18px; padding: 14px 22px; }
+
     /* Marcadores no Mapa */
     .truck-marker {
       width: 44px;
@@ -660,6 +848,13 @@
       place-items: center;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.45);
       font-size: 20px;
+    }
+
+    body.tv-mode .truck-marker {
+      width: 58px;
+      height: 58px;
+      border-width: 4px;
+      font-size: 28px;
     }
 
     .truck-marker.sos {
@@ -679,6 +874,13 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       font-size: 13px;
       font-weight: 800;
+    }
+
+    body.tv-mode .pin-marker {
+      width: 44px;
+      height: 44px;
+      border-width: 3px;
+      font-size: 18px;
     }
 
     .pin-marker.final { background: #ef4444; }
@@ -734,7 +936,10 @@
     }
 
     body.tv-mode #toast {
-      left: calc(50% - 195px);
+      top: 104px;
+      left: calc(50% - (var(--tv-sidebar-w) / 2));
+      font-size: 17px;
+      padding: 13px 24px;
     }
 
     #toast.show { opacity: 1; }
@@ -883,19 +1088,19 @@
   <aside id="tvSidebar" class="hidden">
     <div class="tv-header">
       <div>
-        <strong style="font-size: 14px;">📺 Central TV • Gestor</strong>
-        <div style="font-size: 11px; color: var(--text-muted);" id="tvActiveCountLabel">0 transportes ativos</div>
+        <strong class="tv-header-title">📺 Central TV</strong>
+        <div class="tv-header-sub" id="tvActiveCountLabel">0 transportes ativos</div>
       </div>
-      <div style="display:flex; gap:5px;">
-        <button type="button" id="btnTvSoundEnable" class="btn btn-warning btn-xs">🔇 Ativar Som</button>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">
+        <button type="button" id="btnTvSoundEnable" class="btn btn-warning btn-xs">🔇 Som</button>
         <button type="button" id="btnTvFullscreen" class="btn btn-dark btn-xs" title="Tela Cheia">⛶</button>
         <button type="button" id="btnTvLogout" class="btn btn-dark btn-xs" title="Sair">🔒</button>
       </div>
     </div>
 
-    <div id="tvLoginBox" style="padding: 18px;">
-      <h3 style="font-size: 15px; margin-bottom: 8px;">🔒 Acesso da Central TV</h3>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+    <div id="tvLoginBox" class="tv-login-box">
+      <h3>🔒 Acesso da Central TV</h3>
+      <p>
         Digite a senha do gestor para sincronizar os transportes ao vivo com seu celular.
       </p>
       <div class="form-group">
@@ -906,8 +1111,8 @@
 
     <div id="tvMainContent" class="hidden" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
       <div class="tv-mode-bar">
-        <span id="tvModeLabel" style="font-weight: 700; color: #93c5fd;">🌐 Visão Geral (Todos)</span>
-        <div style="display:flex; gap:5px;">
+        <span id="tvModeLabel" style="font-weight: 800; color: #93c5fd;">🌐 Visão Geral (Todos)</span>
+        <div style="display:flex; gap:6px;">
           <button type="button" id="btnTvFitAll" class="btn btn-dark btn-xs">🗺️ Enquadrar</button>
           <button type="button" id="btnTvOverviewLocal" class="btn btn-dark btn-xs hidden">Ver Todos</button>
         </div>
@@ -921,7 +1126,7 @@
           <button type="button" id="btnTvOpenFullChat" class="btn btn-dark btn-xs hidden">Responder</button>
         </div>
         <div id="tvChatFeed" class="tv-chat-feed">
-          <div style="color: var(--text-muted); text-align: center; margin-top: 20px;">
+          <div class="tv-chat-empty">
             As mensagens do chat aparecerão aqui automaticamente.
           </div>
         </div>
@@ -932,9 +1137,9 @@
   <!-- HUD Inferior na TV quando um transporte está em Foco Tela Cheia -->
   <div id="tvFocusHud" class="tv-focus-hud hidden">
     <div style="min-width: 0; flex: 1;">
-      <div style="font-size: 11px; color: #34d399; font-weight: 800;" id="tvHudCode">#0000 • AO VIVO</div>
-      <div style="font-size: 16px; font-weight: 800; margin: 2px 0;" id="tvHudVehicle">--</div>
-      <div style="font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="tvHudStop">Aguardando rota...</div>
+      <div class="tv-hud-code" id="tvHudCode">#0000 • AO VIVO</div>
+      <div class="tv-hud-vehicle" id="tvHudVehicle">--</div>
+      <div class="tv-hud-stop" id="tvHudStop">Aguardando rota...</div>
     </div>
     <div class="tv-hud-stats">
       <div>
@@ -1088,17 +1293,17 @@
   <!-- ========================================================= -->
   <div id="sosAlertModal" class="hidden">
     <div class="sos-card">
-      <div style="font-size: 42px; margin-bottom: 6px;">🚨</div>
-      <h2 style="color: #fca5a5; font-size: 19px; font-weight: 800; letter-spacing: 0.4px;">ALERTA SOS ACIONADO!</h2>
-      <p id="sosAlertDesc" style="font-size: 13px; color: var(--text); margin-top: 8px; line-height: 1.45;">--</p>
-      <p id="sosAlertCoords" style="font-size: 11px; color: var(--text-muted); margin-top: 6px;"></p>
+      <div class="sos-icon">🚨</div>
+      <h2 class="sos-title">ALERTA SOS ACIONADO!</h2>
+      <p id="sosAlertDesc" class="sos-desc">--</p>
+      <p id="sosAlertCoords" class="sos-coords"></p>
 
-      <div class="btn-grid" style="margin-top: 14px;">
+      <div class="btn-grid" style="margin-top: 16px;">
         <button type="button" id="btnSosLocateMap" class="btn btn-accent btn-sm">📍 Ver no Mapa</button>
         <button type="button" id="btnSosOpenChat" class="btn btn-dark btn-sm">💬 Abrir Chat</button>
       </div>
 
-      <button type="button" id="btnSosAcknowledge" class="btn btn-primary" style="margin-top: 10px;">
+      <button type="button" id="btnSosAcknowledge" class="btn btn-primary" style="margin-top: 12px;">
         🔇 Silenciar Alarme (Ciente)
       </button>
     </div>
@@ -1453,11 +1658,13 @@
     });
 
     function getTruckIcon(isSos = false) {
+      const sz = isTvMode ? 58 : 44;
+      const half = sz / 2;
       return L.divIcon({
         className: "",
         html: `<div class="truck-marker ${isSos ? "sos" : ""}">🚚</div>`,
-        iconSize: [44, 44],
-        iconAnchor: [22, 22]
+        iconSize: [sz, sz],
+        iconAnchor: [half, half]
       });
     }
 
@@ -1522,6 +1729,9 @@
       stopMarkers.forEach((m) => map.removeLayer(m));
       stopMarkers = [];
 
+      const sz = isTvMode ? 44 : 32;
+      const half = sz / 2;
+
       stops.forEach((st, idx) => {
         const isLast = idx === stops.length - 1;
         const isDone = idx < currentStopIdx;
@@ -1530,8 +1740,8 @@
         const icon = L.divIcon({
           className: "",
           html: `<div class="${cls}">${label}</div>`,
-          iconSize: [32, 32],
-          iconAnchor: [16, 16]
+          iconSize: [sz, sz],
+          iconAnchor: [half, half]
         });
         const m = L.marker([st.lat, st.lng], { icon }).addTo(map);
         if (st.label) m.bindPopup(`<strong>${isLast ? "Destino Final" : "Parada " + (idx + 1)}</strong><br>${st.label}`);
@@ -1559,7 +1769,7 @@
           const route = json.routes[0];
           if (routeLayer) map.removeLayer(routeLayer);
           routeLayer = L.geoJSON(route.geometry, {
-            style: { color: "#10b981", weight: 5, opacity: 0.9 }
+            style: { color: "#10b981", weight: isTvMode ? 7 : 5, opacity: 0.9 }
           }).addTo(map);
 
           const nextLeg = route.legs && route.legs[0] ? route.legs[0] : route;
@@ -1666,7 +1876,7 @@
       const list = messagesObj ? Object.values(messagesObj) : [];
 
       if (list.length === 0) {
-        box.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:12px; margin-top:24px;">Nenhuma mensagem ainda. Inicie a conversa abaixo.</div>`;
+        box.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:${isTvMode ? "17px" : "12px"}; margin-top:24px;">Nenhuma mensagem ainda. Inicie a conversa abaixo.</div>`;
         return;
       }
 
@@ -1942,7 +2152,6 @@
         connectFirebase().then((conn) => {
           if (!conn) return;
 
-          // Escuta o estado atual da TV
           conn.onValue(conn.ref(conn.db, `gestor_privado/${adminPassHash}/tv_control`), (snap) => {
             const ctrl = snap.val();
             currentTvFocusedTripId = ctrl && ctrl.focusedTripId ? ctrl.focusedTripId : null;
@@ -1952,7 +2161,6 @@
             renderSavedTripsList();
           });
 
-          // Sincroniza lista de fretes ativos como fonte única da verdade (sem duplicatas)
           conn.onValue(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos`), (snap) => {
             const cloudObj = snap.val() || {};
             const deduplicated = deduplicateTripsList(Object.values(cloudObj));
@@ -2138,7 +2346,6 @@
             createdAt: Date.now()
           });
 
-          // Grava na nuvem; o listener onValue atualiza managerTripsList sem duplicar
           await conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos/${tripId}`), tripSummary);
 
           draftStops = [];
@@ -2252,11 +2459,11 @@
       updateStatusBadge("live", "Central TV");
 
       let tvPassHash = "";
-      let tvTripsMap = {};     // tripId -> summary
-      let tvTripInfos = {};    // tripId -> info (stops, vehicle, driverName)
-      let tvTripLive = {};     // tripId -> latest update (lat, lng, status, currentStop, sosAt)
-      let tvTripChats = {};    // tripId -> array of chat messages
-      let tvMarkers = {};      // tripId -> L.Marker
+      let tvTripsMap = {};
+      let tvTripInfos = {};
+      let tvTripLive = {};
+      let tvTripChats = {};
+      let tvMarkers = {};
       let focusedTripId = null;
       let tvUserDraggedOverview = false;
       let tvLastOverviewCount = 0;
@@ -2330,17 +2537,17 @@
         document.getElementById("btnRecenter").classList.add("hidden");
 
         if (focusedTripId) {
-          document.getElementById("tvModeLabel").textContent = `🎯 Tela Cheia: #${focusedTripId}`;
+          document.getElementById("tvModeLabel").textContent = `🎯 Foco: #${focusedTripId}`;
           document.getElementById("btnTvOverviewLocal").classList.remove("hidden");
           document.getElementById("tvFocusHud").classList.remove("hidden");
           document.getElementById("btnTvOpenFullChat").classList.remove("hidden");
           document.getElementById("tvChatHeaderTitle").textContent = `💬 Chat • #${focusedTripId}`;
         } else {
-          document.getElementById("tvModeLabel").textContent = "🌐 Visão Geral (Todos ao Vivo)";
+          document.getElementById("tvModeLabel").textContent = "🌐 Visão Geral (Todos)";
           document.getElementById("btnTvOverviewLocal").classList.add("hidden");
           document.getElementById("tvFocusHud").classList.add("hidden");
           document.getElementById("btnTvOpenFullChat").classList.add("hidden");
-          document.getElementById("tvChatHeaderTitle").textContent = "💬 Mensagens Recentes";
+          document.getElementById("tvChatHeaderTitle").textContent = "💬 Mensagens ao Vivo";
           if (routeLayer && map) {
             map.removeLayer(routeLayer);
             routeLayer = null;
@@ -2371,7 +2578,7 @@
 
         const recent = messages.slice(-20);
         if (recent.length === 0) {
-          feed.innerHTML = `<div style="color: var(--text-muted); text-align: center; margin-top: 20px;">Nenhuma mensagem recente.</div>`;
+          feed.innerHTML = `<div class="tv-chat-empty">Nenhuma mensagem recente.</div>`;
           return;
         }
 
@@ -2384,11 +2591,11 @@
           const timeStr = m.ts ? new Date(m.ts).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "";
 
           item.innerHTML = `
-            <div style="display:flex; justify-content:space-between; font-size:10px; margin-bottom:2px;">
+            <div class="tv-chat-meta">
               <span class="${roleCls}" style="font-weight:800;">${!focusedTripId ? `[#${m.tripId}] ` : ""}${m.sender || m.role}</span>
               <span style="color:var(--text-muted);">${timeStr}</span>
             </div>
-            <div style="color:var(--text);">${m.text || ""}</div>
+            <div class="tv-chat-text">${m.text || ""}</div>
           `;
           feed.appendChild(item);
         });
@@ -2403,7 +2610,7 @@
 
         if (tripIds.length === 0) {
           container.innerHTML = `
-            <div style="text-align:center; color:var(--text-muted); font-size:12px; padding:24px 10px;">
+            <div class="tv-empty-msg">
               Nenhum transporte ativo no momento.<br><br>Crie um transporte no seu celular para ele aparecer aqui automaticamente.
             </div>
           `;
@@ -2418,28 +2625,28 @@
           const isFocused = focusedTripId === tId;
           const hasSos = live && live.sosAt && live.sosAt > parseInt(localStorage.getItem(`fc_ack_sos_${tId}`) || "0", 10);
 
-          let statusHtml = `<span style="color:#fbbf24; font-size:10px; font-weight:800;">● AGUARDANDO GPS</span>`;
+          let statusHtml = `<span class="tv-card-status" style="color:#fbbf24;">● AGUARDANDO GPS</span>`;
           if (hasSos) {
-            statusHtml = `<span style="color:#f87171; font-size:10px; font-weight:800;">🚨 SOS ATIVO</span>`;
+            statusHtml = `<span class="tv-card-status" style="color:#f87171;">🚨 SOS ATIVO</span>`;
           } else if (live && live.status === "concluido") {
-            statusHtml = `<span style="color:#60a5fa; font-size:10px; font-weight:800;">✓ ENTREGUE</span>`;
+            statusHtml = `<span class="tv-card-status" style="color:#60a5fa;">✓ ENTREGUE</span>`;
           } else if (live && live.lat && live.lng) {
             const sec = Math.max(0, Math.floor((Date.now() - (live.updatedAt || Date.now())) / 1000));
-            statusHtml = `<span style="color:#34d399; font-size:10px; font-weight:800;">● AO VIVO (${sec < 5 ? "agora" : sec + "s"})</span>`;
+            statusHtml = `<span class="tv-card-status" style="color:#34d399;">● AO VIVO (${sec < 5 ? "agora" : sec + "s"})</span>`;
           }
 
           const card = document.createElement("div");
           card.className = `tv-trip-card ${isFocused ? "focused" : ""} ${hasSos ? "sos-card-item" : ""}`;
           card.innerHTML = `
-            <div class="info-flex" style="margin-bottom:4px;">
-              <strong style="font-size:13px;">#${tId}</strong>
+            <div class="info-flex">
+              <strong class="tv-card-code">#${tId}</strong>
               ${statusHtml}
             </div>
-            <div style="font-size:12px; color:var(--text); font-weight:600;">
+            <div class="tv-card-vehicle">
               ${info.vehicle || "Utilitário"}${info.driverName ? " • " + info.driverName : ""}
             </div>
-            <div class="info-flex" style="margin-top:8px;">
-              <span style="font-size:11px; color:var(--text-muted);">
+            <div class="info-flex" style="margin-top:10px;">
+              <span class="tv-card-hint">
                 ${isFocused ? "Exibindo em tela cheia" : "Clique para focar no mapa"}
               </span>
               <span id="tvChatBadge_${tId}" class="unread-pill hidden">0</span>
@@ -2458,7 +2665,6 @@
         if (!map) return;
         const activeIds = new Set(Object.keys(tvTripsMap));
 
-        // Remove marcadores de viagens encerradas ou fora do foco
         Object.keys(tvMarkers).forEach((mId) => {
           if (!activeIds.has(mId) || (focusedTripId && mId !== focusedTripId)) {
             map.removeLayer(tvMarkers[mId]);
@@ -2492,7 +2698,7 @@
             document.getElementById("tvHudEta").textContent = "--";
             document.getElementById("tvHudUpdated").textContent = "--";
             if (stops.length > 0 && tvLastFocusedRouteTrip !== focusedTripId) {
-              map.fitBounds(L.latLngBounds(stops.map((s) => [s.lat, s.lng])), { padding: [90, 90] });
+              map.fitBounds(L.latLngBounds(stops.map((s) => [s.lat, s.lng])), { padding: [110, 110] });
               tvLastFocusedRouteTrip = focusedTripId;
             }
             return;
@@ -2516,7 +2722,7 @@
 
             if (needForce) {
               const pts = [[live.lat, live.lng], ...remainingStops.map((s) => [s.lat, s.lng])];
-              map.fitBounds(L.latLngBounds(pts), { padding: [95, 95] });
+              map.fitBounds(L.latLngBounds(pts), { padding: [110, 110] });
             } else if (autoFollow) {
               map.panTo([live.lat, live.lng]);
             }
@@ -2547,7 +2753,6 @@
           const stops = info.stops || [];
           const labelText = `#${tId}${info.driverName ? " • " + info.driverName : ""}`;
 
-          // Usa GPS ao vivo se já iniciou, ou a primeira parada cadastrada como referência visual
           let lat = null, lng = null, isPendingGps = false;
           if (live && live.lat && live.lng) {
             lat = live.lat;
@@ -2564,7 +2769,7 @@
           const badgeLabel = isPendingGps ? `${labelText} (Aguardando)` : labelText;
           if (!tvMarkers[tId]) {
             const m = L.marker([lat, lng], { icon: getTruckIcon(Boolean(live && live.sosAt)) }).addTo(map);
-            m.bindTooltip(badgeLabel, { permanent: true, direction: "top", offset: [0, -24], className: "tv-truck-label" });
+            m.bindTooltip(badgeLabel, { permanent: true, direction: "top", offset: [0, -32], className: "tv-truck-label" });
             m.on("click", () => setTvFocusedTrip(tId));
             tvMarkers[tId] = m;
           } else {
@@ -2579,7 +2784,7 @@
             if (allCoords.length === 1) {
               map.setView(allCoords[0], 15);
             } else {
-              map.fitBounds(L.latLngBounds(allCoords), { padding: [95, 95] });
+              map.fitBounds(L.latLngBounds(allCoords), { padding: [110, 110] });
             }
           }
         }
@@ -2601,7 +2806,6 @@
         connectFirebase().then((conn) => {
           if (!conn) return;
 
-          // 1. Escuta comando remoto enviado pelo celular do Gestor
           conn.onValue(conn.ref(conn.db, `gestor_privado/${tvPassHash}/tv_control`), (snap) => {
             const ctrl = snap.val();
             const targetId = ctrl && ctrl.focusedTripId ? ctrl.focusedTripId : null;
@@ -2610,7 +2814,6 @@
             }
           });
 
-          // 2. Escuta todos os transportes ativos cadastrados pelo Gestor
           conn.onValue(conn.ref(conn.db, `gestor_privado/${tvPassHash}/ativos`), (snap) => {
             tvTripsMap = snap.val() || {};
             renderTvSidebarList();
