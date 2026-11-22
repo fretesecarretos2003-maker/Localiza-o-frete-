@@ -893,7 +893,6 @@
       </div>
     </div>
 
-    <!-- Login na TV (caso ainda não tenha senha salva) -->
     <div id="tvLoginBox" style="padding: 18px;">
       <h3 style="font-size: 15px; margin-bottom: 8px;">🔒 Acesso da Central TV</h3>
       <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
@@ -905,16 +904,17 @@
       <button type="button" id="btnTvLogin" class="btn btn-primary">Conectar Central TV</button>
     </div>
 
-    <!-- Conteúdo Principal da TV -->
     <div id="tvMainContent" class="hidden" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
       <div class="tv-mode-bar">
         <span id="tvModeLabel" style="font-weight: 700; color: #93c5fd;">🌐 Visão Geral (Todos)</span>
-        <button type="button" id="btnTvOverviewLocal" class="btn btn-dark btn-xs hidden">Ver Todos</button>
+        <div style="display:flex; gap:5px;">
+          <button type="button" id="btnTvFitAll" class="btn btn-dark btn-xs">🗺️ Enquadrar</button>
+          <button type="button" id="btnTvOverviewLocal" class="btn btn-dark btn-xs hidden">Ver Todos</button>
+        </div>
       </div>
 
       <div id="tvTripsList" class="tv-trips-scroll"></div>
 
-      <!-- Painel de Chat ao Vivo na TV -->
       <div class="tv-chat-panel">
         <div class="tv-chat-header">
           <span id="tvChatHeaderTitle">💬 Mensagens ao Vivo</span>
@@ -1197,9 +1197,20 @@
     function generateUniqueTripId() {
       const d = new Date();
       const pad = (n) => String(n).padStart(2, "0");
-      const stamp = `${pad(d.getDate())}${pad(d.getMonth() + 1)}-${pad(d.getHours())}${pad(d.getMinutes())}`;
+      const stamp = `${pad(d.getDate())}${pad(d.getMonth() + 1)}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
       const rand = Math.random().toString(36).substring(2, 6).toUpperCase();
       return `${stamp}-${rand}`;
+    }
+
+    function deduplicateTripsList(list) {
+      const seen = new Set();
+      const result = [];
+      (list || []).forEach((item) => {
+        if (!item || !item.tripId || seen.has(item.tripId)) return;
+        seen.add(item.tripId);
+        result.push(item);
+      });
+      return result.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
     }
 
     function haversineMeters(lat1, lon1, lat2, lon2) {
@@ -1867,14 +1878,16 @@
     });
 
     // =========================================================================
-    // 1. MODO GESTOR (CELULAR — CONTROLA OS FRETES E A TV)
+    // 1. MODO GESTOR (CELULAR — GESTOR E MOTORISTA + CONTROLE DA TV)
     // =========================================================================
     if (isManagerMode) {
       let adminPassword = "";
       let adminPassHash = "";
       let isAdminAuthenticated = false;
+      let isCreatingTrip = false;
       let draftStops = [];
       let currentTvFocusedTripId = null;
+      let managerTripsList = deduplicateTripsList(JSON.parse(localStorage.getItem("fc_saved_trips") || "[]"));
       const monitoredTripIds = new Set();
 
       document.getElementById("btnCopyTvLink").addEventListener("click", () => {
@@ -1902,6 +1915,28 @@
         setTvRemoteFocus(null);
       });
 
+      function attachTripListeners(item, conn) {
+        if (!item || !item.tripId || monitoredTripIds.has(item.tripId)) return;
+        monitoredTripIds.add(item.tripId);
+
+        conn.onValue(conn.ref(conn.db, `fretes/${item.tripId}/updates`), (uSnap) => {
+          const all = uSnap.val();
+          if (!all) return;
+          const keys = Object.keys(all);
+          const latest = all[keys[keys.length - 1]];
+          if (latest && latest.sosAt) {
+            const ackTs = parseInt(localStorage.getItem(`fc_ack_sos_${item.tripId}`) || "0", 10);
+            if (latest.sosAt > ackTs) {
+              triggerSosAlertModal(item, latest);
+            }
+          }
+        });
+
+        subscribeChatUnreadBadge(item.tripId, "Gestor", () => [
+          document.getElementById(`mgrChatBadge_${item.tripId}`)
+        ]);
+      }
+
       function startManagerRealtimeSync() {
         if (!isAdminAuthenticated || !adminPassHash) return;
         connectFirebase().then((conn) => {
@@ -1917,36 +1952,15 @@
             renderSavedTripsList();
           });
 
-          // Sincroniza lista de fretes ativos da nuvem
+          // Sincroniza lista de fretes ativos como fonte única da verdade (sem duplicatas)
           conn.onValue(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos`), (snap) => {
             const cloudObj = snap.val() || {};
-            const cloudList = Object.values(cloudObj).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-            if (cloudList.length > 0) {
-              localStorage.setItem("fc_saved_trips", JSON.stringify(cloudList));
-            }
+            const deduplicated = deduplicateTripsList(Object.values(cloudObj));
+            managerTripsList = deduplicated;
+            localStorage.setItem("fc_saved_trips", JSON.stringify(deduplicated));
             renderSavedTripsList();
 
-            cloudList.forEach((item) => {
-              if (monitoredTripIds.has(item.tripId)) return;
-              monitoredTripIds.add(item.tripId);
-
-              conn.onValue(conn.ref(conn.db, `fretes/${item.tripId}/updates`), (uSnap) => {
-                const all = uSnap.val();
-                if (!all) return;
-                const keys = Object.keys(all);
-                const latest = all[keys[keys.length - 1]];
-                if (latest && latest.sosAt) {
-                  const ackTs = parseInt(localStorage.getItem(`fc_ack_sos_${item.tripId}`) || "0", 10);
-                  if (latest.sosAt > ackTs) {
-                    triggerSosAlertModal(item, latest);
-                  }
-                }
-              });
-
-              subscribeChatUnreadBadge(item.tripId, "Gestor", () => [
-                document.getElementById(`mgrChatBadge_${item.tripId}`)
-              ]);
-            });
+            deduplicated.forEach((item) => attachTripListeners(item, conn));
           });
         });
       }
@@ -2075,15 +2089,20 @@
       });
 
       document.getElementById("btnCreateTrip").addEventListener("click", async () => {
-        if (!isAdminAuthenticated) return;
+        if (!isAdminAuthenticated || isCreatingTrip) return;
         const conn = await connectFirebase();
         if (!conn) return;
 
+        isCreatingTrip = true;
         const btnCreate = document.getElementById("btnCreateTrip");
         btnCreate.disabled = true;
         btnCreate.textContent = "Criando transporte...";
 
-        const tripId = document.getElementById("mgrTripId").value.trim().replace(/[^a-zA-Z0-9-_]/g, "") || generateUniqueTripId();
+        let tripId = document.getElementById("mgrTripId").value.trim().replace(/[^a-zA-Z0-9-_]/g, "");
+        if (!tripId || managerTripsList.some((t) => t.tripId === tripId)) {
+          tripId = generateUniqueTripId();
+        }
+
         const driverName = document.getElementById("mgrDriverName").value.trim();
         const vehicle = document.getElementById("mgrVehicle").value;
         const intervalMs = parseInt(document.getElementById("mgrInterval").value, 10);
@@ -2119,40 +2138,36 @@
             createdAt: Date.now()
           });
 
-          // Sincroniza no índice privado do gestor para aparecer na TV
+          // Grava na nuvem; o listener onValue atualiza managerTripsList sem duplicar
           await conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos/${tripId}`), tripSummary);
-
-          const saved = JSON.parse(localStorage.getItem("fc_saved_trips") || "[]");
-          saved.unshift(tripSummary);
-          localStorage.setItem("fc_saved_trips", JSON.stringify(saved.slice(0, 20)));
 
           draftStops = [];
           refreshDraftStopsUI();
           document.getElementById("mgrTripId").value = generateUniqueTripId();
           document.getElementById("mgrDriverName").value = "";
           document.getElementById("mgrPixAmount").value = "";
-          renderSavedTripsList();
           showToast("Transporte criado e enviado para a TV!");
         } catch (err) {
           showToast("Erro de permissão no Firebase: " + (err.code || "acesso negado"), true);
         } finally {
+          isCreatingTrip = false;
           btnCreate.disabled = false;
           btnCreate.textContent = "✅ Criar Transporte e Gerar Links";
         }
       });
 
       function renderSavedTripsList() {
-        const saved = JSON.parse(localStorage.getItem("fc_saved_trips") || "[]");
+        const items = deduplicateTripsList(managerTripsList);
         const sec = document.getElementById("activeTripsSection");
         const list = document.getElementById("activeTripsList");
-        if (saved.length === 0) {
+        if (items.length === 0) {
           sec.classList.add("hidden");
           return;
         }
         sec.classList.remove("hidden");
         list.innerHTML = "";
 
-        saved.forEach((item, idx) => {
+        items.forEach((item) => {
           const driverUrl = `${baseUrl()}?id=${encodeURIComponent(item.tripId)}&motorista=1&chave=${encodeURIComponent(item.driverKey)}`;
           const clientUrl = `${baseUrl()}?id=${encodeURIComponent(item.tripId)}`;
           const isFocusedOnTv = currentTvFocusedTripId === item.tripId;
@@ -2167,20 +2182,26 @@
                 <strong>#${item.tripId}</strong> ${isFocusedOnTv ? '<span style="color:#34d399; font-size:10px; font-weight:800;">• NA TV</span>' : ""}
                 <div style="font-size: 11px; color: var(--text-muted);">${item.vehicle}${item.driverName ? " • " + item.driverName : ""} (${item.stopsCount} parada(s))${item.pixAmount ? " • R$ " + item.pixAmount : ""}</div>
               </div>
-              <button type="button" class="btn btn-danger btn-xs" data-del="${idx}" title="Remover da lista e da TV">✕</button>
+              <button type="button" class="btn btn-danger btn-xs" data-del="1" title="Encerrar e remover da TV">✕</button>
             </div>
+
             <div class="btn-grid" style="margin-top: 0;">
               <button type="button" class="btn btn-accent btn-sm" data-drv="1">📲 Link Motorista</button>
               <button type="button" class="btn btn-primary btn-sm" data-cli="1">📲 Link Cliente</button>
             </div>
-            <div class="btn-grid-3">
-              <button type="button" class="btn ${isFocusedOnTv ? "btn-primary" : "btn-dark"} btn-xs" data-tvfocus="1">
-                📺 ${isFocusedOnTv ? "Na TV" : "Focar TV"}
+
+            <div class="btn-grid" style="margin-top: 6px;">
+              <a href="${driverUrl}" target="_blank" class="btn btn-warning btn-sm">🚚 Sou o Motorista</a>
+              <button type="button" class="btn ${isFocusedOnTv ? "btn-primary" : "btn-dark"} btn-sm" data-tvfocus="1">
+                📺 ${isFocusedOnTv ? "Em Foco na TV" : "Focar na TV"}
               </button>
+            </div>
+
+            <div class="btn-grid" style="margin-top: 6px;">
               <button type="button" class="btn btn-dark btn-xs" data-chat="1">
                 💬 Chat <span id="mgrChatBadge_${item.tripId}" class="unread-pill hidden">0</span>
               </button>
-              <a href="${clientUrl}" target="_blank" class="btn btn-dark btn-xs">👁️ Mapa</a>
+              <a href="${clientUrl}" target="_blank" class="btn btn-dark btn-xs">👁️ Ver Mapa ao Vivo</a>
             </div>
           `;
 
@@ -2205,8 +2226,8 @@
           });
 
           card.querySelector("[data-del]").addEventListener("click", async () => {
-            saved.splice(idx, 1);
-            localStorage.setItem("fc_saved_trips", JSON.stringify(saved));
+            managerTripsList = managerTripsList.filter((t) => t.tripId !== item.tripId);
+            localStorage.setItem("fc_saved_trips", JSON.stringify(managerTripsList));
             renderSavedTripsList();
             if (adminPassHash) {
               const conn = await connectFirebase();
@@ -2237,7 +2258,8 @@
       let tvTripChats = {};    // tripId -> array of chat messages
       let tvMarkers = {};      // tripId -> L.Marker
       let focusedTripId = null;
-      let tvInitialOverviewFit = false;
+      let tvUserDraggedOverview = false;
+      let tvLastOverviewCount = 0;
       let tvLastFocusedRouteTrip = null;
       const subscribedTvTrips = new Set();
 
@@ -2254,6 +2276,12 @@
         } else {
           document.exitFullscreen().catch(() => {});
         }
+      });
+
+      document.getElementById("btnTvFitAll").addEventListener("click", () => {
+        tvUserDraggedOverview = false;
+        tvLastOverviewCount = 0;
+        syncTvMapState(true);
       });
 
       document.getElementById("btnTvLogout").addEventListener("click", () => {
@@ -2283,6 +2311,12 @@
         ]);
       });
 
+      if (map) {
+        map.on("dragstart", () => {
+          if (!focusedTripId) tvUserDraggedOverview = true;
+        });
+      }
+
       onSosLocateCallback = (tripItem) => {
         setTvFocusedTrip(tripItem.tripId);
       };
@@ -2290,6 +2324,8 @@
       function setTvFocusedTrip(tripIdOrNull) {
         focusedTripId = tripIdOrNull && tvTripsMap[tripIdOrNull] ? tripIdOrNull : null;
         tvLastFocusedRouteTrip = null;
+        tvUserDraggedOverview = false;
+        tvLastOverviewCount = 0;
         autoFollow = true;
         document.getElementById("btnRecenter").classList.add("hidden");
 
@@ -2404,7 +2440,7 @@
             </div>
             <div class="info-flex" style="margin-top:8px;">
               <span style="font-size:11px; color:var(--text-muted);">
-                ${isFocused ? "Exibindo em tela cheia" : "Toque para focar no mapa"}
+                ${isFocused ? "Exibindo em tela cheia" : "Clique para focar no mapa"}
               </span>
               <span id="tvChatBadge_${tId}" class="unread-pill hidden">0</span>
             </div>
@@ -2418,11 +2454,11 @@
         });
       }
 
-      async function syncTvMapState(forceRoute = false) {
+      async function syncTvMapState(forceFit = false) {
         if (!map) return;
         const activeIds = new Set(Object.keys(tvTripsMap));
 
-        // Remove marcadores de viagens removidas
+        // Remove marcadores de viagens encerradas ou fora do foco
         Object.keys(tvMarkers).forEach((mId) => {
           if (!activeIds.has(mId) || (focusedTripId && mId !== focusedTripId)) {
             map.removeLayer(tvMarkers[mId]);
@@ -2475,7 +2511,7 @@
 
           const remainingStops = stops.slice(stopIdx);
           if (!isDone && remainingStops.length > 0) {
-            const needForce = forceRoute || tvLastFocusedRouteTrip !== focusedTripId;
+            const needForce = forceFit || tvLastFocusedRouteTrip !== focusedTripId;
             tvLastFocusedRouteTrip = focusedTripId;
 
             if (needForce) {
@@ -2503,33 +2539,49 @@
           return;
         }
 
-        // MODO VISÃO GERAL (TODOS OS VEÍCULOS ATIVOS NO MAPA)
+        // MODO VISÃO GERAL (TODOS OS TRANSPORTES ATIVOS NO MAPA)
         const allCoords = [];
         Object.keys(tvTripsMap).forEach((tId) => {
           const live = tvTripLive[tId];
           const info = tvTripInfos[tId] || tvTripsMap[tId];
-          if (!live || !live.lat || !live.lng) return;
-
-          allCoords.push([live.lat, live.lng]);
+          const stops = info.stops || [];
           const labelText = `#${tId}${info.driverName ? " • " + info.driverName : ""}`;
 
+          // Usa GPS ao vivo se já iniciou, ou a primeira parada cadastrada como referência visual
+          let lat = null, lng = null, isPendingGps = false;
+          if (live && live.lat && live.lng) {
+            lat = live.lat;
+            lng = live.lng;
+          } else if (stops.length > 0) {
+            lat = stops[0].lat;
+            lng = stops[0].lng;
+            isPendingGps = true;
+          }
+
+          if (lat === null || lng === null) return;
+          allCoords.push([lat, lng]);
+
+          const badgeLabel = isPendingGps ? `${labelText} (Aguardando)` : labelText;
           if (!tvMarkers[tId]) {
-            const m = L.marker([live.lat, live.lng], { icon: getTruckIcon(Boolean(live.sosAt)) }).addTo(map);
-            m.bindTooltip(labelText, { permanent: true, direction: "top", offset: [0, -24], className: "tv-truck-label" });
+            const m = L.marker([lat, lng], { icon: getTruckIcon(Boolean(live && live.sosAt)) }).addTo(map);
+            m.bindTooltip(badgeLabel, { permanent: true, direction: "top", offset: [0, -24], className: "tv-truck-label" });
             m.on("click", () => setTvFocusedTrip(tId));
             tvMarkers[tId] = m;
           } else {
-            smoothMoveMarker(tvMarkers[tId], live.lat, live.lng);
+            smoothMoveMarker(tvMarkers[tId], lat, lng);
+            tvMarkers[tId].setTooltipContent(badgeLabel);
           }
         });
 
-        if (allCoords.length > 0 && !tvInitialOverviewFit) {
-          if (allCoords.length === 1) {
-            map.setView(allCoords[0], 15);
-          } else {
-            map.fitBounds(L.latLngBounds(allCoords), { padding: [90, 90] });
+        if (allCoords.length > 0 && (!tvUserDraggedOverview || forceFit)) {
+          if (forceFit || allCoords.length !== tvLastOverviewCount) {
+            tvLastOverviewCount = allCoords.length;
+            if (allCoords.length === 1) {
+              map.setView(allCoords[0], 15);
+            } else {
+              map.fitBounds(L.latLngBounds(allCoords), { padding: [95, 95] });
+            }
           }
-          tvInitialOverviewFit = true;
         }
       }
 
@@ -2562,22 +2614,20 @@
           conn.onValue(conn.ref(conn.db, `gestor_privado/${tvPassHash}/ativos`), (snap) => {
             tvTripsMap = snap.val() || {};
             renderTvSidebarList();
-            syncTvMapState();
+            syncTvMapState(true);
 
             Object.keys(tvTripsMap).forEach((tId) => {
               if (subscribedTvTrips.has(tId)) return;
               subscribedTvTrips.add(tId);
 
-              // Info do transporte
               conn.onValue(conn.ref(conn.db, `fretes/${tId}/info`), (iSnap) => {
                 if (iSnap.val()) {
                   tvTripInfos[tId] = iSnap.val();
                   renderTvSidebarList();
-                  if (focusedTripId === tId) syncTvMapState(true);
+                  syncTvMapState(focusedTripId === tId);
                 }
               });
 
-              // GPS e SOS ao vivo
               conn.onValue(conn.ref(conn.db, `fretes/${tId}/updates`), (uSnap) => {
                 const all = uSnap.val();
                 if (!all) return;
@@ -2596,7 +2646,6 @@
                 syncTvMapState();
               });
 
-              // Chat ao vivo e som de notificação na TV
               subscribeChatUnreadBadge(
                 tId,
                 "Gestor",
