@@ -201,7 +201,7 @@
       border-radius: 22px 22px 0 0;
       padding: 12px 16px 20px;
       box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
-      max-height: 76dvh;
+      max-height: 78dvh;
       overflow-y: auto;
       transition: max-height 0.25s ease;
     }
@@ -284,7 +284,7 @@
     .form-group { margin-bottom: 10px; }
     .form-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
 
-    .input-row { display: flex; gap: 8px; }
+    .input-row { display: flex; gap: 8px; align-items: center; }
 
     input, select {
       width: 100%;
@@ -424,6 +424,17 @@
       padding: 14px;
       margin-bottom: 12px;
       text-align: center;
+    }
+
+    .bg-tip-box {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 11px;
+      padding: 9px 11px;
+      margin-top: 8px;
+      font-size: 11px;
+      color: #fde68a;
+      line-height: 1.4;
     }
 
     /* ========================================================= */
@@ -1028,7 +1039,7 @@
   <div id="toast">Pronto!</div>
 
   <!-- ========================================================= -->
-  <!-- 1. INTERFACE DO GESTOR (CELULAR)                          -->
+  <!-- 1. INTERFACE DO GESTOR (PAINEL PRINCIPAL)                 -->
   <!-- ========================================================= -->
   <section id="managerView" class="bottom-sheet hidden">
     <div class="sheet-top-row" data-toggle-sheet="managerView">
@@ -1069,27 +1080,37 @@
           <input type="text" id="mgrTripId" />
         </div>
         <div style="flex: 1;">
-          <label>Motorista (Opcional)</label>
-          <input type="text" id="mgrDriverName" placeholder="Ex: Eric / Gilberto" />
-        </div>
-      </div>
-
-      <div class="input-row form-group">
-        <div style="flex: 1.3;">
-          <label>Veículo</label>
-          <select id="mgrVehicle">
-            <option value="Picape Utilitária (Montana)">Picape Utilitária (Montana)</option>
-            <option value="Caminhão Baú (Hyundai HR)">Caminhão Baú (Hyundai HR)</option>
-            <option value="Caminhão Baú (Ford Cargo 815)">Caminhão Baú (Ford Cargo 815)</option>
-          </select>
-        </div>
-        <div style="flex: 0.7;">
-          <label>GPS (Bateria)</label>
+          <label>Intervalo GPS</label>
           <select id="mgrInterval">
             <option value="20000" selected>Super Eco (20s)</option>
             <option value="12000">Eco (12s)</option>
             <option value="6000">Rápido (6s)</option>
           </select>
+        </div>
+      </div>
+
+      <div class="input-row form-group">
+        <div style="flex: 1;">
+          <label>Nome do Motorista</label>
+          <input type="text" id="mgrDriverName" placeholder="Ex: Eric / Gilberto" />
+        </div>
+        <div style="flex: 1;">
+          <label>WhatsApp Motorista</label>
+          <input type="tel" id="mgrDriverPhone" placeholder="(11) 98194-9225" />
+        </div>
+      </div>
+
+      <!-- Seleção e Cadastro de Veículos -->
+      <div class="form-group">
+        <label>Veículo (selecione ou cadastre novo no +)</label>
+        <div class="input-row">
+          <select id="mgrVehicle" style="flex: 1;"></select>
+          <button type="button" id="btnToggleNewVehicle" class="btn btn-accent btn-sm" title="Cadastrar novo veículo">+</button>
+          <button type="button" id="btnDeleteCustomVehicle" class="btn btn-danger btn-sm hidden" title="Excluir veículo personalizado">🗑️</button>
+        </div>
+        <div id="newVehicleBox" class="input-row hidden" style="margin-top: 6px;">
+          <input type="text" id="newVehicleInput" placeholder="Ex: Caminhão VUC / Fiorino Baú" />
+          <button type="button" id="btnSaveNewVehicle" class="btn btn-primary btn-sm">Salvar</button>
         </div>
       </div>
 
@@ -1134,6 +1155,77 @@
         </div>
         <div id="activeTripsList"></div>
       </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 1B. INTERFACE MAPA AO VIVO DO GESTOR (?id=...&gestor=1)   -->
+  <!-- ========================================================= -->
+  <section id="managerTrackView" class="bottom-sheet hidden">
+    <div class="sheet-top-row" data-toggle-sheet="managerTrackView">
+      <span style="font-size: 11px; color: #fbbf24; font-weight: 700;">🛡️ Visão do Gestor</span>
+      <div class="sheet-handle"></div>
+      <button type="button" class="btn-toggle-sheet">Minimizar</button>
+    </div>
+
+    <div id="mgrTrackAuthBox">
+      <div class="section-header">
+        <h2>🔒 Acesso do Gestor ao Mapa</h2>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+        Confirme sua senha de gestor para acompanhar este frete e conversar no chat oficial da Central.
+      </p>
+      <div class="form-group">
+        <input type="password" id="mgrTrackPassInput" placeholder="Senha do Gestor" />
+      </div>
+      <button type="button" id="btnMgrTrackLogin" class="btn btn-primary">Entrar como Gestor</button>
+    </div>
+
+    <div id="mgrTrackContent" class="hidden">
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <small>Distância</small>
+          <strong id="mgrTrackDist">--</strong>
+        </div>
+        <div class="metric-box">
+          <small>Previsão</small>
+          <strong id="mgrTrackEta">--</strong>
+        </div>
+        <div class="metric-box">
+          <small>Atualizado</small>
+          <strong id="mgrTrackUpdated">Aguardando</strong>
+        </div>
+      </div>
+
+      <div id="mgrTrackStopBanner" class="info-card hidden" style="border-color: rgba(16, 185, 129, 0.35);">
+        <div style="font-size: 11px; color: #34d399; font-weight: 700;" id="mgrTrackStopProgress">ROTA EM ANDAMENTO</div>
+        <div style="font-size: 13px; font-weight: 600; margin-top: 2px;" id="mgrTrackStopLabel">--</div>
+      </div>
+
+      <div class="info-card info-flex">
+        <div>
+          <div style="color: var(--text-muted); font-size: 11px;">VEÍCULO / MOTORISTA</div>
+          <strong id="mgrTrackVehicle">--</strong>
+          <div id="mgrTrackPayStatus" style="font-size: 11px; color: #fbbf24; margin-top: 2px;"></div>
+        </div>
+        <div style="text-align: right;">
+          <div style="color: var(--text-muted); font-size: 11px;">CÓDIGO</div>
+          <strong id="mgrTrackCode">#0000</strong>
+        </div>
+      </div>
+
+      <div class="btn-grid" style="margin-top: 0;">
+        <button type="button" id="btnMgrTrackChat" class="btn btn-accent">
+          💬 Chat (Gestor) <span id="mgrTrackUnreadBadge" class="unread-pill hidden">0</span>
+        </button>
+        <button type="button" id="btnMgrTrackPaid" class="btn btn-primary">
+          💰 Confirmar Pago
+        </button>
+      </div>
+
+      <a id="btnMgrTrackBack" href="#" class="btn btn-dark" style="margin-top: 8px;">
+        ⬅️ Voltar ao Painel do Gestor
+      </a>
     </div>
   </section>
 
@@ -1243,9 +1335,15 @@
       <button type="button" id="btnDrvStart" class="btn btn-primary">
         ▶ Iniciar Transmissão ao Vivo
       </button>
-      <button type="button" id="btnDrvChatSetup" class="btn btn-dark" style="margin-top: 8px;">
-        💬 Chat da Equipe / Cliente <span id="drvUnreadBadge1" class="unread-pill hidden">0</span>
-      </button>
+
+      <div class="btn-grid" style="margin-top: 8px;">
+        <button type="button" id="btnDrvChatSetup" class="btn btn-dark btn-sm">
+          💬 Chat <span id="drvUnreadBadge1" class="unread-pill hidden">0</span>
+        </button>
+        <a id="btnDrvWaCentralSetup" href="#" target="_blank" class="btn btn-accent btn-sm">
+          🏢 WhatsApp Central
+        </a>
+      </div>
     </div>
 
     <div id="drvActiveControls" class="hidden">
@@ -1261,12 +1359,18 @@
         ✅ Concluir Parada Atual e Ir para Próxima
       </button>
 
-      <div class="btn-grid-3">
+      <div class="btn-grid">
         <button type="button" id="btnDrvChat" class="btn btn-dark btn-sm">
           💬 Chat <span id="drvUnreadBadge2" class="unread-pill hidden">0</span>
         </button>
-        <button type="button" id="btnDrvOled" class="btn btn-accent btn-sm">🔋 Tela Preta</button>
-        <button type="button" id="btnDrvShareClient" class="btn btn-dark btn-sm">📲 Link</button>
+        <a id="btnDrvWaCentralActive" href="#" target="_blank" class="btn btn-dark btn-sm">
+          🏢 WhatsApp Central
+        </a>
+      </div>
+
+      <div class="btn-grid" style="margin-top: 6px;">
+        <button type="button" id="btnDrvOled" class="btn btn-accent btn-sm">🔋 Tela Preta (Eco)</button>
+        <button type="button" id="btnDrvShareClient" class="btn btn-dark btn-sm">📲 Link Cliente</button>
       </div>
 
       <button type="button" id="btnDrvConfirmPaid" class="btn btn-primary hidden" style="margin-top: 8px;">
@@ -1276,13 +1380,20 @@
       <button type="button" id="btnDrvFinish" class="btn btn-danger" style="margin-top: 8px;">
         ■ Finalizar Entrega Completa
       </button>
+
+      <div class="bg-tip-box">
+        💡 <strong>Dica ao usar Google Maps:</strong> Mantenha o Maps em <strong>janelinha flutuante (Picture-in-Picture)</strong> ou <strong>Tela Dividida</strong> para que o Android não pause o envio do GPS.
+      </div>
     </div>
 
-    <!-- Botão pós-finalização caso o cliente pague após o término -->
+    <!-- Botões pós-finalização -->
     <div id="drvPostFinishControls" class="hidden">
-      <button type="button" id="btnDrvConfirmPaidAfter" class="btn btn-primary">
+      <button type="button" id="btnDrvConfirmPaidAfter" class="btn btn-primary" style="margin-bottom: 8px;">
         💰 Confirmar Pagamento Recebido
       </button>
+      <a id="btnDrvWaCentralDone" href="#" target="_blank" class="btn btn-dark">
+        🏢 Falar com a Central no WhatsApp
+      </a>
     </div>
   </section>
 
@@ -1326,7 +1437,6 @@
       <button type="button" class="btn-toggle-sheet">Minimizar</button>
     </div>
 
-    <!-- QR Code Pix (Exibido ao concluir serviço, até o pagamento ser confirmado) -->
     <div id="cliPixCard" class="pix-box hidden">
       <div style="font-size: 11px; color: #34d399; font-weight: 800; letter-spacing: 0.4px;">✅ ENTREGA CONCLUÍDA • PAGAMENTO PIX</div>
       <div id="cliPixAmountLabel" style="font-size: 18px; font-weight: 800; margin-top: 4px;"></div>
@@ -1347,7 +1457,6 @@
       </div>
     </div>
 
-    <!-- Aviso após confirmação do pagamento pelo Gestor ou Motorista -->
     <div id="cliPaidBanner" class="paid-banner hidden">
       <div style="font-size: 26px; margin-bottom: 4px;">✅</div>
       <strong style="font-size: 15px; color: #34d399; display: block;">PAGAMENTO CONFIRMADO!</strong>
@@ -1385,12 +1494,16 @@
       </div>
     </div>
 
-    <div class="btn-grid" style="margin-top: 0;">
-      <button type="button" id="btnClientChat" class="btn btn-accent">
-        💬 Chat ao Vivo <span id="cliUnreadBadge" class="unread-pill hidden">0</span>
-      </button>
-      <a id="btnClientWhatsApp" href="#" target="_blank" class="btn btn-primary">
-        📲 WhatsApp
+    <button type="button" id="btnClientChat" class="btn btn-accent" style="margin-bottom: 8px;">
+      💬 Chat ao Vivo <span id="cliUnreadBadge" class="unread-pill hidden">0</span>
+    </button>
+
+    <div id="cliWhatsAppGrid" class="btn-grid" style="margin-top: 0;">
+      <a id="btnClientWhatsAppDriver" href="#" target="_blank" class="btn btn-primary hidden">
+        🚚 WhatsApp Motorista
+      </a>
+      <a id="btnClientWhatsAppCentral" href="#" target="_blank" class="btn btn-dark" style="grid-column: 1 / -1;">
+        🏢 WhatsApp Central
       </a>
     </div>
   </section>
@@ -1448,7 +1561,12 @@
   <script>
     const CONFIG = {
       empresa: "Fretes e Carretos",
-      whatsapp: "5511981949225",
+      whatsappCentral: "5511958597349",
+      defaultVehicles: [
+        "Picape Utilitária (Montana)",
+        "Caminhão Baú (Hyundai HR)",
+        "Caminhão Baú (Ford Cargo 815)"
+      ],
       firebase: {
         apiKey: "AIzaSyCH_wpFlgl1icQIGEOL8HifFc8LbYfXloo",
         authDomain: "localiza-frete.firebaseapp.com",
@@ -1465,7 +1583,8 @@
     const driverKeyParam = params.get("chave");
     const isTvMode = params.get("tv") === "1" && !tripParam;
     const isDriverMode = Boolean(tripParam && params.get("motorista") === "1" && driverKeyParam);
-    const isClientMode = Boolean(tripParam && !isDriverMode);
+    const isManagerTrackMode = Boolean(tripParam && params.get("gestor") === "1" && !isDriverMode);
+    const isClientMode = Boolean(tripParam && !isDriverMode && !isManagerTrackMode);
     const isManagerMode = !tripParam && !isTvMode;
 
     if (isTvMode) {
@@ -1473,6 +1592,7 @@
       document.getElementById("tvSidebar").classList.remove("hidden");
     }
     if (isManagerMode) document.getElementById("managerView").classList.remove("hidden");
+    if (isManagerTrackMode) document.getElementById("managerTrackView").classList.remove("hidden");
     if (isDriverMode) document.getElementById("driverView").classList.remove("hidden");
     if (isClientMode) document.getElementById("clientView").classList.remove("hidden");
 
@@ -1504,6 +1624,13 @@
         state === "sos"  ? "badge-sos"  : "badge-wait"
       );
       label.textContent = text;
+    }
+
+    function normalizeBrazilPhone(raw) {
+      const digits = String(raw || "").replace(/\D/g, "");
+      if (!digits) return "";
+      if (digits.length === 10 || digits.length === 11) return "55" + digits;
+      return digits;
     }
 
     function generateUniqueTripId() {
@@ -1538,7 +1665,7 @@
       return window.location.origin + window.location.pathname;
     }
 
-    // SHA-256 puro em JS para sincronizar Gestor e TV com segurança sem expor a senha
+    // SHA-256 puro em JS para sincronizar Gestor e TV sem expor a senha
     function sha256Hex(str) {
       const ascii = unescape(encodeURIComponent(str));
       function rightRotate(value, amount) {
@@ -1890,14 +2017,14 @@
     }
 
     // =========================================================================
-    // ÁUDIO DE SEGUNDO PLANO (MANTÉM NOTIFICAÇÃO DE MÍDIA E GPS ATIVO NO ANDROID)
+    // ÁUDIO DE SEGUNDO PLANO + WEB WORKER + WEB LOCK (REFORÇO NO NAVEGADOR)
     // =========================================================================
     let bgAudioEl = null;
+    let bgWorker = null;
+
     function startBackgroundAudioKeepAlive(onStatusChange) {
       try {
         if (!bgAudioEl) {
-          // Gera 2 segundos de WAV PCM com tom sub-audível (30Hz, amplitude mínima)
-          // para que o Android reconheça mídia ativa e mantenha a notificação e o GPS vivos
           const sampleRate = 8000;
           const numSamples = sampleRate * 2;
           const buffer = new ArrayBuffer(44 + numSamples);
@@ -1964,6 +2091,20 @@
       if ("mediaSession" in navigator) {
         navigator.mediaSession.playbackState = "none";
       }
+      if (bgWorker) {
+        bgWorker.terminate();
+        bgWorker = null;
+      }
+    }
+
+    function startWorkerHeartbeat(intervalMs, onTick) {
+      if (bgWorker) bgWorker.terminate();
+      try {
+        const workerCode = `setInterval(() => postMessage("tick"), ${Math.max(5000, intervalMs)});`;
+        const blob = new Blob([workerCode], { type: "application/javascript" });
+        bgWorker = new Worker(URL.createObjectURL(blob));
+        bgWorker.onmessage = () => onTick();
+      } catch (_) {}
     }
 
     // =========================================================================
@@ -2214,8 +2355,10 @@
         }
         map.setView([latCopy, lngCopy], 17);
         const mgrSheet = document.getElementById("managerView");
-        mgrSheet.classList.add("minimized");
-        mgrSheet.querySelector(".btn-toggle-sheet").textContent = "Expandir";
+        if (mgrSheet && !mgrSheet.classList.contains("hidden")) {
+          mgrSheet.classList.add("minimized");
+          mgrSheet.querySelector(".btn-toggle-sheet").textContent = "Expandir";
+        }
         showToast("Mapa centralizado no ponto do SOS!");
       } else {
         showToast("Sem coordenada GPS registrada ainda.", true);
@@ -2231,7 +2374,7 @@
     });
 
     // =========================================================================
-    // 1. MODO GESTOR (CELULAR — GESTOR E MOTORISTA + CONTROLE DA TV)
+    // 1. MODO GESTOR (PAINEL PRINCIPAL + CADASTRO DE VEÍCULOS)
     // =========================================================================
     if (isManagerMode) {
       let adminPassword = "";
@@ -2241,8 +2384,92 @@
       let draftStops = [];
       let currentTvFocusedTripId = null;
       let managerTripsList = deduplicateTripsList(JSON.parse(localStorage.getItem("fc_saved_trips") || "[]"));
+      let customVehiclesList = JSON.parse(localStorage.getItem("fc_custom_vehicles") || "[]");
       const monitoredTripIds = new Set();
       const paidTripsMap = {};
+
+      // Gerenciamento de veículos padrão + personalizados
+      function renderVehiclesDropdown(selectValue = null) {
+        const sel = document.getElementById("mgrVehicle");
+        const prev = selectValue || sel.value;
+        sel.innerHTML = "";
+
+        const allVehicles = [...CONFIG.defaultVehicles, ...customVehiclesList];
+        allVehicles.forEach((v) => {
+          const opt = document.createElement("option");
+          opt.value = v;
+          opt.textContent = v;
+          sel.appendChild(opt);
+        });
+
+        if (prev && allVehicles.includes(prev)) {
+          sel.value = prev;
+        }
+        updateDeleteVehicleButton();
+      }
+
+      function updateDeleteVehicleButton() {
+        const sel = document.getElementById("mgrVehicle");
+        const btnDel = document.getElementById("btnDeleteCustomVehicle");
+        if (customVehiclesList.includes(sel.value)) {
+          btnDel.classList.remove("hidden");
+        } else {
+          btnDel.classList.add("hidden");
+        }
+      }
+
+      renderVehiclesDropdown();
+      document.getElementById("mgrVehicle").addEventListener("change", updateDeleteVehicleButton);
+
+      document.getElementById("btnToggleNewVehicle").addEventListener("click", () => {
+        const box = document.getElementById("newVehicleBox");
+        box.classList.toggle("hidden");
+        if (!box.classList.contains("hidden")) {
+          document.getElementById("newVehicleInput").focus();
+        }
+      });
+
+      document.getElementById("btnSaveNewVehicle").addEventListener("click", async () => {
+        const input = document.getElementById("newVehicleInput");
+        const name = input.value.trim();
+        if (!name) return;
+
+        const all = [...CONFIG.defaultVehicles, ...customVehiclesList];
+        if (!all.includes(name)) {
+          customVehiclesList.push(name);
+          localStorage.setItem("fc_custom_vehicles", JSON.stringify(customVehiclesList));
+          if (adminPassHash) {
+            const conn = await connectFirebase();
+            if (conn) {
+              conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/veiculos`), customVehiclesList).catch(() => {});
+            }
+          }
+        }
+
+        input.value = "";
+        document.getElementById("newVehicleBox").classList.add("hidden");
+        renderVehiclesDropdown(name);
+        showToast("Veículo cadastrado!");
+      });
+
+      document.getElementById("btnDeleteCustomVehicle").addEventListener("click", async () => {
+        const sel = document.getElementById("mgrVehicle");
+        const current = sel.value;
+        if (!customVehiclesList.includes(current)) return;
+        if (!confirm(`Remover o veículo "${current}" da lista?`)) return;
+
+        customVehiclesList = customVehiclesList.filter((v) => v !== current);
+        localStorage.setItem("fc_custom_vehicles", JSON.stringify(customVehiclesList));
+        renderVehiclesDropdown();
+
+        if (adminPassHash) {
+          const conn = await connectFirebase();
+          if (conn) {
+            conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/veiculos`), customVehiclesList).catch(() => {});
+          }
+        }
+        showToast("Veículo removido.");
+      });
 
       document.getElementById("btnCopyTvLink").addEventListener("click", () => {
         const tvUrl = `${baseUrl()}?tv=1`;
@@ -2333,6 +2560,16 @@
         if (!isAdminAuthenticated || !adminPassHash) return;
         connectFirebase().then((conn) => {
           if (!conn) return;
+
+          // Sincroniza veículos personalizados salvos na nuvem
+          conn.onValue(conn.ref(conn.db, `gestor_privado/${adminPassHash}/veiculos`), (vSnap) => {
+            const cloudVehicles = vSnap.val();
+            if (Array.isArray(cloudVehicles)) {
+              customVehiclesList = cloudVehicles;
+              localStorage.setItem("fc_custom_vehicles", JSON.stringify(customVehiclesList));
+              renderVehiclesDropdown();
+            }
+          });
 
           conn.onValue(conn.ref(conn.db, `gestor_privado/${adminPassHash}/tv_control`), (snap) => {
             const ctrl = snap.val();
@@ -2494,6 +2731,8 @@
         }
 
         const driverName = document.getElementById("mgrDriverName").value.trim();
+        const driverPhoneRaw = document.getElementById("mgrDriverPhone").value.trim();
+        const driverPhone = normalizeBrazilPhone(driverPhoneRaw);
         const vehicle = document.getElementById("mgrVehicle").value;
         const intervalMs = parseInt(document.getElementById("mgrInterval").value, 10);
         const pixKey = document.getElementById("mgrPixKey").value.trim();
@@ -2507,6 +2746,7 @@
           driverKey,
           vehicle,
           driverName,
+          driverPhone,
           pixKey,
           pixAmount,
           paid: false,
@@ -2523,6 +2763,7 @@
           await conn.set(conn.ref(conn.db, `fretes/${tripId}/info`), {
             vehicle: vehicle,
             driverName: driverName,
+            driverPhone: driverPhone,
             intervalMs: intervalMs,
             pixKey: pixKey,
             pixAmount: pixAmount,
@@ -2537,6 +2778,7 @@
           refreshDraftStopsUI();
           document.getElementById("mgrTripId").value = generateUniqueTripId();
           document.getElementById("mgrDriverName").value = "";
+          document.getElementById("mgrDriverPhone").value = "";
           document.getElementById("mgrPixAmount").value = "";
           showToast("Transporte criado e enviado para a TV!");
         } catch (err) {
@@ -2562,6 +2804,7 @@
         items.forEach((item) => {
           const driverUrl = `${baseUrl()}?id=${encodeURIComponent(item.tripId)}&motorista=1&chave=${encodeURIComponent(item.driverKey)}`;
           const clientUrl = `${baseUrl()}?id=${encodeURIComponent(item.tripId)}`;
+          const managerMapUrl = `${baseUrl()}?id=${encodeURIComponent(item.tripId)}&gestor=1`;
           const isFocusedOnTv = currentTvFocusedTripId === item.tripId;
           const isPaid = Boolean(item.paid || paidTripsMap[item.tripId]);
 
@@ -2596,7 +2839,7 @@
               <button type="button" class="btn btn-dark btn-xs" data-chat="1">
                 💬 Chat <span id="mgrChatBadge_${item.tripId}" class="unread-pill hidden">0</span>
               </button>
-              <a href="${clientUrl}" target="_blank" class="btn btn-dark btn-xs">👁️ Mapa</a>
+              <a href="${managerMapUrl}" class="btn btn-dark btn-xs">🛡️ Mapa Gestor</a>
               <button type="button" class="btn ${isPaid ? "btn-primary" : "btn-dark"} btn-xs" data-paid="1" ${isPaid ? "disabled" : ""}>
                 ${isPaid ? "✅ Pago" : "💰 Pago?"}
               </button>
@@ -2620,7 +2863,11 @@
 
           card.querySelector("[data-drv]").addEventListener("click", () => {
             const msg = `Olá${item.driverName ? " " + item.driverName : ""}! Acesse o link abaixo para iniciar o rastreio GPS do frete *#${item.tripId}*:\n\n${driverUrl}`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+            const phone = normalizeBrazilPhone(item.driverPhone);
+            const waLink = phone
+              ? `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`
+              : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+            window.open(waLink, "_blank");
           });
 
           card.querySelector("[data-cli]").addEventListener("click", () => {
@@ -2646,6 +2893,193 @@
           list.appendChild(card);
         });
       }
+    }
+
+    // =========================================================================
+    // 1B. MODO MAPA DO GESTOR (?id=...&gestor=1) — MONITORA E FALA COMO GESTOR
+    // =========================================================================
+    if (isManagerTrackMode) {
+      document.getElementById("mgrTrackCode").textContent = "#" + tripParam;
+      document.getElementById("btnMgrTrackBack").href = baseUrl();
+
+      let mgrTrackPass = "";
+      let mgrTrackHash = "";
+      let isMgrTrackVerified = false;
+      let tripInfo = { stops: [] };
+      let latestLive = null;
+      let lastUpdateTimestamp = null;
+
+      function startManagerTrackListeners() {
+        const badges = [document.getElementById("mgrTrackUnreadBadge")];
+        subscribeChatUnreadBadge(tripParam, "Gestor", badges);
+
+        document.getElementById("btnMgrTrackChat").addEventListener("click", () => {
+          openChatForTrip(tripParam, "Gestor", "Gestor (Central)", badges);
+        });
+
+        document.getElementById("btnMgrTrackPaid").addEventListener("click", async () => {
+          if (!confirm(`Confirmar recebimento do pagamento do frete #${tripParam}?`)) return;
+          const conn = await connectFirebase();
+          if (!conn) return;
+          try {
+            await conn.update(conn.ref(conn.db, `fretes/${tripParam}/info`), { paid: true, paidAt: Date.now() });
+            if (mgrTrackHash) {
+              await conn.update(conn.ref(conn.db, `gestor_privado/${mgrTrackHash}/ativos/${tripParam}`), { paid: true }).catch(() => {});
+            }
+            showToast("💰 Pagamento confirmado!");
+          } catch {
+            showToast("Erro ao confirmar pagamento.", true);
+          }
+        });
+
+        setInterval(() => {
+          if (!lastUpdateTimestamp) return;
+          const sec = Math.floor((Date.now() - lastUpdateTimestamp) / 1000);
+          document.getElementById("mgrTrackUpdated").textContent = sec < 5 ? "Agora" : `${sec}s atrás`;
+        }, 1000);
+
+        async function refreshManagerTrackView() {
+          const stops = tripInfo.stops || [];
+          const stopIdx = latestLive && typeof latestLive.currentStop === "number" ? latestLive.currentStop : 0;
+          const isPaid = Boolean(tripInfo.paid || (latestLive && latestLive.paid));
+
+          const payEl = document.getElementById("mgrTrackPayStatus");
+          const paidBtn = document.getElementById("btnMgrTrackPaid");
+          if (isPaid) {
+            payEl.textContent = "✅ Pagamento Confirmado";
+            payEl.style.color = "#34d399";
+            paidBtn.textContent = "✅ Pago";
+            paidBtn.disabled = true;
+          } else if (tripInfo.pixKey) {
+            payEl.textContent = tripInfo.pixAmount ? `Aguardando Pix • R$ ${tripInfo.pixAmount}` : "Aguardando Pix";
+            payEl.style.color = "#fbbf24";
+          } else {
+            payEl.textContent = "";
+          }
+
+          if (stops.length > 0) {
+            renderStopPins(stops, stopIdx);
+            const targetStop = stops[Math.min(stopIdx, stops.length - 1)];
+            const isLast = stopIdx >= stops.length - 1;
+            document.getElementById("mgrTrackStopBanner").classList.remove("hidden");
+            document.getElementById("mgrTrackStopProgress").textContent = isLast
+              ? `DESTINO FINAL (${stopIdx + 1}/${stops.length})`
+              : `INDO PARA PARADA ${stopIdx + 1} DE ${stops.length}`;
+            document.getElementById("mgrTrackStopLabel").textContent = targetStop.label;
+          }
+
+          if (!latestLive) return;
+
+          if (latestLive.sosAt) {
+            const ackTs = parseInt(localStorage.getItem(`fc_ack_sos_${tripParam}`) || "0", 10);
+            if (latestLive.sosAt > ackTs) {
+              triggerSosAlertModal({ tripId: tripParam, vehicle: tripInfo.vehicle || "Veículo", driverName: tripInfo.driverName }, latestLive);
+            }
+          }
+
+          if (latestLive.status === "concluido") {
+            updateStatusBadge("done", "Entregue");
+            document.getElementById("mgrTrackDist").textContent = "0 km";
+            document.getElementById("mgrTrackEta").textContent = "Chegou";
+            if (routeLayer && map) map.removeLayer(routeLayer);
+            return;
+          }
+
+          if (latestLive.lat && latestLive.lng && map) {
+            updateStatusBadge("live", "Ao Vivo (Gestor)");
+            lastUpdateTimestamp = latestLive.updatedAt || Date.now();
+
+            if (!truckMarker) {
+              truckMarker = L.marker([latestLive.lat, latestLive.lng], { icon: getTruckIcon(Boolean(latestLive.sosAt)) }).addTo(map);
+            } else {
+              smoothMoveMarker(truckMarker, latestLive.lat, latestLive.lng);
+            }
+
+            const remainingStops = stops.slice(stopIdx);
+            if (remainingStops.length > 0) {
+              if (!initialFitDone) {
+                const pts = [[latestLive.lat, latestLive.lng], ...remainingStops.map((s) => [s.lat, s.lng])];
+                map.fitBounds(L.latLngBounds(pts), { padding: [70, 70] });
+                initialFitDone = true;
+              } else if (autoFollow) {
+                map.panTo([latestLive.lat, latestLive.lng]);
+              }
+
+              const routeMetrics = await drawStreetRoute(latestLive.lat, latestLive.lng, remainingStops);
+              if (routeMetrics) {
+                const km = routeMetrics.nextDistance / 1000;
+                document.getElementById("mgrTrackDist").textContent = km < 1 ? `${Math.round(routeMetrics.nextDistance)} m` : `${km.toFixed(1)} km`;
+                const mins = Math.max(1, Math.round(routeMetrics.nextDuration / 60));
+                document.getElementById("mgrTrackEta").textContent = mins > 60 ? `${Math.floor(mins / 60)}h ${mins % 60}m` : `${mins} min`;
+              }
+            } else {
+              if (!initialFitDone) {
+                map.setView([latestLive.lat, latestLive.lng], 16);
+                initialFitDone = true;
+              } else if (autoFollow) {
+                map.panTo([latestLive.lat, latestLive.lng]);
+              }
+              document.getElementById("mgrTrackDist").textContent = "Em rota";
+              document.getElementById("mgrTrackEta").textContent = "Ao vivo";
+            }
+          }
+        }
+
+        connectFirebase().then((conn) => {
+          if (!conn) return;
+          conn.onValue(conn.ref(conn.db, `fretes/${tripParam}/info`), (snap) => {
+            const val = snap.val();
+            if (val) {
+              tripInfo = val;
+              document.getElementById("mgrTrackVehicle").textContent =
+                `${val.vehicle || "Utilitário"}${val.driverName ? " • " + val.driverName : ""}`;
+              refreshManagerTrackView();
+            }
+          });
+
+          conn.onValue(conn.ref(conn.db, `fretes/${tripParam}/updates`), (snap) => {
+            const all = snap.val();
+            if (all) {
+              const keys = Object.keys(all);
+              latestLive = all[keys[keys.length - 1]];
+              refreshManagerTrackView();
+            }
+          });
+        });
+      }
+
+      function unlockManagerTrackView(pass) {
+        mgrTrackPass = pass;
+        mgrTrackHash = sha256Hex(pass);
+        isMgrTrackVerified = true;
+        document.getElementById("mgrTrackAuthBox").classList.add("hidden");
+        document.getElementById("mgrTrackContent").classList.remove("hidden");
+        startManagerTrackListeners();
+      }
+
+      const savedPass = localStorage.getItem("fc_admin_pass");
+      if (savedPass) {
+        verifyAdminPassword(savedPass).then((ok) => {
+          if (ok) unlockManagerTrackView(savedPass);
+        });
+      }
+
+      document.getElementById("btnMgrTrackLogin").addEventListener("click", async () => {
+        const val = document.getElementById("mgrTrackPassInput").value.trim();
+        if (!val) return;
+        const btn = document.getElementById("btnMgrTrackLogin");
+        btn.disabled = true;
+        btn.textContent = "Verificando...";
+        const ok = await verifyAdminPassword(val);
+        btn.disabled = false;
+        btn.textContent = "Entrar como Gestor";
+        if (!ok) {
+          showToast("Senha incorreta!", true);
+          return;
+        }
+        localStorage.setItem("fc_admin_pass", val);
+        unlockManagerTrackView(val);
+      });
     }
 
     // =========================================================================
@@ -2998,7 +3432,6 @@
               map.fitBounds(L.latLngBounds(allCoords), { padding: [120, 120] });
             }
           } else if (liveCoords.length === 1 && allCoords.length === 1) {
-            // Se há 1 veículo ao vivo na visão geral, acompanha suavemente o movimento dele
             map.panTo(liveCoords[0]);
           }
         }
@@ -3105,10 +3538,17 @@
     }
 
     // =========================================================================
-    // 3. MODO MOTORISTA (SOS 190/192/193 + GPS EM 2º PLANO + CONFIRMAR PAGAMENTO)
+    // 3. MODO MOTORISTA (SOS 190/192/193 + WHATSAPP CENTRAL + GPS 2º PLANO)
     // =========================================================================
     if (isDriverMode) {
       document.getElementById("drvTripCode").textContent = "#" + tripParam;
+
+      // Configura os botões "WhatsApp Central" (+5511958597349) para o Motorista
+      const centralWaMsg = `Olá Central! Sou o motorista do transporte #${tripParam}.`;
+      const centralWaHref = `https://wa.me/${CONFIG.whatsappCentral}?text=${encodeURIComponent(centralWaMsg)}`;
+      document.getElementById("btnDrvWaCentralSetup").href = centralWaHref;
+      document.getElementById("btnDrvWaCentralActive").href = centralWaHref;
+      document.getElementById("btnDrvWaCentralDone").href = centralWaHref;
 
       let tripInfo = { stops: [], intervalMs: 20000, vehicle: "Utilitário" };
       let currentStopIdx = 0, watchId = null, bgGpsTimer = null, wakeLock = null;
@@ -3131,7 +3571,7 @@
       document.getElementById("btnDrvChatSetup").addEventListener("click", openDriverChat);
       document.getElementById("btnDrvChat").addEventListener("click", openDriverChat);
 
-      // Abre modal de confirmação SOS (evita toque acidental e permite escolher 190/192/193)
+      // Modal de confirmação SOS (evita toque acidental e permite escolher 190/192/193)
       document.getElementById("btnDrvSos").addEventListener("click", () => {
         document.getElementById("driverSosConfirmModal").classList.remove("hidden");
       });
@@ -3170,7 +3610,6 @@
         });
       });
 
-      // Botões de confirmação de pagamento pelo motorista
       function updateDriverPaymentButtons() {
         const hasPix = Boolean((tripInfo.pixKey || "").trim());
         const btnActive = document.getElementById("btnDrvConfirmPaid");
@@ -3267,7 +3706,6 @@
         return conn.set(conn.ref(conn.db, `fretes/${tripParam}/updates/${driverKeyParam}`), payload);
       }
 
-      // Processa cada posição GPS (seja do watchPosition ou do reforço em 2º plano)
       function handleIncomingDriverCoords(lat, lng, forceSend = false) {
         const now = Date.now();
         const intervalMs = tripInfo.intervalMs || 20000;
@@ -3302,7 +3740,7 @@
         publishDriverUpdate({ lat, lng });
       }
 
-      // Reativa WakeLock ao voltar para a aba
+      // Envia posição imediatamente quando o motorista volta para a aba do navegador
       document.addEventListener("visibilitychange", async () => {
         if (document.visibilityState === "visible" && watchId !== null) {
           try {
@@ -3313,6 +3751,11 @@
           if (bgAudioEl && bgAudioEl.paused) {
             bgAudioEl.play().catch(() => {});
           }
+          navigator.geolocation.getCurrentPosition(
+            (pos) => handleIncomingDriverCoords(pos.coords.latitude, pos.coords.longitude, true),
+            () => {},
+            { enableHighAccuracy: true, timeout: 10000 }
+          );
         }
       });
 
@@ -3337,6 +3780,13 @@
           if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen");
         } catch (_) {}
 
+        // Solicita Web Lock para impedir descarte da aba em segundo plano
+        if (navigator.locks && navigator.locks.request) {
+          navigator.locks.request("fc_gps_lock", () => new Promise((resolve) => {
+            window.__releaseGpsLock = resolve;
+          })).catch(() => {});
+        }
+
         document.getElementById("drvSetupControls").classList.add("hidden");
         document.getElementById("drvActiveControls").classList.remove("hidden");
         updateStatusBadge("live", "Ao Vivo");
@@ -3347,31 +3797,31 @@
           showToast("Chave de motorista inválida!", true);
         });
 
-        // 1. Leitura imediata da primeira posição
         navigator.geolocation.getCurrentPosition(
           (pos) => handleIncomingDriverCoords(pos.coords.latitude, pos.coords.longitude, true),
           () => {},
           { enableHighAccuracy: true, timeout: 12000 }
         );
 
-        // 2. Rastreamento contínuo
         watchId = navigator.geolocation.watchPosition(
           (pos) => handleIncomingDriverCoords(pos.coords.latitude, pos.coords.longitude, false),
           () => showToast("Ative o GPS do celular.", true),
           { enableHighAccuracy: true, maximumAge: 8000, timeout: 15000 }
         );
 
-        // 3. Reforço periódico para quando o motorista abrir o Google Maps ou outra aba
         const intervalMs = tripInfo.intervalMs || 20000;
-        if (bgGpsTimer) clearInterval(bgGpsTimer);
-        bgGpsTimer = setInterval(() => {
+        const pollGps = () => {
           if (watchId === null) return;
           navigator.geolocation.getCurrentPosition(
             (pos) => handleIncomingDriverCoords(pos.coords.latitude, pos.coords.longitude, false),
             () => {},
             { enableHighAccuracy: true, maximumAge: 10000, timeout: 12000 }
           );
-        }, intervalMs);
+        };
+
+        if (bgGpsTimer) clearInterval(bgGpsTimer);
+        bgGpsTimer = setInterval(pollGps, intervalMs);
+        startWorkerHeartbeat(intervalMs, pollGps);
       });
 
       document.getElementById("btnDrvNextStop").addEventListener("click", () => {
@@ -3409,6 +3859,7 @@
         if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
         if (bgGpsTimer !== null) { clearInterval(bgGpsTimer); bgGpsTimer = null; }
         if (wakeLock) { wakeLock.release(); wakeLock = null; }
+        if (window.__releaseGpsLock) { window.__releaseGpsLock(); window.__releaseGpsLock = null; }
         stopBackgroundAudioKeepAlive();
 
         await publishDriverUpdate({ status: "concluido" });
@@ -3422,12 +3873,14 @@
     }
 
     // =========================================================================
-    // 4. MODO CLIENTE
+    // 4. MODO CLIENTE (WHATSAPP MOTORISTA + WHATSAPP CENTRAL + CHAT)
     // =========================================================================
     if (isClientMode) {
       document.getElementById("cliCode").textContent = "#" + tripParam;
-      const waMsg = `Olá! Estou acompanhando o transporte #${tripParam} pelo link de rastreio.`;
-      document.getElementById("btnClientWhatsApp").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(waMsg)}`;
+
+      const centralWaMsg = `Olá Central! Estou acompanhando o transporte #${tripParam} pelo link de rastreio.`;
+      document.getElementById("btnClientWhatsAppCentral").href =
+        `https://wa.me/${CONFIG.whatsappCentral}?text=${encodeURIComponent(centralWaMsg)}`;
 
       const cliBadges = [document.getElementById("cliUnreadBadge")];
       subscribeChatUnreadBadge(tripParam, "Cliente", cliBadges);
@@ -3446,6 +3899,22 @@
         navigator.clipboard.writeText(generatedPixPayload);
         showToast("Código Pix Copia e Cola copiado!");
       });
+
+      function updateClientWhatsAppButtons() {
+        const drvPhone = normalizeBrazilPhone(tripInfo.driverPhone);
+        const btnDrv = document.getElementById("btnClientWhatsAppDriver");
+        const btnCen = document.getElementById("btnClientWhatsAppCentral");
+
+        if (drvPhone) {
+          const drvMsg = `Olá${tripInfo.driverName ? " " + tripInfo.driverName : ""}! Estou acompanhando o transporte #${tripParam}.`;
+          btnDrv.href = `https://wa.me/${drvPhone}?text=${encodeURIComponent(drvMsg)}`;
+          btnDrv.classList.remove("hidden");
+          btnCen.style.gridColumn = "auto";
+        } else {
+          btnDrv.classList.add("hidden");
+          btnCen.style.gridColumn = "1 / -1";
+        }
+      }
 
       function renderClientPixPayment() {
         const isPaid = Boolean(tripInfo.paid || (latestLive && latestLive.paid));
@@ -3560,6 +4029,7 @@
             tripInfo = val;
             document.getElementById("cliVehicle").textContent =
               `${val.vehicle || "Utilitário"}${val.driverName ? " • " + val.driverName : ""}`;
+            updateClientWhatsAppButtons();
             updateClientView();
           }
         });
