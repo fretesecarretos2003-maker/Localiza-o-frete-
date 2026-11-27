@@ -56,7 +56,6 @@
       background: #e2e8f0;
     }
 
-    /* Ajuste do mapa no Modo TV Horizontal */
     body.tv-mode #map {
       right: var(--tv-sidebar-w);
       width: auto;
@@ -67,7 +66,6 @@
       filter: invert(100%) hue-rotate(180deg) brightness(92%) contrast(92%);
     }
 
-    /* Cabeçalho Padrão (Mobile) */
     .top-bar {
       position: fixed;
       top: 12px;
@@ -153,7 +151,6 @@
       100% { transform: scale(0.9); opacity: 0; }
     }
 
-    /* Botões Flutuantes */
     .floating-controls {
       position: fixed;
       top: 78px;
@@ -188,7 +185,6 @@
       border-radius: 15px;
     }
 
-    /* Painel Inferior Mobile */
     .bottom-sheet {
       position: fixed;
       bottom: 0;
@@ -355,7 +351,6 @@
       margin-left: 2px;
     }
 
-    /* Paradas */
     .stop-item {
       display: flex;
       align-items: center;
@@ -384,7 +379,6 @@
 
     .stop-badge.final { background: var(--danger); }
 
-    /* Cartão Pix no Cliente */
     .pix-box {
       background: linear-gradient(145deg, rgba(16, 185, 129, 0.16), rgba(59, 130, 246, 0.14));
       border: 1.5px solid rgba(16, 185, 129, 0.55);
@@ -426,20 +420,7 @@
       text-align: center;
     }
 
-    .bg-tip-box {
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      border-radius: 11px;
-      padding: 9px 11px;
-      margin-top: 8px;
-      font-size: 11px;
-      color: #fde68a;
-      line-height: 1.4;
-    }
-
-    /* ========================================================= */
-    /* MODAL DE CONFIRMAÇÃO SOS (MOTORISTA: 190 / 192 / 193)     */
-    /* ========================================================= */
+    /* Modal SOS Motorista */
     #driverSosConfirmModal {
       position: fixed;
       inset: 0;
@@ -483,9 +464,7 @@
     .sos-192 { background: #ea580c; }
     .sos-193 { background: #b91c1c; }
 
-    /* ========================================================= */
-    /* ESTILOS EXCLUSIVOS DA CENTRAL TV (OTIMIZADO P/ 43" A 3M)  */
-    /* ========================================================= */
+    /* Central TV */
     #tvSidebar {
       position: fixed;
       top: 0;
@@ -510,49 +489,15 @@
       gap: 10px;
     }
 
-    .tv-header-title {
-      font-size: 24px;
-      font-weight: 800;
-      display: block;
-    }
+    .tv-header-title { font-size: 24px; font-weight: 800; display: block; }
+    .tv-header-sub { font-size: 17px; color: var(--text-muted); margin-top: 3px; }
+    body.tv-mode #tvSidebar .btn-xs { padding: 10px 15px; font-size: 16px; border-radius: 11px; }
 
-    .tv-header-sub {
-      font-size: 17px;
-      color: var(--text-muted);
-      margin-top: 3px;
-    }
-
-    body.tv-mode #tvSidebar .btn-xs {
-      padding: 10px 15px;
-      font-size: 16px;
-      border-radius: 11px;
-    }
-
-    .tv-login-box {
-      padding: 26px;
-    }
-
-    .tv-login-box h3 {
-      font-size: 25px;
-      margin-bottom: 12px;
-    }
-
-    .tv-login-box p {
-      font-size: 18px;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-      line-height: 1.45;
-    }
-
-    .tv-login-box input {
-      font-size: 20px;
-      padding: 15px 18px;
-    }
-
-    .tv-login-box .btn {
-      font-size: 20px;
-      padding: 16px;
-    }
+    .tv-login-box { padding: 26px; }
+    .tv-login-box h3 { font-size: 25px; margin-bottom: 12px; }
+    .tv-login-box p { font-size: 18px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.45; }
+    .tv-login-box input { font-size: 20px; padding: 15px 18px; }
+    .tv-login-box .btn { font-size: 20px; padding: 16px; }
 
     .tv-mode-bar {
       padding: 15px 20px;
@@ -565,19 +510,8 @@
       gap: 10px;
     }
 
-    .tv-trips-scroll {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px 20px;
-    }
-
-    .tv-empty-msg {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 19px;
-      line-height: 1.55;
-      padding: 32px 14px;
-    }
+    .tv-trips-scroll { flex: 1; overflow-y: auto; padding: 16px 20px; }
+    .tv-empty-msg { text-align: center; color: var(--text-muted); font-size: 19px; line-height: 1.55; padding: 32px 14px; }
 
     .tv-trip-card {
       background: var(--surface);
@@ -589,42 +523,13 @@
       transition: border-color 0.2s, background 0.2s;
     }
 
-    .tv-trip-card.focused {
-      border-color: var(--primary);
-      background: rgba(16, 185, 129, 0.14);
-    }
-
-    .tv-trip-card.sos-card-item {
-      border-color: #ef4444;
-      background: rgba(239, 68, 68, 0.22);
-    }
-
-    .tv-card-code {
-      font-size: 22px;
-      font-weight: 800;
-    }
-
-    .tv-card-status {
-      font-size: 16px;
-      font-weight: 800;
-    }
-
-    .tv-card-vehicle {
-      font-size: 19px;
-      color: var(--text);
-      font-weight: 600;
-      margin-top: 7px;
-    }
-
-    .tv-card-hint {
-      font-size: 16px;
-      color: var(--text-muted);
-    }
-
-    body.tv-mode .unread-pill {
-      font-size: 16px;
-      padding: 4px 10px;
-    }
+    .tv-trip-card.focused { border-color: var(--primary); background: rgba(16, 185, 129, 0.14); }
+    .tv-trip-card.sos-card-item { border-color: #ef4444; background: rgba(239, 68, 68, 0.22); }
+    .tv-card-code { font-size: 22px; font-weight: 800; }
+    .tv-card-status { font-size: 16px; font-weight: 800; }
+    .tv-card-vehicle { font-size: 19px; color: var(--text); font-weight: 600; margin-top: 7px; }
+    .tv-card-hint { font-size: 16px; color: var(--text-muted); }
+    body.tv-mode .unread-pill { font-size: 16px; padding: 4px 10px; }
 
     .tv-chat-panel {
       height: 40%;
@@ -656,33 +561,10 @@
       font-size: 19px;
     }
 
-    .tv-chat-empty {
-      color: var(--text-muted);
-      text-align: center;
-      margin-top: 26px;
-      font-size: 18px;
-    }
-
-    .tv-chat-bubble {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 16px;
-    }
-
-    .tv-chat-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 16px;
-      margin-bottom: 5px;
-      gap: 8px;
-    }
-
-    .tv-chat-text {
-      color: var(--text);
-      font-size: 19px;
-      line-height: 1.4;
-    }
+    .tv-chat-empty { color: var(--text-muted); text-align: center; margin-top: 26px; font-size: 18px; }
+    .tv-chat-bubble { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 16px; }
+    .tv-chat-meta { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 5px; gap: 8px; }
+    .tv-chat-text { color: var(--text); font-size: 19px; line-height: 1.4; }
 
     .tv-focus-hud {
       position: fixed;
@@ -702,45 +584,12 @@
       box-shadow: var(--shadow);
     }
 
-    .tv-hud-code {
-      font-size: 18px;
-      color: #34d399;
-      font-weight: 800;
-    }
-
-    .tv-hud-vehicle {
-      font-size: 28px;
-      font-weight: 800;
-      margin: 4px 0;
-    }
-
-    .tv-hud-stop {
-      font-size: 19px;
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .tv-hud-stats {
-      display: flex;
-      gap: 28px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-
-    .tv-hud-stats div small {
-      display: block;
-      font-size: 16px;
-      color: var(--text-muted);
-      margin-bottom: 3px;
-    }
-
-    .tv-hud-stats div strong {
-      font-size: 34px;
-      font-weight: 800;
-      color: #34d399;
-    }
+    .tv-hud-code { font-size: 18px; color: #34d399; font-weight: 800; }
+    .tv-hud-vehicle { font-size: 28px; font-weight: 800; margin: 4px 0; }
+    .tv-hud-stop { font-size: 19px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tv-hud-stats { display: flex; gap: 28px; text-align: center; flex-shrink: 0; }
+    .tv-hud-stats div small { display: block; font-size: 16px; color: var(--text-muted); margin-bottom: 3px; }
+    .tv-hud-stats div strong { font-size: 34px; font-weight: 800; color: #34d399; }
 
     .tv-truck-label {
       background: rgba(15, 23, 42, 0.94);
@@ -754,7 +603,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
     }
 
-    /* Modal de Emergência SOS (Tela do Gestor e TV) */
+    /* Alerta SOS Gestor/TV */
     #sosAlertModal {
       position: fixed;
       inset: 0;
@@ -790,19 +639,14 @@
     .sos-desc { font-size: 13px; color: var(--text); margin-top: 8px; line-height: 1.45; }
     .sos-coords { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
 
-    body.tv-mode .sos-card {
-      max-width: 680px;
-      padding: 36px 32px;
-      border-width: 3px;
-    }
-
+    body.tv-mode .sos-card { max-width: 680px; padding: 36px 32px; border-width: 3px; }
     body.tv-mode .sos-icon { font-size: 68px; }
     body.tv-mode .sos-title { font-size: 34px; }
     body.tv-mode .sos-desc { font-size: 22px; margin-top: 16px; }
     body.tv-mode .sos-coords { font-size: 18px; margin-top: 12px; }
     body.tv-mode .sos-card .btn { font-size: 20px; padding: 18px; }
 
-    /* Modal de Chat ao Vivo */
+    /* Modal Chat */
     #chatModal {
       position: fixed;
       inset: 0;
@@ -825,11 +669,7 @@
       overflow: hidden;
     }
 
-    body.tv-mode .chat-container {
-      max-width: 820px;
-      margin: 0 auto;
-      height: 86dvh;
-    }
+    body.tv-mode .chat-container { max-width: 820px; margin: 0 auto; height: 86dvh; }
 
     .chat-header {
       padding: 14px 16px;
@@ -845,14 +685,7 @@
     body.tv-mode #chatSub { font-size: 17px !important; }
     body.tv-mode #btnCloseChat { font-size: 18px; padding: 12px 18px; }
 
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
 
     .chat-msg {
       max-width: 82%;
@@ -865,45 +698,21 @@
       align-self: flex-start;
     }
 
-    body.tv-mode .chat-msg {
-      font-size: 21px;
-      padding: 15px 18px;
-    }
+    body.tv-mode .chat-msg { font-size: 21px; padding: 15px 18px; }
+    .chat-msg.mine { align-self: flex-end; background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.45); }
 
-    .chat-msg.mine {
-      align-self: flex-end;
-      background: rgba(16, 185, 129, 0.2);
-      border-color: rgba(16, 185, 129, 0.45);
-    }
-
-    .chat-meta {
-      font-size: 10px;
-      font-weight: 700;
-      margin-bottom: 3px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
+    .chat-meta { font-size: 10px; font-weight: 700; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
     body.tv-mode .chat-meta { font-size: 16px; margin-bottom: 6px; }
 
     .role-gestor { color: #fbbf24; }
     .role-motorista { color: #38bdf8; }
     .role-cliente { color: #34d399; }
 
-    .chat-input-bar {
-      padding: 10px 12px 16px;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      display: flex;
-      gap: 8px;
-    }
-
+    .chat-input-bar { padding: 10px 12px 16px; background: var(--surface); border-top: 1px solid var(--border); display: flex; gap: 8px; }
     body.tv-mode .chat-input-bar { padding: 18px 22px 24px; gap: 14px; }
     body.tv-mode .chat-input-bar input { font-size: 20px; padding: 16px 18px; }
     body.tv-mode .chat-input-bar .btn { font-size: 20px; padding: 16px 24px; }
 
-    /* Marcadores no Mapa */
     .truck-marker {
       width: 44px;
       height: 44px;
@@ -916,17 +725,8 @@
       font-size: 20px;
     }
 
-    body.tv-mode .truck-marker {
-      width: 62px;
-      height: 62px;
-      border-width: 4px;
-      font-size: 30px;
-    }
-
-    .truck-marker.sos {
-      border-color: #ef4444;
-      background: #7f1d1d;
-    }
+    body.tv-mode .truck-marker { width: 62px; height: 62px; border-width: 4px; font-size: 30px; }
+    .truck-marker.sos { border-color: #ef4444; background: #7f1d1d; }
 
     .pin-marker {
       width: 32px;
@@ -942,17 +742,10 @@
       font-weight: 800;
     }
 
-    body.tv-mode .pin-marker {
-      width: 48px;
-      height: 48px;
-      border-width: 3px;
-      font-size: 20px;
-    }
-
+    body.tv-mode .pin-marker { width: 48px; height: 48px; border-width: 3px; font-size: 20px; }
     .pin-marker.final { background: #ef4444; }
     .pin-marker.done { background: #64748b; opacity: 0.75; }
 
-    /* Tela Preta OLED */
     #oledOverlay {
       position: fixed;
       inset: 0;
@@ -1015,7 +808,6 @@
 
   <div id="map"></div>
 
-  <!-- Cabeçalho -->
   <header class="top-bar">
     <div class="brand">
       <div class="brand-icon">🚚</div>
@@ -1030,7 +822,6 @@
     </div>
   </header>
 
-  <!-- Botões Flutuantes -->
   <div class="floating-controls">
     <button type="button" id="btnThemeToggle" class="float-btn">🌙 Escuro</button>
     <button type="button" id="btnRecenter" class="float-btn hidden">🎯 Centralizar</button>
@@ -1100,7 +891,6 @@
         </div>
       </div>
 
-      <!-- Seleção e Cadastro de Veículos -->
       <div class="form-group">
         <label>Veículo (selecione ou cadastre novo no +)</label>
         <div class="input-row">
@@ -1138,7 +928,6 @@
         ✅ Criar Transporte e Gerar Links
       </button>
 
-      <!-- Barra de Controle Remoto da TV -->
       <div id="tvRemoteControlBox" class="info-card" style="margin-top: 14px; border-color: rgba(59, 130, 246, 0.45);">
         <div class="info-flex">
           <div>
@@ -1281,7 +1070,6 @@
     </div>
   </aside>
 
-  <!-- HUD Inferior na TV quando um transporte está em Foco Tela Cheia -->
   <div id="tvFocusHud" class="tv-focus-hud hidden">
     <div style="min-width: 0; flex: 1;">
       <div class="tv-hud-code" id="tvHudCode">#0000 • AO VIVO</div>
@@ -1312,6 +1100,16 @@
       <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Motorista</span>
       <div class="sheet-handle"></div>
       <button type="button" class="btn-toggle-sheet">Minimizar</button>
+    </div>
+
+    <!-- Banner exibido apenas quando aberto no Chrome (fora do App Android) -->
+    <div id="drvOpenNativeBanner" class="info-card hidden" style="border-color: rgba(16, 185, 129, 0.55); background: rgba(16, 185, 129, 0.14);">
+      <div style="font-size: 12px; font-weight: 700; color: #34d399; margin-bottom: 6px;">
+        📡 Para GPS contínuo ao usar o Maps/Waze:
+      </div>
+      <a id="btnLaunchNativeApp" href="#" class="btn btn-primary btn-sm" style="width: 100%;">
+        📲 Abrir no App Fretes Motorista
+      </a>
     </div>
 
     <div class="info-card info-flex">
@@ -1349,8 +1147,8 @@
     <div id="drvActiveControls" class="hidden">
       <div class="info-card info-flex">
         <div>
-          <span style="color: var(--text-muted); font-size: 12px; display: block;">Posições GPS enviadas:</span>
-          <span id="drvBgAudioStatus" style="font-size: 11px; color: #34d399; font-weight: 600;">🔊 Segundo plano ativo</span>
+          <span style="color: var(--text-muted); font-size: 12px; display: block;">Status do Rastreio:</span>
+          <span id="drvBgAudioStatus" style="font-size: 11px; color: #34d399; font-weight: 700;">📡 Transmitindo ao vivo</span>
         </div>
         <strong id="drvSendCount" style="font-size: 16px;">0</strong>
       </div>
@@ -1380,13 +1178,8 @@
       <button type="button" id="btnDrvFinish" class="btn btn-danger" style="margin-top: 8px;">
         ■ Finalizar Entrega Completa
       </button>
-
-      <div class="bg-tip-box">
-        💡 <strong>Dica ao usar Google Maps:</strong> Mantenha o Maps em <strong>janelinha flutuante (Picture-in-Picture)</strong> ou <strong>Tela Dividida</strong> para que o Android não pause o envio do GPS.
-      </div>
     </div>
 
-    <!-- Botões pós-finalização -->
     <div id="drvPostFinishControls" class="hidden">
       <button type="button" id="btnDrvConfirmPaidAfter" class="btn btn-primary" style="margin-bottom: 8px;">
         💰 Confirmar Pagamento Recebido
@@ -1397,7 +1190,7 @@
     </div>
   </section>
 
-  <!-- Modal de Confirmação SOS (Motorista: Escolha 190, 192 ou 193) -->
+  <!-- Modal Confirmação SOS (Motorista: 190 / 192 / 193) -->
   <div id="driverSosConfirmModal" class="hidden">
     <div class="sos-confirm-card">
       <div style="font-size: 38px; margin-bottom: 6px;">🚨</div>
@@ -1508,9 +1301,7 @@
     </div>
   </section>
 
-  <!-- ========================================================= -->
-  <!-- MODAL DE ALERTA SOS (PARA O GESTOR E PARA A TV)           -->
-  <!-- ========================================================= -->
+  <!-- Modal Alerta SOS -->
   <div id="sosAlertModal" class="hidden">
     <div class="sos-card">
       <div class="sos-icon">🚨</div>
@@ -1529,9 +1320,7 @@
     </div>
   </div>
 
-  <!-- ========================================================= -->
-  <!-- MODAL DE CHAT AO VIVO (GESTOR / MOTORISTA / CLIENTE)      -->
-  <!-- ========================================================= -->
+  <!-- Modal Chat -->
   <div id="chatModal" class="hidden">
     <div class="chat-container">
       <div class="chat-header">
@@ -1562,6 +1351,7 @@
     const CONFIG = {
       empresa: "Fretes e Carretos",
       whatsappCentral: "5511958597349",
+      androidAppPackage: "br.com.fretesecarretos.motorista",
       defaultVehicles: [
         "Picape Utilitária (Montana)",
         "Caminhão Baú (Hyundai HR)",
@@ -1587,6 +1377,11 @@
     const isClientMode = Boolean(tripParam && !isDriverMode && !isManagerTrackMode);
     const isManagerMode = !tripParam && !isTvMode;
 
+    const isInsideNativeApp = Boolean(
+      (window.AndroidGPS && typeof window.AndroidGPS.isNativeApp === "function" && window.AndroidGPS.isNativeApp()) ||
+      params.get("app") === "1"
+    );
+
     if (isTvMode) {
       document.body.classList.add("tv-mode");
       document.getElementById("tvSidebar").classList.remove("hidden");
@@ -1596,7 +1391,6 @@
     if (isDriverMode) document.getElementById("driverView").classList.remove("hidden");
     if (isClientMode) document.getElementById("clientView").classList.remove("hidden");
 
-    // Minimizar / Expandir painel inferior mobile
     document.querySelectorAll("[data-toggle-sheet]").forEach((row) => {
       row.addEventListener("click", () => {
         const sheet = document.getElementById(row.getAttribute("data-toggle-sheet"));
@@ -1665,7 +1459,6 @@
       return window.location.origin + window.location.pathname;
     }
 
-    // SHA-256 puro em JS para sincronizar Gestor e TV sem expor a senha
     function sha256Hex(str) {
       const ascii = unescape(encodeURIComponent(str));
       function rightRotate(value, amount) {
@@ -1731,9 +1524,7 @@
       return result;
     }
 
-    // =========================================================================
-    // EFEITOS SONOROS VIA WEB AUDIO API (CHAT E SIRENE SOS)
-    // =========================================================================
+    // Sons via Web Audio API
     let soundCtx = null;
     function getSoundCtx() {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -1787,9 +1578,7 @@
       if (sosAlarmTimer) return;
       const ringOnce = () => {
         try {
-          if ("vibrate" in navigator) {
-            navigator.vibrate([400, 150, 400, 150, 600]);
-          }
+          if ("vibrate" in navigator) navigator.vibrate([400, 150, 400, 150, 600]);
           const ctx = getSoundCtx();
           if (!ctx) return;
           const now = ctx.currentTime;
@@ -1821,9 +1610,7 @@
       if ("vibrate" in navigator) navigator.vibrate(0);
     }
 
-    // =========================================================================
-    // GERADOR OFICIAL DE PIX COPIA E COLA (EMV / BANCO CENTRAL)
-    // =========================================================================
+    // Pix Copia e Cola EMV
     function crc16Pix(str) {
       let crc = 0xFFFF;
       for (let i = 0; i < str.length; i++) {
@@ -1863,9 +1650,7 @@
       return payload + crc16Pix(payload);
     }
 
-    // =========================================================================
-    // MAPA PADRÃO OPENSTREETMAP + ALTERNÂNCIA MODO ESCURO
-    // =========================================================================
+    // Mapa OpenStreetMap
     let map = null, truckMarker = null, routeLayer = null;
     let stopMarkers = [], autoFollow = true, initialFitDone = false;
     let onMapClickHandler = null;
@@ -2016,17 +1801,13 @@
       return null;
     }
 
-    // =========================================================================
-    // ÁUDIO DE SEGUNDO PLANO + WEB WORKER + WEB LOCK (REFORÇO NO NAVEGADOR)
-    // =========================================================================
+    // Fallback de áudio silencioso apenas se abrir fora do App Nativo
     let bgAudioEl = null;
-    let bgWorker = null;
-
-    function startBackgroundAudioKeepAlive(onStatusChange) {
+    function startWebFallbackAudio() {
+      if (isInsideNativeApp) return;
       try {
         if (!bgAudioEl) {
-          const sampleRate = 8000;
-          const numSamples = sampleRate * 2;
+          const sampleRate = 8000, numSamples = 16000;
           const buffer = new ArrayBuffer(44 + numSamples);
           const view = new DataView(buffer);
           const writeStr = (off, s) => { for (let i = 0; i < s.length; i++) view.setUint8(off + i, s.charCodeAt(i)); };
@@ -2043,73 +1824,22 @@
           view.setUint16(34, 8, true);
           writeStr(36, "data");
           view.setUint32(40, numSamples, true);
-
           for (let i = 0; i < numSamples; i++) {
-            const wave = Math.round(Math.sin((2 * Math.PI * 30 * i) / sampleRate) * 2);
-            view.setUint8(44 + i, 128 + wave);
+            view.setUint8(44 + i, 128 + Math.round(Math.sin((2 * Math.PI * 30 * i) / sampleRate) * 2));
           }
-
-          const blob = new Blob([buffer], { type: "audio/wav" });
-          bgAudioEl = new Audio(URL.createObjectURL(blob));
+          bgAudioEl = new Audio(URL.createObjectURL(new Blob([buffer], { type: "audio/wav" })));
           bgAudioEl.loop = true;
           bgAudioEl.volume = 0.03;
-          bgAudioEl.setAttribute("playsinline", "");
         }
-
-        const playPromise = bgAudioEl.play();
-        if (playPromise && typeof playPromise.then === "function") {
-          playPromise
-            .then(() => {
-              if ("mediaSession" in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                  title: "Rastreio GPS Ativo",
-                  artist: CONFIG.empresa,
-                  album: "Transmissão em Segundo Plano"
-                });
-                navigator.mediaSession.playbackState = "playing";
-                try {
-                  navigator.mediaSession.setActionHandler("play", () => bgAudioEl.play().catch(() => {}));
-                  navigator.mediaSession.setActionHandler("pause", () => bgAudioEl.play().catch(() => {}));
-                } catch (_) {}
-              }
-              if (onStatusChange) onStatusChange(true);
-            })
-            .catch(() => {
-              if (onStatusChange) onStatusChange(false);
-            });
-        }
-      } catch (_) {
-        if (onStatusChange) onStatusChange(false);
-      }
-    }
-
-    function stopBackgroundAudioKeepAlive() {
-      if (bgAudioEl) {
-        bgAudioEl.pause();
-        bgAudioEl.currentTime = 0;
-      }
-      if ("mediaSession" in navigator) {
-        navigator.mediaSession.playbackState = "none";
-      }
-      if (bgWorker) {
-        bgWorker.terminate();
-        bgWorker = null;
-      }
-    }
-
-    function startWorkerHeartbeat(intervalMs, onTick) {
-      if (bgWorker) bgWorker.terminate();
-      try {
-        const workerCode = `setInterval(() => postMessage("tick"), ${Math.max(5000, intervalMs)});`;
-        const blob = new Blob([workerCode], { type: "application/javascript" });
-        bgWorker = new Worker(URL.createObjectURL(blob));
-        bgWorker.onmessage = () => onTick();
+        bgAudioEl.play().catch(() => {});
       } catch (_) {}
     }
 
-    // =========================================================================
-    // CONEXÃO FIREBASE
-    // =========================================================================
+    function stopWebFallbackAudio() {
+      if (bgAudioEl) bgAudioEl.pause();
+    }
+
+    // Conexão Firebase
     let fb = null;
     async function connectFirebase() {
       if (fb) return fb;
@@ -2145,7 +1875,7 @@
     }
 
     // =========================================================================
-    // SISTEMA DE CHAT AO VIVO COM NOTIFICAÇÃO SONORA
+    // CHAT AO VIVO
     // =========================================================================
     let activeChatTripId = null;
     let activeChatRole = "Cliente";
@@ -2296,7 +2026,7 @@
     });
 
     // =========================================================================
-    // CONTROLE COMPARTILHADO DE ALERTA SOS (PARA GESTOR MOBILE E CENTRAL TV)
+    // ALERTA SOS COMPARTILHADO (GESTOR E TV)
     // =========================================================================
     let activeSosTrip = null;
     let activeSosTime = 0;
@@ -2374,7 +2104,7 @@
     });
 
     // =========================================================================
-    // 1. MODO GESTOR (PAINEL PRINCIPAL + CADASTRO DE VEÍCULOS)
+    // 1. MODO GESTOR
     // =========================================================================
     if (isManagerMode) {
       let adminPassword = "";
@@ -2388,7 +2118,6 @@
       const monitoredTripIds = new Set();
       const paidTripsMap = {};
 
-      // Gerenciamento de veículos padrão + personalizados
       function renderVehiclesDropdown(selectValue = null) {
         const sel = document.getElementById("mgrVehicle");
         const prev = selectValue || sel.value;
@@ -2402,9 +2131,7 @@
           sel.appendChild(opt);
         });
 
-        if (prev && allVehicles.includes(prev)) {
-          sel.value = prev;
-        }
+        if (prev && allVehicles.includes(prev)) sel.value = prev;
         updateDeleteVehicleButton();
       }
 
@@ -2424,9 +2151,7 @@
       document.getElementById("btnToggleNewVehicle").addEventListener("click", () => {
         const box = document.getElementById("newVehicleBox");
         box.classList.toggle("hidden");
-        if (!box.classList.contains("hidden")) {
-          document.getElementById("newVehicleInput").focus();
-        }
+        if (!box.classList.contains("hidden")) document.getElementById("newVehicleInput").focus();
       });
 
       document.getElementById("btnSaveNewVehicle").addEventListener("click", async () => {
@@ -2440,9 +2165,7 @@
           localStorage.setItem("fc_custom_vehicles", JSON.stringify(customVehiclesList));
           if (adminPassHash) {
             const conn = await connectFirebase();
-            if (conn) {
-              conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/veiculos`), customVehiclesList).catch(() => {});
-            }
+            if (conn) conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/veiculos`), customVehiclesList).catch(() => {});
           }
         }
 
@@ -2464,16 +2187,13 @@
 
         if (adminPassHash) {
           const conn = await connectFirebase();
-          if (conn) {
-            conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/veiculos`), customVehiclesList).catch(() => {});
-          }
+          if (conn) conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/veiculos`), customVehiclesList).catch(() => {});
         }
         showToast("Veículo removido.");
       });
 
       document.getElementById("btnCopyTvLink").addEventListener("click", () => {
-        const tvUrl = `${baseUrl()}?tv=1`;
-        navigator.clipboard.writeText(tvUrl);
+        navigator.clipboard.writeText(`${baseUrl()}?tv=1`);
         showToast("Link da Central TV copiado!");
       });
 
@@ -2492,23 +2212,16 @@
         }
       }
 
-      document.getElementById("btnTvShowAllRemote").addEventListener("click", () => {
-        setTvRemoteFocus(null);
-      });
+      document.getElementById("btnTvShowAllRemote").addEventListener("click", () => setTvRemoteFocus(null));
 
       async function confirmPaymentAsManager(item) {
         if (!confirm(`Confirmar que o pagamento do frete #${item.tripId} foi recebido?`)) return;
         const conn = await connectFirebase();
         if (!conn) return;
         try {
-          await conn.update(conn.ref(conn.db, `fretes/${item.tripId}/info`), {
-            paid: true,
-            paidAt: Date.now()
-          });
+          await conn.update(conn.ref(conn.db, `fretes/${item.tripId}/info`), { paid: true, paidAt: Date.now() });
           if (adminPassHash) {
-            await conn.update(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos/${item.tripId}`), {
-              paid: true
-            });
+            await conn.update(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos/${item.tripId}`), { paid: true });
           }
           paidTripsMap[item.tripId] = true;
           renderSavedTripsList();
@@ -2521,7 +2234,6 @@
       function attachTripListeners(item, conn) {
         if (!item || !item.tripId || monitoredTripIds.has(item.tripId)) return;
         monitoredTripIds.add(item.tripId);
-
         if (item.paid) paidTripsMap[item.tripId] = true;
 
         conn.onValue(conn.ref(conn.db, `fretes/${item.tripId}/info`), (iSnap) => {
@@ -2544,9 +2256,7 @@
             }
             if (latest.sosAt) {
               const ackTs = parseInt(localStorage.getItem(`fc_ack_sos_${item.tripId}`) || "0", 10);
-              if (latest.sosAt > ackTs) {
-                triggerSosAlertModal(item, latest);
-              }
+              if (latest.sosAt > ackTs) triggerSosAlertModal(item, latest);
             }
           }
         });
@@ -2561,7 +2271,6 @@
         connectFirebase().then((conn) => {
           if (!conn) return;
 
-          // Sincroniza veículos personalizados salvos na nuvem
           conn.onValue(conn.ref(conn.db, `gestor_privado/${adminPassHash}/veiculos`), (vSnap) => {
             const cloudVehicles = vSnap.val();
             if (Array.isArray(cloudVehicles)) {
@@ -2586,7 +2295,6 @@
             managerTripsList = deduplicated;
             localStorage.setItem("fc_saved_trips", JSON.stringify(deduplicated));
             renderSavedTripsList();
-
             deduplicated.forEach((item) => attachTripListeners(item, conn));
           });
         });
@@ -2614,11 +2322,8 @@
         verifyAdminPassword(savedPass).then((ok) => {
           btnLogin.disabled = false;
           btnLogin.textContent = "Desbloquear Painel";
-          if (ok) {
-            unlockManagerUI(savedPass);
-          } else {
-            localStorage.removeItem("fc_admin_pass");
-          }
+          if (ok) unlockManagerUI(savedPass);
+          else localStorage.removeItem("fc_admin_pass");
         });
       }
 
@@ -2628,13 +2333,10 @@
           showToast("Digite a senha do gestor.", true);
           return;
         }
-
         const btnLogin = document.getElementById("btnAdminLogin");
         btnLogin.disabled = true;
         btnLogin.textContent = "Verificando senha...";
-
         const isValid = await verifyAdminPassword(val);
-
         btnLogin.disabled = false;
         btnLogin.textContent = "Desbloquear Painel";
 
@@ -2643,10 +2345,7 @@
           showToast("Senha incorreta! Acesso negado.", true);
           return;
         }
-
-        if (document.getElementById("rememberPassCheck").checked) {
-          localStorage.setItem("fc_admin_pass", val);
-        }
+        if (document.getElementById("rememberPassCheck").checked) localStorage.setItem("fc_admin_pass", val);
         unlockManagerUI(val);
         showToast("Painel desbloqueado!");
       });
@@ -2726,13 +2425,10 @@
         btnCreate.textContent = "Criando transporte...";
 
         let tripId = document.getElementById("mgrTripId").value.trim().replace(/[^a-zA-Z0-9-_]/g, "");
-        if (!tripId || managerTripsList.some((t) => t.tripId === tripId)) {
-          tripId = generateUniqueTripId();
-        }
+        if (!tripId || managerTripsList.some((t) => t.tripId === tripId)) tripId = generateUniqueTripId();
 
         const driverName = document.getElementById("mgrDriverName").value.trim();
-        const driverPhoneRaw = document.getElementById("mgrDriverPhone").value.trim();
-        const driverPhone = normalizeBrazilPhone(driverPhoneRaw);
+        const driverPhone = normalizeBrazilPhone(document.getElementById("mgrDriverPhone").value.trim());
         const vehicle = document.getElementById("mgrVehicle").value;
         const intervalMs = parseInt(document.getElementById("mgrInterval").value, 10);
         const pixKey = document.getElementById("mgrPixKey").value.trim();
@@ -2742,16 +2438,8 @@
         if (pixKey) localStorage.setItem("fc_default_pix", pixKey);
 
         const tripSummary = {
-          tripId,
-          driverKey,
-          vehicle,
-          driverName,
-          driverPhone,
-          pixKey,
-          pixAmount,
-          paid: false,
-          stopsCount: draftStops.length,
-          createdAt: Date.now()
+          tripId, driverKey, vehicle, driverName, driverPhone, pixKey, pixAmount,
+          paid: false, stopsCount: draftStops.length, createdAt: Date.now()
         };
 
         try {
@@ -2761,15 +2449,8 @@
           });
 
           await conn.set(conn.ref(conn.db, `fretes/${tripId}/info`), {
-            vehicle: vehicle,
-            driverName: driverName,
-            driverPhone: driverPhone,
-            intervalMs: intervalMs,
-            pixKey: pixKey,
-            pixAmount: pixAmount,
-            paid: false,
-            stops: draftStops,
-            createdAt: Date.now()
+            vehicle, driverName, driverPhone, intervalMs, pixKey, pixAmount,
+            paid: false, stops: draftStops, createdAt: Date.now()
           });
 
           await conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos/${tripId}`), tripSummary);
@@ -2847,13 +2528,9 @@
           `;
 
           const paidBtn = card.querySelector("[data-paid]");
-          if (paidBtn && !isPaid) {
-            paidBtn.addEventListener("click", () => confirmPaymentAsManager(item));
-          }
+          if (paidBtn && !isPaid) paidBtn.addEventListener("click", () => confirmPaymentAsManager(item));
 
-          card.querySelector("[data-tvfocus]").addEventListener("click", () => {
-            setTvRemoteFocus(isFocusedOnTv ? null : item.tripId);
-          });
+          card.querySelector("[data-tvfocus]").addEventListener("click", () => setTvRemoteFocus(isFocusedOnTv ? null : item.tripId));
 
           card.querySelector("[data-chat]").addEventListener("click", () => {
             openChatForTrip(item.tripId, "Gestor", "Gestor (Central)", [
@@ -2883,9 +2560,7 @@
               const conn = await connectFirebase();
               if (conn) {
                 conn.remove(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos/${item.tripId}`)).catch(() => {});
-                if (currentTvFocusedTripId === item.tripId) {
-                  setTvRemoteFocus(null);
-                }
+                if (currentTvFocusedTripId === item.tripId) setTvRemoteFocus(null);
               }
             }
           });
@@ -2896,15 +2571,13 @@
     }
 
     // =========================================================================
-    // 1B. MODO MAPA DO GESTOR (?id=...&gestor=1) — MONITORA E FALA COMO GESTOR
+    // 1B. MODO MAPA DO GESTOR (?id=...&gestor=1)
     // =========================================================================
     if (isManagerTrackMode) {
       document.getElementById("mgrTrackCode").textContent = "#" + tripParam;
       document.getElementById("btnMgrTrackBack").href = baseUrl();
 
-      let mgrTrackPass = "";
       let mgrTrackHash = "";
-      let isMgrTrackVerified = false;
       let tripInfo = { stops: [] };
       let latestLive = null;
       let lastUpdateTimestamp = null;
@@ -3049,9 +2722,7 @@
       }
 
       function unlockManagerTrackView(pass) {
-        mgrTrackPass = pass;
         mgrTrackHash = sha256Hex(pass);
-        isMgrTrackVerified = true;
         document.getElementById("mgrTrackAuthBox").classList.add("hidden");
         document.getElementById("mgrTrackContent").classList.remove("hidden");
         startManagerTrackListeners();
@@ -3083,7 +2754,7 @@
     }
 
     // =========================================================================
-    // 2. MODO CENTRAL TV (HORIZONTAL WIDESCREEN + ACOMPANHAMENTO AUTOMÁTICO)
+    // 2. MODO CENTRAL TV
     // =========================================================================
     if (isTvMode) {
       updateStatusBadge("live", "Central TV");
@@ -3109,11 +2780,8 @@
       });
 
       document.getElementById("btnTvFullscreen").addEventListener("click", () => {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen().catch(() => {});
-        } else {
-          document.exitFullscreen().catch(() => {});
-        }
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+        else document.exitFullscreen().catch(() => {});
       });
 
       document.getElementById("btnTvFitAll").addEventListener("click", () => {
@@ -3155,9 +2823,7 @@
         });
       }
 
-      onSosLocateCallback = (tripItem) => {
-        setTvFocusedTrip(tripItem.tripId);
-      };
+      onSosLocateCallback = (tripItem) => setTvFocusedTrip(tripItem.tripId);
 
       function setTvFocusedTrip(tripIdOrNull) {
         focusedTripId = tripIdOrNull && tvTripsMap[tripIdOrNull] ? tripIdOrNull : null;
@@ -3259,11 +2925,9 @@
           const hasSos = live && live.sosAt && live.sosAt > parseInt(localStorage.getItem(`fc_ack_sos_${tId}`) || "0", 10);
 
           let statusHtml = `<span class="tv-card-status" style="color:#fbbf24;">● AGUARDANDO GPS</span>`;
-          if (hasSos) {
-            statusHtml = `<span class="tv-card-status" style="color:#f87171;">🚨 SOS ATIVO</span>`;
-          } else if (live && live.status === "concluido") {
-            statusHtml = `<span class="tv-card-status" style="color:#60a5fa;">✓ ENTREGUE${isPaid ? " • PAGO" : ""}</span>`;
-          } else if (live && live.lat && live.lng) {
+          if (hasSos) statusHtml = `<span class="tv-card-status" style="color:#f87171;">🚨 SOS ATIVO</span>`;
+          else if (live && live.status === "concluido") statusHtml = `<span class="tv-card-status" style="color:#60a5fa;">✓ ENTREGUE${isPaid ? " • PAGO" : ""}</span>`;
+          else if (live && live.lat && live.lng) {
             const sec = Math.max(0, Math.floor((Date.now() - (live.updatedAt || Date.now())) / 1000));
             statusHtml = `<span class="tv-card-status" style="color:#34d399;">● AO VIVO (${sec < 5 ? "agora" : sec + "s"})</span>`;
           }
@@ -3286,10 +2950,7 @@
             </div>
           `;
 
-          card.addEventListener("click", () => {
-            setTvFocusedTrip(isFocused ? null : tId);
-          });
-
+          card.addEventListener("click", () => setTvFocusedTrip(isFocused ? null : tId));
           container.appendChild(card);
         });
       }
@@ -3305,7 +2966,6 @@
           }
         });
 
-        // MODO FOCO EM TRANSPORTE ESPECÍFICO (TELA CHEIA)
         if (focusedTripId && tvTripsMap[focusedTripId]) {
           const info = tvTripInfos[focusedTripId] || tvTripsMap[focusedTripId];
           const live = tvTripLive[focusedTripId];
@@ -3383,7 +3043,6 @@
           return;
         }
 
-        // MODO VISÃO GERAL (TODOS OS TRANSPORTES ATIVOS NO MAPA)
         const allCoords = [];
         const liveCoords = [];
         const stateParts = [];
@@ -3426,11 +3085,8 @@
         if (allCoords.length > 0 && (!tvUserDraggedOverview || forceFit)) {
           if (forceFit || newSignature !== tvLastOverviewSignature) {
             tvLastOverviewSignature = newSignature;
-            if (allCoords.length === 1) {
-              map.setView(allCoords[0], 16);
-            } else {
-              map.fitBounds(L.latLngBounds(allCoords), { padding: [120, 120] });
-            }
+            if (allCoords.length === 1) map.setView(allCoords[0], 16);
+            else map.fitBounds(L.latLngBounds(allCoords), { padding: [120, 120] });
           } else if (liveCoords.length === 1 && allCoords.length === 1) {
             map.panTo(liveCoords[0]);
           }
@@ -3456,9 +3112,7 @@
           conn.onValue(conn.ref(conn.db, `gestor_privado/${tvPassHash}/tv_control`), (snap) => {
             const ctrl = snap.val();
             const targetId = ctrl && ctrl.focusedTripId ? ctrl.focusedTripId : null;
-            if (targetId !== focusedTripId) {
-              setTvFocusedTrip(targetId);
-            }
+            if (targetId !== focusedTripId) setTvFocusedTrip(targetId);
           });
 
           conn.onValue(conn.ref(conn.db, `gestor_privado/${tvPassHash}/ativos`), (snap) => {
@@ -3538,20 +3192,28 @@
     }
 
     // =========================================================================
-    // 3. MODO MOTORISTA (SOS 190/192/193 + WHATSAPP CENTRAL + GPS 2º PLANO)
+    // 3. MODO MOTORISTA (INTEGRADO COM APP ANDROID NATIVO)
     // =========================================================================
     if (isDriverMode) {
       document.getElementById("drvTripCode").textContent = "#" + tripParam;
 
-      // Configura os botões "WhatsApp Central" (+5511958597349) para o Motorista
       const centralWaMsg = `Olá Central! Sou o motorista do transporte #${tripParam}.`;
       const centralWaHref = `https://wa.me/${CONFIG.whatsappCentral}?text=${encodeURIComponent(centralWaMsg)}`;
       document.getElementById("btnDrvWaCentralSetup").href = centralWaHref;
       document.getElementById("btnDrvWaCentralActive").href = centralWaHref;
       document.getElementById("btnDrvWaCentralDone").href = centralWaHref;
 
+      // Se abriu no navegador Android (fora do App Nativo), exibe atalho para abrir no App
+      if (!isInsideNativeApp && /android/i.test(navigator.userAgent)) {
+        const banner = document.getElementById("drvOpenNativeBanner");
+        const btnApp = document.getElementById("btnLaunchNativeApp");
+        const cleanPath = `${window.location.host}${window.location.pathname}${window.location.search}`;
+        btnApp.href = `intent://${cleanPath}#Intent;scheme=https;package=${CONFIG.androidAppPackage};end`;
+        banner.classList.remove("hidden");
+      }
+
       let tripInfo = { stops: [], intervalMs: 20000, vehicle: "Utilitário" };
-      let currentStopIdx = 0, watchId = null, bgGpsTimer = null, wakeLock = null;
+      let currentStopIdx = 0, watchId = null, wakeLock = null;
       let lastSentTime = 0, lastSentCoords = null, sendCounter = 0;
       let isTripFinished = false;
       let isPaymentConfirmed = false;
@@ -3571,7 +3233,6 @@
       document.getElementById("btnDrvChatSetup").addEventListener("click", openDriverChat);
       document.getElementById("btnDrvChat").addEventListener("click", openDriverChat);
 
-      // Modal de confirmação SOS (evita toque acidental e permite escolher 190/192/193)
       document.getElementById("btnDrvSos").addEventListener("click", () => {
         document.getElementById("driverSosConfirmModal").classList.remove("hidden");
       });
@@ -3628,12 +3289,8 @@
           btnAfter.disabled = true;
         }
 
-        if (!isTripFinished && watchId !== null) {
-          btnActive.classList.remove("hidden");
-        }
-        if (isTripFinished) {
-          btnAfter.classList.remove("hidden");
-        }
+        if (!isTripFinished && watchId !== null) btnActive.classList.remove("hidden");
+        if (isTripFinished) btnAfter.classList.remove("hidden");
       }
 
       async function handleDriverConfirmPayment() {
@@ -3667,11 +3324,8 @@
         document.getElementById("btnOpenGmaps").href =
           `https://www.google.com/maps/dir/?api=1&destination=${activeStop.lat},${activeStop.lng}&travelmode=driving`;
 
-        if (!isLast && watchId !== null) {
-          document.getElementById("btnDrvNextStop").classList.remove("hidden");
-        } else {
-          document.getElementById("btnDrvNextStop").classList.add("hidden");
-        }
+        if (!isLast && watchId !== null) document.getElementById("btnDrvNextStop").classList.remove("hidden");
+        else document.getElementById("btnDrvNextStop").classList.add("hidden");
       }
 
       connectFirebase().then((conn) => {
@@ -3703,7 +3357,7 @@
           updatedAt: Date.now(),
           ...extra
         };
-        return conn.set(conn.ref(conn.db, `fretes/${tripParam}/updates/${driverKeyParam}`), payload);
+        return conn.update(conn.ref(conn.db, `fretes/${tripParam}/updates/${driverKeyParam}`), payload);
       }
 
       function handleIncomingDriverCoords(lat, lng, forceSend = false) {
@@ -3737,55 +3391,28 @@
         document.getElementById("oledStatusText").textContent =
           `Último envio: ${new Date().toLocaleTimeString("pt-BR")} (${sendCounter} envios)`;
 
-        publishDriverUpdate({ lat, lng });
+        // Quando está no App Nativo, o LocationTrackingService já envia em 2º plano
+        if (!window.AndroidGPS) {
+          publishDriverUpdate({ lat, lng });
+        }
       }
 
-      // Envia posição imediatamente quando o motorista volta para a aba do navegador
-      document.addEventListener("visibilitychange", async () => {
-        if (document.visibilityState === "visible" && watchId !== null) {
-          try {
-            if ("wakeLock" in navigator && !wakeLock) {
-              wakeLock = await navigator.wakeLock.request("screen");
-            }
-          } catch (_) {}
-          if (bgAudioEl && bgAudioEl.paused) {
-            bgAudioEl.play().catch(() => {});
-          }
-          navigator.geolocation.getCurrentPosition(
-            (pos) => handleIncomingDriverCoords(pos.coords.latitude, pos.coords.longitude, true),
-            () => {},
-            { enableHighAccuracy: true, timeout: 10000 }
-          );
-        }
-      });
-
       document.getElementById("btnDrvStart").addEventListener("click", async () => {
-        if (!("geolocation" in navigator)) {
-          alert("Seu navegador não suporta GPS.");
-          return;
-        }
+        const intervalMs = tripInfo.intervalMs || 20000;
 
-        const bgStatusEl = document.getElementById("drvBgAudioStatus");
-        startBackgroundAudioKeepAlive((ok) => {
-          if (ok) {
-            bgStatusEl.textContent = "🔊 Notificação 2º plano ativa";
-            bgStatusEl.style.color = "#34d399";
-          } else {
-            bgStatusEl.textContent = "⚠️ Toque na tela p/ ativar 2º plano";
-            bgStatusEl.style.color = "#fbbf24";
-          }
-        });
+        // Aciona o Serviço Nativo do Android se estiver dentro do App
+        if (window.AndroidGPS && typeof window.AndroidGPS.startTracking === "function") {
+          window.AndroidGPS.startTracking(tripParam, driverKeyParam, intervalMs);
+          document.getElementById("drvBgAudioStatus").textContent = "🛰️ GPS Nativo 2º Plano Ativo";
+        } else {
+          startWebFallbackAudio();
+          document.getElementById("drvBgAudioStatus").textContent = "🌐 Modo Navegador (mantenha aberto)";
+          document.getElementById("drvBgAudioStatus").style.color = "#fbbf24";
+        }
 
         try {
           if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen");
         } catch (_) {}
-
-        // Solicita Web Lock para impedir descarte da aba em segundo plano
-        if (navigator.locks && navigator.locks.request) {
-          navigator.locks.request("fc_gps_lock", () => new Promise((resolve) => {
-            window.__releaseGpsLock = resolve;
-          })).catch(() => {});
-        }
 
         document.getElementById("drvSetupControls").classList.add("hidden");
         document.getElementById("drvActiveControls").classList.remove("hidden");
@@ -3797,31 +3424,13 @@
           showToast("Chave de motorista inválida!", true);
         });
 
-        navigator.geolocation.getCurrentPosition(
-          (pos) => handleIncomingDriverCoords(pos.coords.latitude, pos.coords.longitude, true),
-          () => {},
-          { enableHighAccuracy: true, timeout: 12000 }
-        );
-
-        watchId = navigator.geolocation.watchPosition(
-          (pos) => handleIncomingDriverCoords(pos.coords.latitude, pos.coords.longitude, false),
-          () => showToast("Ative o GPS do celular.", true),
-          { enableHighAccuracy: true, maximumAge: 8000, timeout: 15000 }
-        );
-
-        const intervalMs = tripInfo.intervalMs || 20000;
-        const pollGps = () => {
-          if (watchId === null) return;
-          navigator.geolocation.getCurrentPosition(
+        if ("geolocation" in navigator) {
+          watchId = navigator.geolocation.watchPosition(
             (pos) => handleIncomingDriverCoords(pos.coords.latitude, pos.coords.longitude, false),
             () => {},
-            { enableHighAccuracy: true, maximumAge: 10000, timeout: 12000 }
+            { enableHighAccuracy: true, maximumAge: 8000, timeout: 15000 }
           );
-        };
-
-        if (bgGpsTimer) clearInterval(bgGpsTimer);
-        bgGpsTimer = setInterval(pollGps, intervalMs);
-        startWorkerHeartbeat(intervalMs, pollGps);
+        }
       });
 
       document.getElementById("btnDrvNextStop").addEventListener("click", () => {
@@ -3857,10 +3466,12 @@
         if (!confirm("Finalizar a entrega e desligar o GPS?")) return;
         isTripFinished = true;
         if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
-        if (bgGpsTimer !== null) { clearInterval(bgGpsTimer); bgGpsTimer = null; }
         if (wakeLock) { wakeLock.release(); wakeLock = null; }
-        if (window.__releaseGpsLock) { window.__releaseGpsLock(); window.__releaseGpsLock = null; }
-        stopBackgroundAudioKeepAlive();
+        stopWebFallbackAudio();
+
+        if (window.AndroidGPS && typeof window.AndroidGPS.stopTracking === "function") {
+          window.AndroidGPS.stopTracking();
+        }
 
         await publishDriverUpdate({ status: "concluido" });
         updateStatusBadge("done", "Concluído");
@@ -3873,7 +3484,7 @@
     }
 
     // =========================================================================
-    // 4. MODO CLIENTE (WHATSAPP MOTORISTA + WHATSAPP CENTRAL + CHAT)
+    // 4. MODO CLIENTE
     // =========================================================================
     if (isClientMode) {
       document.getElementById("cliCode").textContent = "#" + tripParam;
@@ -3931,10 +3542,7 @@
         if (!pixKey) return;
 
         pixCard.classList.remove("hidden");
-
-        if (tripInfo.pixAmount) {
-          document.getElementById("cliPixAmountLabel").textContent = `Valor: R$ ${tripInfo.pixAmount}`;
-        }
+        if (tripInfo.pixAmount) document.getElementById("cliPixAmountLabel").textContent = `Valor: R$ ${tripInfo.pixAmount}`;
 
         if (/^https?:\/\//i.test(pixKey)) {
           document.getElementById("cliPixLinkSection").classList.remove("hidden");
