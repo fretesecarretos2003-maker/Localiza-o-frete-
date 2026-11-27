@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Leaflet via jsDelivr (com backup automático no script) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -124,11 +123,7 @@
       gap: 5px;
     }
 
-    body.tv-mode .badge {
-      padding: 10px 18px;
-      font-size: 16px;
-      gap: 9px;
-    }
+    body.tv-mode .badge { padding: 10px 18px; font-size: 16px; gap: 9px; }
 
     .badge-live { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
     .badge-wait { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
@@ -179,11 +174,7 @@
       cursor: pointer;
     }
 
-    body.tv-mode .float-btn {
-      padding: 14px 18px;
-      font-size: 18px;
-      border-radius: 15px;
-    }
+    body.tv-mode .float-btn { padding: 14px 18px; font-size: 18px; border-radius: 15px; }
 
     .bottom-sheet {
       position: fixed;
@@ -202,10 +193,7 @@
       transition: max-height 0.25s ease;
     }
 
-    .bottom-sheet.minimized {
-      max-height: 58px;
-      overflow: hidden;
-    }
+    .bottom-sheet.minimized { max-height: 58px; overflow: hidden; }
 
     .sheet-top-row {
       display: flex;
@@ -215,12 +203,7 @@
       cursor: pointer;
     }
 
-    .sheet-handle {
-      width: 38px;
-      height: 4px;
-      background: var(--surface-light);
-      border-radius: 99px;
-    }
+    .sheet-handle { width: 38px; height: 4px; background: var(--surface-light); border-radius: 99px; }
 
     .btn-toggle-sheet {
       background: var(--surface);
@@ -233,22 +216,10 @@
       cursor: pointer;
     }
 
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      gap: 8px;
-    }
-
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 8px; }
     .section-header h2 { font-size: 15px; font-weight: 700; }
 
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 12px;
-    }
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
 
     .metric-box {
       background: var(--surface);
@@ -270,12 +241,7 @@
       font-size: 13px;
     }
 
-    .info-flex {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
+    .info-flex { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 
     .form-group { margin-bottom: 10px; }
     .form-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
@@ -327,19 +293,8 @@
       50% { box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
     }
 
-    .btn-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .btn-grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 6px;
-      margin-top: 6px;
-    }
+    .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+    .btn-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 6px; }
 
     .unread-pill {
       background: #ef4444;
@@ -388,15 +343,7 @@
       text-align: center;
     }
 
-    .pix-qr {
-      width: 150px;
-      height: 150px;
-      border-radius: 12px;
-      background: #fff;
-      padding: 6px;
-      margin: 10px auto;
-      display: block;
-    }
+    .pix-qr { width: 150px; height: 150px; border-radius: 12px; background: #fff; padding: 6px; margin: 10px auto; display: block; }
 
     .pix-code-preview {
       background: #0f172a;
@@ -479,16 +426,7 @@
       box-shadow: -10px 0 30px rgba(0, 0, 0, 0.55);
     }
 
-    .tv-header {
-      padding: 20px 22px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
+    .tv-header { padding: 20px 22px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .tv-header-title { font-size: 24px; font-weight: 800; display: block; }
     .tv-header-sub { font-size: 17px; color: var(--text-muted); margin-top: 3px; }
     body.tv-mode #tvSidebar .btn-xs { padding: 10px 15px; font-size: 16px; border-radius: 11px; }
@@ -499,17 +437,7 @@
     .tv-login-box input { font-size: 20px; padding: 15px 18px; }
     .tv-login-box .btn { font-size: 20px; padding: 16px; }
 
-    .tv-mode-bar {
-      padding: 15px 20px;
-      background: rgba(59, 130, 246, 0.16);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 18px;
-      gap: 10px;
-    }
-
+    .tv-mode-bar { padding: 15px 20px; background: rgba(59, 130, 246, 0.16); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 18px; gap: 10px; }
     .tv-trips-scroll { flex: 1; overflow-y: auto; padding: 16px 20px; }
     .tv-empty-msg { text-align: center; color: var(--text-muted); font-size: 19px; line-height: 1.55; padding: 32px 14px; }
 
@@ -531,36 +459,9 @@
     .tv-card-hint { font-size: 16px; color: var(--text-muted); }
     body.tv-mode .unread-pill { font-size: 16px; padding: 4px 10px; }
 
-    .tv-chat-panel {
-      height: 40%;
-      min-height: 270px;
-      border-top: 1px solid var(--border);
-      background: #0f172a;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .tv-chat-header {
-      padding: 14px 20px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      font-size: 19px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .tv-chat-feed {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      font-size: 19px;
-    }
-
+    .tv-chat-panel { height: 40%; min-height: 270px; border-top: 1px solid var(--border); background: #0f172a; display: flex; flex-direction: column; }
+    .tv-chat-header { padding: 14px 20px; background: var(--surface); border-bottom: 1px solid var(--border); font-size: 19px; font-weight: 800; display: flex; align-items: center; justify-content: space-between; }
+    .tv-chat-feed { flex: 1; overflow-y: auto; padding: 14px 18px; display: flex; flex-direction: column; gap: 12px; font-size: 19px; }
     .tv-chat-empty { color: var(--text-muted); text-align: center; margin-top: 26px; font-size: 18px; }
     .tv-chat-bubble { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 16px; }
     .tv-chat-meta { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 5px; gap: 8px; }
@@ -671,15 +572,7 @@
 
     body.tv-mode .chat-container { max-width: 820px; margin: 0 auto; height: 86dvh; }
 
-    .chat-header {
-      padding: 14px 16px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
+    .chat-header { padding: 14px 16px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
     body.tv-mode .chat-header { padding: 20px 24px; }
     body.tv-mode .chat-header strong { font-size: 24px !important; }
     body.tv-mode #chatSub { font-size: 17px !important; }
@@ -1093,7 +986,7 @@
   </div>
 
   <!-- ========================================================= -->
-  <!-- 3. INTERFACE DO MOTORISTA                                 -->
+  <!-- 3. INTERFACE DO MOTORISTA (APP E NAVEGADOR)               -->
   <!-- ========================================================= -->
   <section id="driverView" class="bottom-sheet hidden">
     <div class="sheet-top-row" data-toggle-sheet="driverView">
@@ -1102,91 +995,127 @@
       <button type="button" class="btn-toggle-sheet">Minimizar</button>
     </div>
 
-    <!-- Banner exibido apenas quando aberto no Chrome (fora do App Android) -->
-    <div id="drvOpenNativeBanner" class="info-card hidden" style="border-color: rgba(16, 185, 129, 0.55); background: rgba(16, 185, 129, 0.14);">
-      <div style="font-size: 12px; font-weight: 700; color: #34d399; margin-bottom: 6px;">
-        📡 Para GPS contínuo ao usar o Maps/Waze:
-      </div>
-      <a id="btnLaunchNativeApp" href="#" class="btn btn-primary btn-sm" style="width: 100%;">
-        📲 Abrir no App Fretes Motorista
-      </a>
-    </div>
-
-    <div class="info-card info-flex">
-      <div>
-        <div style="font-size: 11px; color: var(--text-muted);">TRANSPORTE</div>
-        <strong id="drvTripCode">#0000</strong>
-        <div style="font-size: 11px; color: var(--text-muted);" id="drvVehicle">--</div>
-      </div>
-      <button type="button" id="btnDrvSos" class="btn btn-sos btn-sm">🚨 SOS</button>
-    </div>
-
-    <div id="drvStopBox" class="info-card hidden">
-      <div style="font-size: 11px; color: #34d399; font-weight: 700;" id="drvStopTitle">PRÓXIMA PARADA</div>
-      <div style="font-size: 13px; font-weight: 600; margin: 4px 0 8px;" id="drvStopAddr">--</div>
-      <a id="btnOpenGmaps" href="#" target="_blank" class="btn btn-accent">
-        🗺️ Abrir Rota no Google Maps
-      </a>
-    </div>
-
-    <div id="drvSetupControls">
-      <button type="button" id="btnDrvStart" class="btn btn-primary">
-        ▶ Iniciar Transmissão ao Vivo
-      </button>
-
-      <div class="btn-grid" style="margin-top: 8px;">
-        <button type="button" id="btnDrvChatSetup" class="btn btn-dark btn-sm">
-          💬 Chat <span id="drvUnreadBadge1" class="unread-pill hidden">0</span>
-        </button>
-        <a id="btnDrvWaCentralSetup" href="#" target="_blank" class="btn btn-accent btn-sm">
-          🏢 WhatsApp Central
-        </a>
-      </div>
-    </div>
-
-    <div id="drvActiveControls" class="hidden">
-      <div class="info-card info-flex">
-        <div>
-          <span style="color: var(--text-muted); font-size: 12px; display: block;">Status do Rastreio:</span>
-          <span id="drvBgAudioStatus" style="font-size: 11px; color: #34d399; font-weight: 700;">📡 Transmitindo ao vivo</span>
-        </div>
-        <strong id="drvSendCount" style="font-size: 16px;">0</strong>
-      </div>
-
-      <button type="button" id="btnDrvNextStop" class="btn btn-warning hidden" style="margin-bottom: 8px;">
-        ✅ Concluir Parada Atual e Ir para Próxima
-      </button>
-
-      <div class="btn-grid">
-        <button type="button" id="btnDrvChat" class="btn btn-dark btn-sm">
-          💬 Chat <span id="drvUnreadBadge2" class="unread-pill hidden">0</span>
-        </button>
-        <a id="btnDrvWaCentralActive" href="#" target="_blank" class="btn btn-dark btn-sm">
-          🏢 WhatsApp Central
-        </a>
-      </div>
-
-      <div class="btn-grid" style="margin-top: 6px;">
-        <button type="button" id="btnDrvOled" class="btn btn-accent btn-sm">🔋 Tela Preta (Eco)</button>
-        <button type="button" id="btnDrvShareClient" class="btn btn-dark btn-sm">📲 Link Cliente</button>
-      </div>
-
-      <button type="button" id="btnDrvConfirmPaid" class="btn btn-primary hidden" style="margin-top: 8px;">
-        💰 Confirmar Pagamento Recebido
-      </button>
-
-      <button type="button" id="btnDrvFinish" class="btn btn-danger" style="margin-top: 8px;">
-        ■ Finalizar Entrega Completa
-      </button>
-    </div>
-
-    <div id="drvPostFinishControls" class="hidden">
-      <button type="button" id="btnDrvConfirmPaidAfter" class="btn btn-primary" style="margin-bottom: 8px;">
-        💰 Confirmar Pagamento Recebido
-      </button>
-      <a id="btnDrvWaCentralDone" href="#" target="_blank" class="btn btn-dark">
+    <!-- Tela de Espera -->
+    <div id="driverWaitingBox" class="hidden" style="text-align: center; padding: 8px 4px;">
+      <div style="font-size: 32px; margin-bottom: 6px;">🚚</div>
+      <h2 style="font-size: 16px; font-weight: 800;" id="drvWaitTitle">Aguardando Transporte</h2>
+      <p style="font-size: 12px; color: var(--text-muted); margin: 6px 0 14px; line-height: 1.45;" id="drvWaitDesc">
+        Assim que a Central enviar o link do próximo frete no seu WhatsApp, toque nele para iniciar o rastreio.
+      </p>
+      <a id="btnDrvWaCentralWait" href="#" target="_blank" class="btn btn-primary" style="margin-bottom: 8px;">
         🏢 Falar com a Central no WhatsApp
       </a>
+      <button type="button" id="btnToggleManualLink" class="btn btn-dark btn-xs">
+        Colar link manualmente
+      </button>
+      <div id="manualLinkBox" class="input-row hidden" style="margin-top: 8px;">
+        <input type="url" id="manualLinkInput" placeholder="Cole o link recebido..." />
+        <button type="button" id="btnGoManualLink" class="btn btn-accent btn-sm">Ir</button>
+      </div>
+    </div>
+
+    <!-- Conteúdo da Corrida Ativa do Motorista -->
+    <div id="driverTripContainer">
+      <div id="drvOpenNativeBanner" class="info-card hidden" style="border-color: rgba(16, 185, 129, 0.55); background: rgba(16, 185, 129, 0.14);">
+        <div style="font-size: 12px; font-weight: 700; color: #34d399; margin-bottom: 6px;">
+          📡 Para GPS contínuo ao usar o Maps/Waze:
+        </div>
+        <a id="btnLaunchNativeApp" href="#" class="btn btn-primary btn-sm" style="width: 100%;">
+          📲 Abrir no App Fretes Motorista
+        </a>
+      </div>
+
+      <div class="info-card info-flex">
+        <div>
+          <div style="font-size: 11px; color: var(--text-muted);">TRANSPORTE</div>
+          <strong id="drvTripCode">#0000</strong>
+          <div style="font-size: 11px; color: var(--text-muted);" id="drvVehicle">--</div>
+        </div>
+        <button type="button" id="btnDrvSos" class="btn btn-sos btn-sm">🚨 SOS</button>
+      </div>
+
+      <!-- Cartão da Parada Atual + Botões de Avanço/Retorno de Parada (sempre visíveis na rota) -->
+      <div id="drvStopBox" class="info-card hidden">
+        <div style="font-size: 11px; color: #34d399; font-weight: 700;" id="drvStopTitle">PRÓXIMA PARADA</div>
+        <div style="font-size: 13px; font-weight: 600; margin: 4px 0 8px;" id="drvStopAddr">--</div>
+
+        <a id="btnOpenGmaps" href="#" target="_blank" class="btn btn-accent">
+          🗺️ Abrir Rota no Google Maps
+        </a>
+
+        <button type="button" id="btnDrvNextStop" class="btn btn-warning hidden" style="margin-top: 8px;">
+          ✅ Finalizar parada atual e ir para a próxima
+        </button>
+
+        <button type="button" id="btnDrvPrevStop" class="btn btn-dark btn-xs hidden" style="width: 100%; margin-top: 6px;">
+          ↩️ Voltar para parada anterior
+        </button>
+      </div>
+
+      <!-- Controles antes de iniciar transmissão GPS -->
+      <div id="drvSetupControls">
+        <button type="button" id="btnDrvStart" class="btn btn-primary">
+          ▶ Iniciar Transmissão ao Vivo
+        </button>
+
+        <button type="button" id="btnDrvConfirmPaidSetup" class="btn btn-dark" style="margin-top: 8px;">
+          💰 Confirmar Pagamento Recebido
+        </button>
+
+        <div class="btn-grid" style="margin-top: 8px;">
+          <button type="button" id="btnDrvChatSetup" class="btn btn-dark btn-sm">
+            💬 Chat <span id="drvUnreadBadge1" class="unread-pill hidden">0</span>
+          </button>
+          <a id="btnDrvWaCentralSetup" href="#" target="_blank" class="btn btn-accent btn-sm">
+            🏢 WhatsApp Central
+          </a>
+        </div>
+      </div>
+
+      <!-- Controles durante a transmissão GPS -->
+      <div id="drvActiveControls" class="hidden">
+        <div class="info-card info-flex">
+          <div>
+            <span style="color: var(--text-muted); font-size: 12px; display: block;">Status do Rastreio:</span>
+            <span id="drvBgAudioStatus" style="font-size: 11px; color: #34d399; font-weight: 700;">📡 Transmitindo ao vivo</span>
+          </div>
+          <strong id="drvSendCount" style="font-size: 16px;">0</strong>
+        </div>
+
+        <div class="btn-grid">
+          <button type="button" id="btnDrvChat" class="btn btn-dark btn-sm">
+            💬 Chat <span id="drvUnreadBadge2" class="unread-pill hidden">0</span>
+          </button>
+          <a id="btnDrvWaCentralActive" href="#" target="_blank" class="btn btn-dark btn-sm">
+            🏢 WhatsApp Central
+          </a>
+        </div>
+
+        <button type="button" id="btnDrvOled" class="btn btn-accent" style="margin-top: 8px;">
+          🔋 Tela Preta (Economia de Bateria)
+        </button>
+
+        <button type="button" id="btnDrvConfirmPaid" class="btn btn-primary" style="margin-top: 8px;">
+          💰 Confirmar Pagamento Recebido
+        </button>
+
+        <button type="button" id="btnDrvFinish" class="btn btn-danger" style="margin-top: 8px;">
+          ■ Finalizar Entrega Completa
+        </button>
+      </div>
+
+      <!-- Controles após finalizar a entrega -->
+      <div id="drvPostFinishControls" class="hidden">
+        <button type="button" id="btnDrvConfirmPaidAfter" class="btn btn-primary" style="margin-bottom: 8px;">
+          💰 Confirmar Pagamento Recebido
+        </button>
+        <a id="btnDrvWaCentralDone" href="#" target="_blank" class="btn btn-dark" style="margin-bottom: 8px;">
+          🏢 Falar com a Central no WhatsApp
+        </a>
+        <button type="button" id="btnDrvBackToWait" class="btn btn-dark btn-sm" style="width: 100%;">
+          Aguardar Próximo Transporte
+        </button>
+      </div>
     </div>
   </section>
 
@@ -1371,16 +1300,18 @@
     const params = new URLSearchParams(window.location.search);
     const tripParam = params.get("id");
     const driverKeyParam = params.get("chave");
-    const isTvMode = params.get("tv") === "1" && !tripParam;
-    const isDriverMode = Boolean(tripParam && params.get("motorista") === "1" && driverKeyParam);
-    const isManagerTrackMode = Boolean(tripParam && params.get("gestor") === "1" && !isDriverMode);
-    const isClientMode = Boolean(tripParam && !isDriverMode && !isManagerTrackMode);
-    const isManagerMode = !tripParam && !isTvMode;
 
     const isInsideNativeApp = Boolean(
       (window.AndroidGPS && typeof window.AndroidGPS.isNativeApp === "function" && window.AndroidGPS.isNativeApp()) ||
       params.get("app") === "1"
     );
+
+    const isTvMode = params.get("tv") === "1" && !tripParam && !isInsideNativeApp;
+    const isDriverWaitingMode = Boolean(isInsideNativeApp && !tripParam);
+    const isDriverMode = Boolean((tripParam && params.get("motorista") === "1" && driverKeyParam) || isDriverWaitingMode);
+    const isManagerTrackMode = Boolean(tripParam && params.get("gestor") === "1" && !isDriverMode && !isInsideNativeApp);
+    const isClientMode = Boolean(tripParam && !isDriverMode && !isManagerTrackMode);
+    const isManagerMode = !tripParam && !isTvMode && !isInsideNativeApp;
 
     if (isTvMode) {
       document.body.classList.add("tv-mode");
@@ -1418,6 +1349,13 @@
         state === "sos"  ? "badge-sos"  : "badge-wait"
       );
       label.textContent = text;
+    }
+
+    function getTripStops(info) {
+      if (!info || !info.stops) return [];
+      if (Array.isArray(info.stops)) return info.stops.filter(Boolean);
+      if (typeof info.stops === "object") return Object.values(info.stops).filter(Boolean);
+      return [];
     }
 
     function normalizeBrazilPhone(raw) {
@@ -1524,7 +1462,6 @@
       return result;
     }
 
-    // Sons via Web Audio API
     let soundCtx = null;
     function getSoundCtx() {
       const AudioContextClass = window.AudioContext || window.webkitAudioContext;
@@ -1610,7 +1547,6 @@
       if ("vibrate" in navigator) navigator.vibrate(0);
     }
 
-    // Pix Copia e Cola EMV
     function crc16Pix(str) {
       let crc = 0xFFFF;
       for (let i = 0; i < str.length; i++) {
@@ -1650,7 +1586,6 @@
       return payload + crc16Pix(payload);
     }
 
-    // Mapa OpenStreetMap
     let map = null, truckMarker = null, routeLayer = null;
     let stopMarkers = [], autoFollow = true, initialFitDone = false;
     let onMapClickHandler = null;
@@ -1801,7 +1736,6 @@
       return null;
     }
 
-    // Fallback de áudio silencioso apenas se abrir fora do App Nativo
     let bgAudioEl = null;
     function startWebFallbackAudio() {
       if (isInsideNativeApp) return;
@@ -1839,7 +1773,6 @@
       if (bgAudioEl) bgAudioEl.pause();
     }
 
-    // Conexão Firebase
     let fb = null;
     async function connectFirebase() {
       if (fb) return fb;
@@ -2138,11 +2071,8 @@
       function updateDeleteVehicleButton() {
         const sel = document.getElementById("mgrVehicle");
         const btnDel = document.getElementById("btnDeleteCustomVehicle");
-        if (customVehiclesList.includes(sel.value)) {
-          btnDel.classList.remove("hidden");
-        } else {
-          btnDel.classList.add("hidden");
-        }
+        if (customVehiclesList.includes(sel.value)) btnDel.classList.remove("hidden");
+        else btnDel.classList.add("hidden");
       }
 
       renderVehiclesDropdown();
@@ -2450,7 +2380,7 @@
 
           await conn.set(conn.ref(conn.db, `fretes/${tripId}/info`), {
             vehicle, driverName, driverPhone, intervalMs, pixKey, pixAmount,
-            paid: false, stops: draftStops, createdAt: Date.now()
+            paid: false, deleted: false, stops: draftStops, createdAt: Date.now()
           });
 
           await conn.set(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos/${tripId}`), tripSummary);
@@ -2548,7 +2478,7 @@
           });
 
           card.querySelector("[data-cli]").addEventListener("click", () => {
-            const msg = `Olá! Seu transporte com a *${CONFIG.empresa}* já está programado. Acompanhe o veículo em tempo real pelo link:\n\n${clientUrl}`;
+            const msg = `Olá! Seu transporte com a *${CONFIG.empresa}* está a caminho. Acompanhe o veículo em tempo real pelo link:\n\n${clientUrl}`;
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
           });
 
@@ -2559,6 +2489,7 @@
             if (adminPassHash) {
               const conn = await connectFirebase();
               if (conn) {
+                conn.update(conn.ref(conn.db, `fretes/${item.tripId}/info`), { deleted: true, deletedAt: Date.now() }).catch(() => {});
                 conn.remove(conn.ref(conn.db, `gestor_privado/${adminPassHash}/ativos/${item.tripId}`)).catch(() => {});
                 if (currentTvFocusedTripId === item.tripId) setTvRemoteFocus(null);
               }
@@ -2612,7 +2543,7 @@
         }, 1000);
 
         async function refreshManagerTrackView() {
-          const stops = tripInfo.stops || [];
+          const stops = getTripStops(tripInfo);
           const stopIdx = latestLive && typeof latestLive.currentStop === "number" ? latestLive.currentStop : 0;
           const isPaid = Boolean(tripInfo.paid || (latestLive && latestLive.paid));
 
@@ -2969,7 +2900,7 @@
         if (focusedTripId && tvTripsMap[focusedTripId]) {
           const info = tvTripInfos[focusedTripId] || tvTripsMap[focusedTripId];
           const live = tvTripLive[focusedTripId];
-          const stops = info.stops || [];
+          const stops = getTripStops(info);
           const stopIdx = live && typeof live.currentStop === "number" ? live.currentStop : 0;
 
           document.getElementById("tvHudVehicle").textContent =
@@ -3050,7 +2981,7 @@
         Object.keys(tvTripsMap).forEach((tId) => {
           const live = tvTripLive[tId];
           const info = tvTripInfos[tId] || tvTripsMap[tId];
-          const stops = info.stops || [];
+          const stops = getTripStops(info);
           const labelText = `#${tId}${info.driverName ? " • " + info.driverName : ""}`;
 
           let lat = null, lng = null, isPendingGps = false;
@@ -3192,295 +3123,420 @@
     }
 
     // =========================================================================
-    // 3. MODO MOTORISTA (INTEGRADO COM APP ANDROID NATIVO)
+    // 3. MODO MOTORISTA (PARADAS SEQUENCIAIS + PAGAMENTO + APP NATIVO)
     // =========================================================================
     if (isDriverMode) {
-      document.getElementById("drvTripCode").textContent = "#" + tripParam;
-
-      const centralWaMsg = `Olá Central! Sou o motorista do transporte #${tripParam}.`;
+      const centralWaMsg = tripParam
+        ? `Olá Central! Sou o motorista do transporte #${tripParam}.`
+        : "Olá Central! Estou com o aplicativo Fretes Motorista aberto aguardando transporte.";
       const centralWaHref = `https://wa.me/${CONFIG.whatsappCentral}?text=${encodeURIComponent(centralWaMsg)}`;
+
+      document.getElementById("btnDrvWaCentralWait").href = centralWaHref;
       document.getElementById("btnDrvWaCentralSetup").href = centralWaHref;
       document.getElementById("btnDrvWaCentralActive").href = centralWaHref;
       document.getElementById("btnDrvWaCentralDone").href = centralWaHref;
 
-      // Se abriu no navegador Android (fora do App Nativo), exibe atalho para abrir no App
-      if (!isInsideNativeApp && /android/i.test(navigator.userAgent)) {
-        const banner = document.getElementById("drvOpenNativeBanner");
-        const btnApp = document.getElementById("btnLaunchNativeApp");
-        const cleanPath = `${window.location.host}${window.location.pathname}${window.location.search}`;
-        btnApp.href = `intent://${cleanPath}#Intent;scheme=https;package=${CONFIG.androidAppPackage};end`;
-        banner.classList.remove("hidden");
+      function switchToDriverWaitingScreen(titleText = "Aguardando Transporte", descText = "Assim que a Central enviar o link do próximo frete no seu WhatsApp, toque nele para iniciar o rastreio.") {
+        updateStatusBadge("wait", "Aguardando");
+        document.getElementById("driverTripContainer").classList.add("hidden");
+        document.getElementById("driverWaitingBox").classList.remove("hidden");
+        document.getElementById("drvWaitTitle").textContent = titleText;
+        document.getElementById("drvWaitDesc").textContent = descText;
+
+        if (routeLayer && map) {
+          map.removeLayer(routeLayer);
+          routeLayer = null;
+        }
+        stopMarkers.forEach((m) => map && map.removeLayer(m));
+        stopMarkers = [];
+
+        if (window.AndroidGPS) {
+          if (typeof window.AndroidGPS.stopTracking === "function") window.AndroidGPS.stopTracking();
+          if (typeof window.AndroidGPS.clearSavedTrip === "function") window.AndroidGPS.clearSavedTrip();
+        }
       }
 
-      let tripInfo = { stops: [], intervalMs: 20000, vehicle: "Utilitário" };
-      let currentStopIdx = 0, watchId = null, wakeLock = null;
-      let lastSentTime = 0, lastSentCoords = null, sendCounter = 0;
-      let isTripFinished = false;
-      let isPaymentConfirmed = false;
-      let activeDriverSos = null;
-
-      const drvBadges = [
-        document.getElementById("drvUnreadBadge1"),
-        document.getElementById("drvUnreadBadge2")
-      ];
-      subscribeChatUnreadBadge(tripParam, "Motorista", drvBadges);
-
-      function openDriverChat() {
-        const sender = tripInfo.driverName ? `Motorista (${tripInfo.driverName})` : "Motorista";
-        openChatForTrip(tripParam, "Motorista", sender, drvBadges);
-      }
-
-      document.getElementById("btnDrvChatSetup").addEventListener("click", openDriverChat);
-      document.getElementById("btnDrvChat").addEventListener("click", openDriverChat);
-
-      document.getElementById("btnDrvSos").addEventListener("click", () => {
-        document.getElementById("driverSosConfirmModal").classList.remove("hidden");
+      document.getElementById("btnToggleManualLink").addEventListener("click", () => {
+        document.getElementById("manualLinkBox").classList.toggle("hidden");
       });
 
-      document.getElementById("btnCancelSosConfirm").addEventListener("click", () => {
-        document.getElementById("driverSosConfirmModal").classList.add("hidden");
+      document.getElementById("btnGoManualLink").addEventListener("click", () => {
+        const val = document.getElementById("manualLinkInput").value.trim();
+        if (val.startsWith("http")) window.location.href = val;
+        else showToast("Cole o link completo recebido no WhatsApp.", true);
       });
 
-      document.querySelectorAll("[data-sos-num]").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          const dialNum = btn.getAttribute("data-sos-num");
-          const serviceLabel = btn.getAttribute("data-sos-label");
-          document.getElementById("driverSosConfirmModal").classList.add("hidden");
+      document.getElementById("btnDrvBackToWait").addEventListener("click", () => {
+        switchToDriverWaitingScreen();
+      });
 
-          activeDriverSos = { sosAt: Date.now(), sosService: serviceLabel };
-          updateStatusBadge("sos", `SOS ${dialNum}`);
-          showToast(`🚨 Enviando alerta ${serviceLabel} ao Gestor e à TV...`, true);
+      if (isDriverWaitingMode) {
+        switchToDriverWaitingScreen();
+      } else {
+        document.getElementById("drvTripCode").textContent = "#" + tripParam;
 
-          try {
-            await publishDriverUpdate(activeDriverSos);
-            const conn = await connectFirebase();
-            if (conn) {
-              const sender = tripInfo.driverName ? `Motorista (${tripInfo.driverName})` : "Motorista";
-              await conn.push(conn.ref(conn.db, `fretes/${tripParam}/chat`), {
-                role: "Motorista",
-                sender: sender,
-                text: `🚨 ALERTA DE EMERGÊNCIA SOS — ${serviceLabel.toUpperCase()} ACIONADO PELO MOTORISTA!`,
-                ts: Date.now()
-              });
-            }
-          } catch (_) {}
+        if (!isInsideNativeApp && /android/i.test(navigator.userAgent)) {
+          const cleanPath = `${window.location.host}${window.location.pathname}${window.location.search}`;
+          const fallbackUrl = new URL(window.location.href);
+          fallbackUrl.searchParams.set("web", "1");
+          const intentUrl = `intent://${cleanPath}#Intent;scheme=https;package=${CONFIG.androidAppPackage};S.browser_fallback_url=${encodeURIComponent(fallbackUrl.toString())};end`;
 
-          setTimeout(() => {
-            window.location.href = `tel:${dialNum}`;
-          }, 300);
+          const banner = document.getElementById("drvOpenNativeBanner");
+          const btnApp = document.getElementById("btnLaunchNativeApp");
+          btnApp.href = intentUrl;
+          banner.classList.remove("hidden");
+
+          if (!params.get("web")) {
+            window.location.href = intentUrl;
+          }
+        }
+
+        let tripInfo = { stops: [], intervalMs: 20000, vehicle: "Utilitário" };
+        let currentStopIdx = 0;
+        let watchId = null;
+        let wakeLock = null;
+        let isTrackingActive = false;
+        let lastSentTime = 0, lastSentCoords = null, sendCounter = 0;
+        let isTripFinished = false;
+        let isPaymentConfirmed = false;
+        let activeDriverSos = null;
+
+        const drvBadges = [
+          document.getElementById("drvUnreadBadge1"),
+          document.getElementById("drvUnreadBadge2")
+        ];
+        subscribeChatUnreadBadge(tripParam, "Motorista", drvBadges);
+
+        function openDriverChat() {
+          const sender = tripInfo.driverName ? `Motorista (${tripInfo.driverName})` : "Motorista";
+          openChatForTrip(tripParam, "Motorista", sender, drvBadges);
+        }
+
+        document.getElementById("btnDrvChatSetup").addEventListener("click", openDriverChat);
+        document.getElementById("btnDrvChat").addEventListener("click", openDriverChat);
+
+        document.getElementById("btnDrvSos").addEventListener("click", () => {
+          document.getElementById("driverSosConfirmModal").classList.remove("hidden");
         });
-      });
 
-      function updateDriverPaymentButtons() {
-        const hasPix = Boolean((tripInfo.pixKey || "").trim());
-        const btnActive = document.getElementById("btnDrvConfirmPaid");
-        const btnAfter = document.getElementById("btnDrvConfirmPaidAfter");
+        document.getElementById("btnCancelSosConfirm").addEventListener("click", () => {
+          document.getElementById("driverSosConfirmModal").classList.add("hidden");
+        });
 
-        if (!hasPix) {
-          btnActive.classList.add("hidden");
-          btnAfter.classList.add("hidden");
-          return;
+        document.querySelectorAll("[data-sos-num]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const dialNum = btn.getAttribute("data-sos-num");
+            const serviceLabel = btn.getAttribute("data-sos-label");
+            document.getElementById("driverSosConfirmModal").classList.add("hidden");
+
+            activeDriverSos = { sosAt: Date.now(), sosService: serviceLabel };
+            updateStatusBadge("sos", `SOS ${dialNum}`);
+            showToast(`🚨 Enviando alerta ${serviceLabel} ao Gestor e à TV...`, true);
+
+            try {
+              await publishDriverUpdate(activeDriverSos);
+              const conn = await connectFirebase();
+              if (conn) {
+                const sender = tripInfo.driverName ? `Motorista (${tripInfo.driverName})` : "Motorista";
+                await conn.push(conn.ref(conn.db, `fretes/${tripParam}/chat`), {
+                  role: "Motorista",
+                  sender: sender,
+                  text: `🚨 ALERTA DE EMERGÊNCIA SOS — ${serviceLabel.toUpperCase()} ACIONADO PELO MOTORISTA!`,
+                  ts: Date.now()
+                });
+              }
+            } catch (_) {}
+
+            setTimeout(() => {
+              window.location.href = `tel:${dialNum}`;
+            }, 300);
+          });
+        });
+
+        function updateDriverPaymentButtons() {
+          const payButtons = [
+            document.getElementById("btnDrvConfirmPaidSetup"),
+            document.getElementById("btnDrvConfirmPaid"),
+            document.getElementById("btnDrvConfirmPaidAfter")
+          ];
+
+          payButtons.forEach((btn) => {
+            if (!btn) return;
+            if (isPaymentConfirmed) {
+              btn.textContent = "✅ Pagamento Confirmado";
+              btn.classList.remove("btn-dark");
+              btn.classList.add("btn-primary");
+              btn.disabled = true;
+            } else {
+              btn.textContent = "💰 Confirmar Pagamento Recebido";
+              btn.disabled = false;
+            }
+          });
         }
 
-        if (isPaymentConfirmed) {
-          btnActive.textContent = "✅ Pagamento Confirmado";
-          btnActive.disabled = true;
-          btnAfter.textContent = "✅ Pagamento Confirmado";
-          btnAfter.disabled = true;
+        async function handleDriverConfirmPayment() {
+          if (isPaymentConfirmed) return;
+          if (!confirm("Confirmar que o cliente realizou o pagamento?")) return;
+          isPaymentConfirmed = true;
+          updateDriverPaymentButtons();
+          await publishDriverUpdate({ paid: true, paidAt: Date.now() });
+          showToast("💰 Pagamento confirmado!");
         }
 
-        if (!isTripFinished && watchId !== null) btnActive.classList.remove("hidden");
-        if (isTripFinished) btnAfter.classList.remove("hidden");
-      }
+        document.getElementById("btnDrvConfirmPaidSetup").addEventListener("click", handleDriverConfirmPayment);
+        document.getElementById("btnDrvConfirmPaid").addEventListener("click", handleDriverConfirmPayment);
+        document.getElementById("btnDrvConfirmPaidAfter").addEventListener("click", handleDriverConfirmPayment);
 
-      async function handleDriverConfirmPayment() {
-        if (isPaymentConfirmed) return;
-        if (!confirm("Confirmar que o cliente realizou o pagamento?")) return;
-        isPaymentConfirmed = true;
-        updateDriverPaymentButtons();
-        await publishDriverUpdate({ paid: true, paidAt: Date.now() });
-        showToast("💰 Pagamento confirmado!");
-      }
+        function updateDriverStopUI() {
+          const stops = getTripStops(tripInfo);
+          const btnNext = document.getElementById("btnDrvNextStop");
+          const btnPrev = document.getElementById("btnDrvPrevStop");
+          const btnFinish = document.getElementById("btnDrvFinish");
 
-      document.getElementById("btnDrvConfirmPaid").addEventListener("click", handleDriverConfirmPayment);
-      document.getElementById("btnDrvConfirmPaidAfter").addEventListener("click", handleDriverConfirmPayment);
-
-      function updateDriverStopUI() {
-        const stops = tripInfo.stops || [];
-        if (stops.length === 0) {
-          document.getElementById("drvStopBox").classList.add("hidden");
-          document.getElementById("btnDrvNextStop").classList.add("hidden");
-          return;
-        }
-        renderStopPins(stops, currentStopIdx);
-        const activeStop = stops[Math.min(currentStopIdx, stops.length - 1)];
-        const isLast = currentStopIdx >= stops.length - 1;
-
-        document.getElementById("drvStopBox").classList.remove("hidden");
-        document.getElementById("drvStopTitle").textContent = isLast
-          ? `DESTINO FINAL (${currentStopIdx + 1}/${stops.length})`
-          : `PARADA ${currentStopIdx + 1} DE ${stops.length}`;
-        document.getElementById("drvStopAddr").textContent = activeStop.label;
-        document.getElementById("btnOpenGmaps").href =
-          `https://www.google.com/maps/dir/?api=1&destination=${activeStop.lat},${activeStop.lng}&travelmode=driving`;
-
-        if (!isLast && watchId !== null) document.getElementById("btnDrvNextStop").classList.remove("hidden");
-        else document.getElementById("btnDrvNextStop").classList.add("hidden");
-      }
-
-      connectFirebase().then((conn) => {
-        if (!conn) return;
-        conn.onValue(conn.ref(conn.db, `fretes/${tripParam}/info`), (snap) => {
-          const val = snap.val();
-          if (!val) {
-            showToast("Transporte não encontrado.", true);
+          if (stops.length === 0) {
+            document.getElementById("drvStopBox").classList.add("hidden");
+            btnNext.classList.add("hidden");
+            btnPrev.classList.add("hidden");
+            if (!isTripFinished) btnFinish.classList.remove("hidden");
             return;
           }
-          tripInfo = val;
-          if (val.paid) isPaymentConfirmed = true;
-          document.getElementById("drvVehicle").textContent = val.vehicle || "Utilitário";
-          updateDriverStopUI();
-          updateDriverPaymentButtons();
-        });
-      });
 
-      async function publishDriverUpdate(extra = {}) {
-        const conn = await connectFirebase();
-        if (!conn) return;
-        const payload = {
-          lat: lastSentCoords ? lastSentCoords.lat : null,
-          lng: lastSentCoords ? lastSentCoords.lng : null,
-          currentStop: currentStopIdx,
-          status: isTripFinished ? "concluido" : "em_rota",
-          paid: isPaymentConfirmed,
-          ...(activeDriverSos || {}),
-          updatedAt: Date.now(),
-          ...extra
-        };
-        return conn.update(conn.ref(conn.db, `fretes/${tripParam}/updates/${driverKeyParam}`), payload);
-      }
+          if (currentStopIdx >= stops.length) currentStopIdx = stops.length - 1;
+          if (currentStopIdx < 0) currentStopIdx = 0;
 
-      function handleIncomingDriverCoords(lat, lng, forceSend = false) {
-        const now = Date.now();
-        const intervalMs = tripInfo.intervalMs || 20000;
+          renderStopPins(stops, currentStopIdx);
+          const activeStop = stops[currentStopIdx];
+          const isLast = currentStopIdx >= stops.length - 1;
 
-        if (map) {
-          if (!truckMarker) {
-            truckMarker = L.marker([lat, lng], { icon: getTruckIcon(Boolean(activeDriverSos)) }).addTo(map);
-            map.setView([lat, lng], 16);
+          document.getElementById("drvStopBox").classList.remove("hidden");
+          document.getElementById("drvStopTitle").textContent = isLast
+            ? `DESTINO FINAL (${currentStopIdx + 1}/${stops.length})`
+            : `PARADA ${currentStopIdx + 1} DE ${stops.length}`;
+          document.getElementById("drvStopAddr").textContent = activeStop.label;
+          document.getElementById("btnOpenGmaps").href =
+            `https://www.google.com/maps/dir/?api=1&destination=${activeStop.lat},${activeStop.lng}&travelmode=driving`;
+
+          if (!isTripFinished) {
+            if (!isLast) {
+              btnNext.classList.remove("hidden");
+              btnFinish.classList.add("hidden");
+            } else {
+              btnNext.classList.add("hidden");
+              btnFinish.classList.remove("hidden");
+            }
+
+            if (currentStopIdx > 0) btnPrev.classList.remove("hidden");
+            else btnPrev.classList.add("hidden");
           } else {
-            smoothMoveMarker(truckMarker, lat, lng);
-            if (autoFollow) map.panTo([lat, lng]);
+            btnNext.classList.add("hidden");
+            btnPrev.classList.add("hidden");
           }
         }
 
-        const remaining = (tripInfo.stops || []).slice(currentStopIdx);
-        if (remaining.length > 0) drawStreetRoute(lat, lng, remaining);
+        connectFirebase().then((conn) => {
+          if (!conn) return;
 
-        if (!forceSend && now - lastSentTime < intervalMs) return;
-        if (!forceSend && lastSentCoords) {
-          const moved = haversineMeters(lastSentCoords.lat, lastSentCoords.lng, lat, lng);
-          if (moved < 10 && now - lastSentTime < 45000) return;
-        }
+          conn.onValue(conn.ref(conn.db, `fretes/${tripParam}/updates/${driverKeyParam}`), (uSnap) => {
+            const uVal = uSnap.val();
+            if (!uVal) return;
 
-        lastSentTime = now;
-        lastSentCoords = { lat, lng };
-        sendCounter++;
+            if (uVal.paid) {
+              isPaymentConfirmed = true;
+              updateDriverPaymentButtons();
+            }
 
-        document.getElementById("drvSendCount").textContent = sendCounter;
-        document.getElementById("oledStatusText").textContent =
-          `Último envio: ${new Date().toLocaleTimeString("pt-BR")} (${sendCounter} envios)`;
+            if (typeof uVal.currentStop === "number" && !isTrackingActive) {
+              currentStopIdx = uVal.currentStop;
+              updateDriverStopUI();
+            }
 
-        // Quando está no App Nativo, o LocationTrackingService já envia em 2º plano
-        if (!window.AndroidGPS) {
-          publishDriverUpdate({ lat, lng });
-        }
-      }
+            if (uVal.status === "concluido" && !isTripFinished) {
+              isTripFinished = true;
+              updateStatusBadge("done", "Concluído");
+              document.getElementById("drvSetupControls").classList.add("hidden");
+              document.getElementById("drvActiveControls").classList.add("hidden");
+              document.getElementById("drvPostFinishControls").classList.remove("hidden");
+              updateDriverStopUI();
+              updateDriverPaymentButtons();
+            }
+          });
 
-      document.getElementById("btnDrvStart").addEventListener("click", async () => {
-        const intervalMs = tripInfo.intervalMs || 20000;
-
-        // Aciona o Serviço Nativo do Android se estiver dentro do App
-        if (window.AndroidGPS && typeof window.AndroidGPS.startTracking === "function") {
-          window.AndroidGPS.startTracking(tripParam, driverKeyParam, intervalMs);
-          document.getElementById("drvBgAudioStatus").textContent = "🛰️ GPS Nativo 2º Plano Ativo";
-        } else {
-          startWebFallbackAudio();
-          document.getElementById("drvBgAudioStatus").textContent = "🌐 Modo Navegador (mantenha aberto)";
-          document.getElementById("drvBgAudioStatus").style.color = "#fbbf24";
-        }
-
-        try {
-          if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen");
-        } catch (_) {}
-
-        document.getElementById("drvSetupControls").classList.add("hidden");
-        document.getElementById("drvActiveControls").classList.remove("hidden");
-        updateStatusBadge("live", "Ao Vivo");
-        updateDriverStopUI();
-        updateDriverPaymentButtons();
-
-        publishDriverUpdate({ status: "em_rota" }).catch(() => {
-          showToast("Chave de motorista inválida!", true);
+          conn.onValue(conn.ref(conn.db, `fretes/${tripParam}/info`), (snap) => {
+            const val = snap.val();
+            if (!val || val.deleted === true) {
+              isTrackingActive = false;
+              if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
+              if (wakeLock) { wakeLock.release(); wakeLock = null; }
+              stopWebFallbackAudio();
+              switchToDriverWaitingScreen(
+                "Transporte Encerrado",
+                "Este transporte foi removido ou finalizado pela Central. Aguardando o próximo link no WhatsApp."
+              );
+              return;
+            }
+            tripInfo = val;
+            if (val.paid) isPaymentConfirmed = true;
+            document.getElementById("drvVehicle").textContent = val.vehicle || "Utilitário";
+            updateDriverStopUI();
+            updateDriverPaymentButtons();
+          });
         });
 
-        if ("geolocation" in navigator) {
-          watchId = navigator.geolocation.watchPosition(
-            (pos) => handleIncomingDriverCoords(pos.coords.latitude, pos.coords.longitude, false),
-            () => {},
-            { enableHighAccuracy: true, maximumAge: 8000, timeout: 15000 }
-          );
-        }
-      });
-
-      document.getElementById("btnDrvNextStop").addEventListener("click", () => {
-        currentStopIdx++;
-        updateDriverStopUI();
-        publishDriverUpdate({ currentStop: currentStopIdx });
-        if (lastSentCoords) {
-          const remaining = (tripInfo.stops || []).slice(currentStopIdx);
-          drawStreetRoute(lastSentCoords.lat, lastSentCoords.lng, remaining, true);
-        }
-        showToast(`Avançado para parada ${currentStopIdx + 1}!`);
-      });
-
-      document.getElementById("btnDrvShareClient").addEventListener("click", () => {
-        const clientUrl = `${baseUrl()}?id=${encodeURIComponent(tripParam)}`;
-        const msg = `Olá! Seu frete com a *${CONFIG.empresa}* está a caminho. Acompanhe pelo link:\n\n${clientUrl}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
-      });
-
-      document.getElementById("btnDrvOled").addEventListener("click", async () => {
-        document.getElementById("oledOverlay").classList.remove("hidden");
-        if ("getBattery" in navigator) {
-          const bat = await navigator.getBattery();
-          document.getElementById("oledBatteryText").textContent = `Bateria atual: ${Math.round(bat.level * 100)}%`;
-        }
-      });
-
-      document.getElementById("btnExitOled").addEventListener("dblclick", () => {
-        document.getElementById("oledOverlay").classList.add("hidden");
-      });
-
-      document.getElementById("btnDrvFinish").addEventListener("click", async () => {
-        if (!confirm("Finalizar a entrega e desligar o GPS?")) return;
-        isTripFinished = true;
-        if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
-        if (wakeLock) { wakeLock.release(); wakeLock = null; }
-        stopWebFallbackAudio();
-
-        if (window.AndroidGPS && typeof window.AndroidGPS.stopTracking === "function") {
-          window.AndroidGPS.stopTracking();
+        async function publishDriverUpdate(extra = {}) {
+          const conn = await connectFirebase();
+          if (!conn) return;
+          const payload = {
+            lat: lastSentCoords ? lastSentCoords.lat : null,
+            lng: lastSentCoords ? lastSentCoords.lng : null,
+            currentStop: currentStopIdx,
+            status: isTripFinished ? "concluido" : "em_rota",
+            paid: isPaymentConfirmed,
+            ...(activeDriverSos || {}),
+            updatedAt: Date.now(),
+            ...extra
+          };
+          return conn.update(conn.ref(conn.db, `fretes/${tripParam}/updates/${driverKeyParam}`), payload);
         }
 
-        await publishDriverUpdate({ status: "concluido" });
-        updateStatusBadge("done", "Concluído");
-        document.getElementById("drvActiveControls").classList.add("hidden");
-        document.getElementById("btnDrvNextStop").classList.add("hidden");
-        document.getElementById("drvPostFinishControls").classList.remove("hidden");
-        updateDriverPaymentButtons();
-        showToast("Entrega finalizada!");
-      });
+        function handleIncomingDriverCoords(lat, lng, forceSend = false) {
+          const now = Date.now();
+          const intervalMs = tripInfo.intervalMs || 20000;
+
+          if (map) {
+            if (!truckMarker) {
+              truckMarker = L.marker([lat, lng], { icon: getTruckIcon(Boolean(activeDriverSos)) }).addTo(map);
+              map.setView([lat, lng], 16);
+            } else {
+              smoothMoveMarker(truckMarker, lat, lng);
+              if (autoFollow) map.panTo([lat, lng]);
+            }
+          }
+
+          const remaining = getTripStops(tripInfo).slice(currentStopIdx);
+          if (remaining.length > 0) drawStreetRoute(lat, lng, remaining);
+
+          if (!forceSend && now - lastSentTime < intervalMs) return;
+          if (!forceSend && lastSentCoords) {
+            const moved = haversineMeters(lastSentCoords.lat, lastSentCoords.lng, lat, lng);
+            if (moved < 10 && now - lastSentTime < 45000) return;
+          }
+
+          lastSentTime = now;
+          lastSentCoords = { lat, lng };
+          sendCounter++;
+
+          document.getElementById("drvSendCount").textContent = sendCounter;
+          document.getElementById("oledStatusText").textContent =
+            `Último envio: ${new Date().toLocaleTimeString("pt-BR")} (${sendCounter} envios)`;
+
+          if (!window.AndroidGPS) {
+            publishDriverUpdate({ lat, lng });
+          }
+        }
+
+        document.getElementById("btnDrvStart").addEventListener("click", async () => {
+          const intervalMs = tripInfo.intervalMs || 20000;
+          isTrackingActive = true;
+
+          if (window.AndroidGPS && typeof window.AndroidGPS.startTracking === "function") {
+            window.AndroidGPS.startTracking(tripParam, driverKeyParam, intervalMs);
+            document.getElementById("drvBgAudioStatus").textContent = "🛰️ GPS Nativo 2º Plano Ativo";
+          } else {
+            startWebFallbackAudio();
+            document.getElementById("drvBgAudioStatus").textContent = "🌐 Modo Navegador (mantenha aberto)";
+            document.getElementById("drvBgAudioStatus").style.color = "#fbbf24";
+          }
+
+          try {
+            if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen");
+          } catch (_) {}
+
+          document.getElementById("drvSetupControls").classList.add("hidden");
+          document.getElementById("drvActiveControls").classList.remove("hidden");
+          updateStatusBadge("live", "Ao Vivo");
+          updateDriverStopUI();
+          updateDriverPaymentButtons();
+
+          publishDriverUpdate({ status: "em_rota" }).catch(() => {
+            showToast("Chave de motorista inválida!", true);
+          });
+
+          if ("geolocation" in navigator) {
+            watchId = navigator.geolocation.watchPosition(
+              (pos) => handleIncomingDriverCoords(pos.coords.latitude, pos.coords.longitude, false),
+              () => {},
+              { enableHighAccuracy: true, maximumAge: 8000, timeout: 15000 }
+            );
+          }
+        });
+
+        document.getElementById("btnDrvNextStop").addEventListener("click", () => {
+          const stops = getTripStops(tripInfo);
+          if (currentStopIdx >= stops.length - 1) return;
+          currentStopIdx++;
+          updateDriverStopUI();
+          publishDriverUpdate({ currentStop: currentStopIdx });
+          if (window.AndroidGPS && typeof window.AndroidGPS.updateStop === "function") {
+            window.AndroidGPS.updateStop(currentStopIdx);
+          }
+          if (lastSentCoords) {
+            const remaining = stops.slice(currentStopIdx);
+            drawStreetRoute(lastSentCoords.lat, lastSentCoords.lng, remaining, true);
+          }
+          const isNowLast = currentStopIdx >= stops.length - 1;
+          showToast(isNowLast ? "🏁 Indo para o Destino Final!" : `✅ Parada concluída! Indo para parada ${currentStopIdx + 1}/${stops.length}`);
+        });
+
+        document.getElementById("btnDrvPrevStop").addEventListener("click", () => {
+          if (currentStopIdx <= 0) return;
+          currentStopIdx--;
+          updateDriverStopUI();
+          publishDriverUpdate({ currentStop: currentStopIdx });
+          if (window.AndroidGPS && typeof window.AndroidGPS.updateStop === "function") {
+            window.AndroidGPS.updateStop(currentStopIdx);
+          }
+          if (lastSentCoords) {
+            const remaining = getTripStops(tripInfo).slice(currentStopIdx);
+            drawStreetRoute(lastSentCoords.lat, lastSentCoords.lng, remaining, true);
+          }
+          showToast(`↩️ Retornado para parada ${currentStopIdx + 1}`);
+        });
+
+        document.getElementById("btnDrvOled").addEventListener("click", async () => {
+          document.getElementById("oledOverlay").classList.remove("hidden");
+          if ("getBattery" in navigator) {
+            const bat = await navigator.getBattery();
+            document.getElementById("oledBatteryText").textContent = `Bateria atual: ${Math.round(bat.level * 100)}%`;
+          }
+        });
+
+        document.getElementById("btnExitOled").addEventListener("dblclick", () => {
+          document.getElementById("oledOverlay").classList.add("hidden");
+        });
+
+        document.getElementById("btnDrvFinish").addEventListener("click", async () => {
+          if (!confirm("Finalizar a entrega e desligar o GPS?")) return;
+          isTripFinished = true;
+          isTrackingActive = false;
+          if (watchId !== null) { navigator.geolocation.clearWatch(watchId); watchId = null; }
+          if (wakeLock) { wakeLock.release(); wakeLock = null; }
+          stopWebFallbackAudio();
+
+          if (window.AndroidGPS) {
+            if (typeof window.AndroidGPS.stopTracking === "function") window.AndroidGPS.stopTracking();
+            if (typeof window.AndroidGPS.clearSavedTrip === "function") window.AndroidGPS.clearSavedTrip();
+          }
+
+          await publishDriverUpdate({ status: "concluido" });
+          updateStatusBadge("done", "Concluído");
+          document.getElementById("drvActiveControls").classList.add("hidden");
+          document.getElementById("btnDrvNextStop").classList.add("hidden");
+          document.getElementById("btnDrvPrevStop").classList.add("hidden");
+          document.getElementById("drvPostFinishControls").classList.remove("hidden");
+          updateDriverPaymentButtons();
+          showToast("Entrega finalizada!");
+        });
+      }
     }
 
     // =========================================================================
@@ -3564,7 +3620,7 @@
       }, 1000);
 
       async function updateClientView() {
-        const stops = tripInfo.stops || [];
+        const stops = getTripStops(tripInfo);
         const stopIdx = latestLive && typeof latestLive.currentStop === "number" ? latestLive.currentStop : 0;
 
         if (stops.length > 0) {
